@@ -15,7 +15,7 @@ export const SignupForm: React.FC<SignupFormProps> = ({
     <div>
       <form
         onSubmit={toggleNext}
-        className="flex flex-col w-[300px] md:w-[400px]"
+        className="flex flex-col w-[300px] md:w-[400px] text-jetBlack"
       >
         <label className="text-2xl font-bold mb-2" htmlFor="name">
           Name
@@ -74,7 +74,7 @@ export const SignupForm: React.FC<SignupFormProps> = ({
           <div className="w-3 h-3 rounded-full bg-slate-400"></div>
         </div>
         <button className="w-full mt-3 h-14 flex justify-center items-center rounded-md bg-darkBlue text-lightBlue hover:text-jetBlack hover:bg-gold transition-colors duration-300">
-          <p className="font-poppins font-bold text-base md:text-xl">Next</p>
+          <p className="font-bold text-base md:text-xl">Next</p>
         </button>
       </form>
     </div>

@@ -1,10 +1,12 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { LoginForm } from "./_components/loginForm";
 import { login } from "./actions";
 
 export default function Login() {
+  const router = useRouter();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -23,7 +25,7 @@ export default function Login() {
 
     try {
       const user = await login(formData);
-      if (user) window.location.href = "/";
+      if (user) router.push("/");
     } catch (error) {
       console.log(error);
     }

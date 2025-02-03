@@ -15,7 +15,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
     <div>
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col w-[300px] md:w-[400px]"
+        className="flex flex-col w-[300px] md:w-[400px] text-jetBlack"
       >
         <label className="text-2xl font-bold mb-2" htmlFor="email">
           Email
@@ -34,7 +34,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
           Password
         </label>
         <input
-          className="border-2 border-jetBlack bg-lightBlue p-2 pl-4 rounded-lg mb-5"
+          className="border-2 border-jetBlack text-jetBlack bg-lightBlue p-2 pl-4 rounded-lg mb-5"
           id="password"
           name="password"
           type="password"
@@ -48,7 +48,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
           <div className="w-3 h-3 rounded-full bg-slate-400"></div>
         </div>
         <button className="w-full mt-3 h-14 flex justify-center items-center rounded-md bg-darkBlue text-lightBlue hover:text-jetBlack hover:bg-gold transition-colors duration-300">
-          <p className="font-poppins font-bold text-base md:text-xl">Log In</p>
+          <p className="font-bold text-base md:text-xl">Log In</p>
         </button>
       </form>
     </div>

@@ -3,8 +3,10 @@
 import { useState } from "react";
 import { SignupForm } from "./_components/signupForm";
 import { signup } from "./actions";
+import { useRouter } from "next/navigation";
 
 export default function Signup() {
+  const router = useRouter();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -39,7 +41,7 @@ export default function Signup() {
 
     try {
       const user = await signup(formData);
-      if (user) window.location.href = "/";
+      if (user) router.push("/");
     } catch (error) {
       console.log(error);
     }
