@@ -43,10 +43,6 @@ export const LoginForm: React.FC<LoginFormProps> = ({
           onChange={handleInputChange}
           required
         />
-        <div className="flex gap-2 items-center justify-center w-full mt-3">
-          <div className="w-3 h-3 rounded-full bg-black"></div>
-          <div className="w-3 h-3 rounded-full bg-slate-400"></div>
-        </div>
         <button className="w-full mt-3 h-14 flex justify-center items-center rounded-md bg-darkBlue text-lightBlue hover:text-jetBlack hover:bg-gold transition-colors duration-300">
           <p className="font-bold text-base md:text-xl">Log In</p>
         </button>
