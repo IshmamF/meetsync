@@ -1,35 +1,22 @@
 "use client";
 
-interface SignupFormProps {
+interface LoginFormProps {
   formData: Record<string, string>;
   handleInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  toggleNext: (event: React.FormEvent<HTMLFormElement>) => void;
+  handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
 }
 
-export const SignupForm: React.FC<SignupFormProps> = ({
+export const LoginForm: React.FC<LoginFormProps> = ({
   formData,
   handleInputChange,
-  toggleNext,
+  handleSubmit,
 }) => {
   return (
     <div>
       <form
-        onSubmit={toggleNext}
+        onSubmit={handleSubmit}
         className="flex flex-col w-[300px] md:w-[400px]"
       >
-        <label className="text-2xl font-bold mb-2" htmlFor="name">
-          Name
-        </label>
-        <input
-          className="border-2 border-jetBlack bg-lightBlue p-2 pl-4 rounded-lg mb-5"
-          id="name"
-          name="name"
-          type="text"
-          placeholder="Enter your name"
-          value={formData.name}
-          onChange={handleInputChange}
-          required
-        />
         <label className="text-2xl font-bold mb-2" htmlFor="email">
           Email
         </label>
@@ -51,21 +38,8 @@ export const SignupForm: React.FC<SignupFormProps> = ({
           id="password"
           name="password"
           type="password"
-          placeholder="Create a password"
+          placeholder="Enter your password"
           value={formData.password}
-          onChange={handleInputChange}
-          required
-        />
-        <label className="text-2xl font-bold mb-2" htmlFor="password">
-          Confirm Password
-        </label>
-        <input
-          className="border-2 border-jetBlack bg-lightBlue p-2 pl-4 rounded-lg mb-5"
-          id="confirmPassword"
-          name="confirmPassword"
-          type="password"
-          placeholder="Confirm password"
-          value={formData.confirmPassword}
           onChange={handleInputChange}
           required
         />
@@ -74,7 +48,7 @@ export const SignupForm: React.FC<SignupFormProps> = ({
           <div className="w-3 h-3 rounded-full bg-slate-400"></div>
         </div>
         <button className="w-full mt-3 h-14 flex justify-center items-center rounded-md bg-darkBlue text-lightBlue hover:text-jetBlack hover:bg-gold transition-colors duration-300">
-          <p className="font-poppins font-bold text-base md:text-xl">Next</p>
+          <p className="font-poppins font-bold text-base md:text-xl">Log In</p>
         </button>
       </form>
     </div>

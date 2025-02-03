@@ -1,17 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { SignupForm } from "./_components/signupForm";
-import { signup } from "./actions";
+import { LoginForm } from "./_components/loginForm";
+import { login } from "./actions";
 
-export default function Signup() {
+export default function Login() {
   const [formData, setFormData] = useState({
-    name: "",
     email: "",
     password: "",
-    confirmPassword: "",
-    address: "",
-    transport: "",
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -22,23 +18,11 @@ export default function Signup() {
     }));
   };
 
-  const toggleNext = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    // todo: instead of just submitting need to add user setup logic here
-    // ie show next form and then submit on completion of that one
-    handleSubmit(e);
-  };
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (formData.password != formData.confirmPassword) {
-      // todo: display error
-      return;
-    }
-
     try {
-      const user = await signup(formData);
+      const user = await login(formData);
       if (user) window.location.href = "/";
     } catch (error) {
       console.log(error);
@@ -47,11 +31,11 @@ export default function Signup() {
 
   return (
     <div className="bg-lightBlue min-h-screen flex flex-col gap-6 justify-center items-center">
-      <div className="text-5xl font-bold">Sign Up</div>
-      <SignupForm
+      <div className="text-5xl font-bold">Log In</div>
+      <LoginForm
         formData={formData}
         handleInputChange={handleInputChange}
-        toggleNext={toggleNext}
+        handleSubmit={handleSubmit}
       />
       ;
     </div>
