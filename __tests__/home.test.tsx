@@ -1,5 +1,4 @@
-//import '@testing-library/jest-dom'
-import {describe, it} from '@jest/globals';
+import '@testing-library/jest-dom'
 import { render } from '@testing-library/react'
 import Home from '../src/app/page'
  
