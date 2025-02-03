@@ -14,6 +14,5 @@ export async function login(formData: Record<string, string>) {
   if (error) {
     throw error;
   }
-  console.log(data);
   return data.user;
 }
