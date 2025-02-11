@@ -3,18 +3,18 @@
 interface SignupFormProps {
   formData: Record<string, string>;
   handleInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  toggleNext: (event: React.FormEvent<HTMLFormElement>) => void;
+  toggleForm: (event: React.FormEvent<HTMLFormElement>) => void;
 }
 
 export const SignupForm: React.FC<SignupFormProps> = ({
   formData,
   handleInputChange,
-  toggleNext,
+  toggleForm,
 }) => {
   return (
     <div>
       <form
-        onSubmit={toggleNext}
+        onSubmit={toggleForm}
         className="flex flex-col w-[300px] md:w-[400px] text-jetBlack"
       >
         <label className="text-2xl font-bold mb-2" htmlFor="name">
@@ -39,6 +39,7 @@ export const SignupForm: React.FC<SignupFormProps> = ({
           name="email"
           type="email"
           placeholder="Enter your email"
+          autoComplete="username"
           value={formData.email}
           onChange={handleInputChange}
           required
@@ -52,6 +53,7 @@ export const SignupForm: React.FC<SignupFormProps> = ({
           name="password"
           type="password"
           placeholder="Create a password"
+          autoComplete="new-password"
           value={formData.password}
           onChange={handleInputChange}
           required
@@ -65,6 +67,7 @@ export const SignupForm: React.FC<SignupFormProps> = ({
           name="confirmPassword"
           type="password"
           placeholder="Confirm password"
+          autoComplete="new-password"
           value={formData.confirmPassword}
           onChange={handleInputChange}
           required
