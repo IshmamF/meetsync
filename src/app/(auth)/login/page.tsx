@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { LoginForm } from "./_components/loginForm";
+import { revalidatePath } from 'next/cache';
 import { login } from "./actions";
 
 export default function Login() {
@@ -25,9 +26,12 @@ export default function Login() {
 
     try {
       const user = await login(formData);
-      if (user) router.push("/");
+      if (user) {
+        revalidatePath('/', 'layout');
+        router.push("/");
+      }
     } catch (error) {
-      console.log(error);
+      router.push("/error");
     }
   };
 
