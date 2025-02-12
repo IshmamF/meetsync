@@ -1,7 +1,5 @@
 "use client";
 
-import CalendarFlow from "./calendarFlow";
-
 interface SignupFormProps {
   formData: Record<string, string>;
   handleInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -47,7 +45,15 @@ export const UserInfoForm: React.FC<SignupFormProps> = ({
           onChange={handleInputChange}
           required
         />
-        <CalendarFlow/>
+        <div className='flex justify-between mb-2'>
+            <div className='text-2xl font-bold flex items-center'>Google Calendar</div>
+            <div className="flex items-center justify-center">
+                <button onClick={() => setButtonClicked('google')} className="px-4 py-2 border flex gap-2 rounded-2xl bg-black dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:border-slate-400 dark:hover:border-slate-500 hover:text-slate-900 dark:hover:text-slate-300 hover:shadow transition duration-150">
+                    <img className="w-6 h-6" src="https://www.svgrepo.com/show/475656/google-color.svg" loading="lazy" alt="google logo"/>
+                    <span className=''>Connect</span>
+                </button>
+            </div>
+        </div>
         <div className="flex gap-2 items-center justify-center w-full mt-3">
             <div className="w-3 h-3 rounded-full bg-slate-400"></div>
             <div className="w-3 h-3 rounded-full bg-black"></div>
