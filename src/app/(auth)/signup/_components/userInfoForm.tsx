@@ -4,12 +4,14 @@ interface SignupFormProps {
   formData: Record<string, string>;
   handleInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   toggleForm: (event: React.FormEvent<HTMLFormElement>) => void;
+  setButtonClicked: (value: string | ((buttonClicked: string) => string)) => void;
 }
 
 export const UserInfoForm: React.FC<SignupFormProps> = ({
   formData,
   handleInputChange,
   toggleForm,
+  setButtonClicked
 }) => {
   return (
     <div>
@@ -48,10 +50,10 @@ export const UserInfoForm: React.FC<SignupFormProps> = ({
             <div className="w-3 h-3 rounded-full bg-black"></div>
         </div>
         <div className="flex gap-4">
-            <button name='previousButton' value='Toggles form' className="w-full mt-3 h-14 flex justify-center items-center rounded-md bg-darkBlue text-lightBlue hover:text-jetBlack hover:bg-gold transition-colors duration-300">
+            <button id='previous' onClick={() => setButtonClicked('previous')} name='previousButton' value='Toggles form' className="w-full mt-3 h-14 flex justify-center items-center rounded-md bg-darkBlue text-lightBlue hover:text-jetBlack hover:bg-gold transition-colors duration-300">
                 <p className="font-bold text-base md:text-xl">Previous</p>
             </button>
-            <button name='submitButton' value='Submits form' className="w-full mt-3 h-14 flex justify-center items-center rounded-md bg-darkBlue text-lightBlue hover:text-jetBlack hover:bg-gold transition-colors duration-300">
+            <button id='submit' onClick={() => setButtonClicked('submit')} name='submitButton' value='Submits form' className="w-full mt-3 h-14 flex justify-center items-center rounded-md bg-darkBlue text-lightBlue hover:text-jetBlack hover:bg-gold transition-colors duration-300">
                 <p className="font-bold text-base md:text-xl">Submit</p>
             </button>
         </div>

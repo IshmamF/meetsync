@@ -18,6 +18,7 @@ export default function Signup() {
     transport: "",
   });
   const [nextForm, setNextForm] = useState(true);
+  const [buttonClicked, setButtonClicked] = useState('');
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -38,13 +39,14 @@ export default function Signup() {
       return;
     }
 
-    const buttonName = e.nativeEvent.submitter.name;
+    console.log(buttonClicked)
 
-    // We toggle forms only when previous button is clicked or when we're on signup form
-    if (buttonName == 'previousButton' || !nextForm) {
-      setNextForm(!nextForm);
-    } else {
+    // Only submit if the buttonClicked is submit
+    if (buttonClicked == 'submit') {
       handleSubmit(e);
+    } else {
+      // We toggle forms only when previous button is clicked or when we're on signup form
+      setNextForm(!nextForm);
     }
 
   };
@@ -77,6 +79,7 @@ export default function Signup() {
           formData={formData}
           handleInputChange={handleInputChange}
           toggleForm={toggleForm}
+          setButtonClicked={setButtonClicked}
         /> }
     </div>
   );
