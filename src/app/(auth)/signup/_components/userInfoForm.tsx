@@ -1,5 +1,7 @@
 "use client";
 
+import CalendarFlow from "./calendarFlow";
+
 interface SignupFormProps {
   formData: Record<string, string>;
   handleInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -45,6 +47,7 @@ export const UserInfoForm: React.FC<SignupFormProps> = ({
           onChange={handleInputChange}
           required
         />
+        <CalendarFlow/>
         <div className="flex gap-2 items-center justify-center w-full mt-3">
             <div className="w-3 h-3 rounded-full bg-slate-400"></div>
             <div className="w-3 h-3 rounded-full bg-black"></div>
