@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { SignupForm } from "./_components/signupForm";
-import { signup } from "./actions";
+import { signup, CalendarOAuth } from "./actions";
 import { useRouter } from "next/navigation";
 import { revalidatePath } from 'next/cache';
 import { UserInfoForm } from "./_components/userInfoForm";
@@ -29,7 +29,7 @@ export default function Signup() {
   };
 
   // Function to toggle which form user is on 
-  const toggleForm = (e: React.FormEvent<HTMLFormElement>) => {
+  const toggleForm = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // todo: instead of just submitting need to add user setup logic here
     // ie show next form and then submit on completion of that one
@@ -44,6 +44,10 @@ export default function Signup() {
     // Only submit if the buttonClicked is submit
     if (buttonClicked == 'submit') {
       handleSubmit(e);
+    } else if (buttonClicked == 'google') {
+      console.log('hi')
+      const url = await CalendarOAuth();
+      console.log(url)
     } else {
       // We toggle forms only when previous button is clicked or when we're on signup form
       setNextForm(!nextForm);
