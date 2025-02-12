@@ -68,7 +68,7 @@ export default function Signup() {
 
   return (
     <div className="bg-lightBlue min-h-screen flex flex-col gap-6 justify-center items-center">
-      <div className="text-5xl font-bold">Sign Up</div>
+      <div className="text-5xl font-bold text-jetBlack">Sign Up</div>
       {!nextForm ? 
         <SignupForm
           formData={formData}

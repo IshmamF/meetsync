@@ -37,7 +37,7 @@ export default function Login() {
 
   return (
     <div className="bg-lightBlue min-h-screen flex flex-col gap-6 justify-center items-center">
-      <div className="text-5xl font-bold">Log In</div>
+      <div className="text-5xl font-bold text-jetBlack">Log In</div>
       <LoginForm
         formData={formData}
         handleInputChange={handleInputChange}
