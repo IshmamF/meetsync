@@ -3,18 +3,18 @@
 interface SignupFormProps {
   formData: Record<string, string>;
   handleInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  toggleForm: (event: React.FormEvent<HTMLFormElement>) => void;
+  handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
 }
 
 export const SignupForm: React.FC<SignupFormProps> = ({
   formData,
   handleInputChange,
-  toggleForm,
+  handleSubmit,
 }) => {
   return (
     <div>
       <form
-        onSubmit={toggleForm}
+        onSubmit={handleSubmit}
         className="flex flex-col w-[300px] md:w-[400px] text-jetBlack"
       >
         <label className="text-2xl font-bold mb-2" htmlFor="name">
