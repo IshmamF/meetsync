@@ -28,9 +28,6 @@ export async function GET(req: NextRequest) {
     const { tokens } = await oauth2Client.getToken(code); 
     oauth2Client.setCredentials(tokens);
 
-    const oauth2 = google.oauth2({ version: "v2", auth: oauth2Client });
-    const { data: userInfo } = await oauth2.userinfo.get();
-
     const user = await supabase.auth.getUser();
     if (!user.data.user) {
       return NextResponse.redirect("/error");
@@ -40,7 +37,6 @@ export async function GET(req: NextRequest) {
       .from("user_google_accounts")
       .upsert({
         user_id: user.data.user.id,
-        google_email: userInfo.email,
         access_token: tokens.access_token,
         refresh_token: tokens.refresh_token,
       });
