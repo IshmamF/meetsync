@@ -3,7 +3,6 @@
 import { CalendarOAuth } from "./actions";
 import { UserInfoForm } from './components/userInfoForm';
 import { useState } from 'react'
-import { revalidatePath } from 'next/cache';
 import { useRouter } from "next/navigation";
 
 export default function CalendarPage() {
