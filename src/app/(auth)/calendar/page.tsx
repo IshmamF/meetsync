@@ -24,6 +24,7 @@ export default function CalendarPage() {
         e.preventDefault();
 
         const url = await CalendarOAuth();
+        router.push(url)
     };
 
   return (

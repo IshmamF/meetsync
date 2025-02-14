@@ -16,10 +16,11 @@ export async function GET(req: NextRequest) {
   );
 
   const { searchParams } = new URL(req.url);
-  console.log(req.url)
+
   const code = searchParams.get("code");
 
   if (!code) {
+    console.error('code not valid')
     return NextResponse.redirect("/error");
   }
 
@@ -30,6 +31,7 @@ export async function GET(req: NextRequest) {
 
     const user = await supabase.auth.getUser();
     if (!user.data.user) {
+      console.error("No sign in session");
       return NextResponse.redirect("/error");
     }
 
@@ -42,6 +44,7 @@ export async function GET(req: NextRequest) {
       });
 
     if (error) {
+      console.error("supabase Error:", error);
       return NextResponse.redirect("/error");
     }
 
