@@ -1,4 +1,4 @@
-import { NextAuthOptions } from 'next-auth'
+import { NextAuthOptions } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from 'next/navigation';
@@ -10,7 +10,6 @@ const GOOGLE_SECRET = process.env.CLIENT_SECRET;
 Documentation Referenced:
 Supabase X NextAuth - https://authjs.dev/getting-started/adapters/supabase?framework=next-js
 Refresh Token - https://authjs.dev/guides/refresh-token-rotation?framework=next-js
-
 */
 
 export const authOptions: NextAuthOptions = {
@@ -34,7 +33,7 @@ export const authOptions: NextAuthOptions = {
         async jwt({ token, account, user }) {
             const supabase = await createClient();
             const { data } = await supabase.auth.getUser();
-            const AccountInfo = data['user']
+            const AccountInfo = data['user'];
             if (!AccountInfo) redirect('/login');
             if (account) {
                 // First-time login, save the `access_token`, its expiry and the `refresh_token`
@@ -54,7 +53,7 @@ export const authOptions: NextAuthOptions = {
                     access_token: account.access_token || token.access_token || "",
                     expires_at: account.expires_at || token.expires_at || Math.floor(Date.now() / 1000 + 86400),
                     refresh_token: account.refresh_token || token.refresh_token || "",
-                }
+                };
             }
             return token
         },
@@ -83,17 +82,17 @@ export const authOptions: NextAuthOptions = {
                       grant_type: "refresh_token",
                       refresh_token: refresh_token,
                     }),
-                  })
+                  });
          
-                  const tokensOrError = await response.json()
+                  const tokensOrError = await response.json();
          
-                  if (!response.ok) throw tokensOrError
+                  if (!response.ok) throw tokensOrError;
          
                   const newTokens = tokensOrError as {
                     access_token: string
                     expires_in: number
                     refresh_token?: string
-                  }
+                  };
          
                   const {error} = await supabase.schema('next_auth').from('accounts').update({
                     access_token: newTokens.access_token,
@@ -103,7 +102,7 @@ export const authOptions: NextAuthOptions = {
 
                   if (error) throw error;
                 } catch (error) {
-                  console.error("Error refreshing access_token", error)
+                  console.error("Error refreshing access_token", error);
                   // If we fail to refresh the token, return an error so we can handle it on the page
                 }
               }

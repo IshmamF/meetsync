@@ -11,7 +11,6 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
-    "@auth/supabase-adapter": "^1.7.4",
     "@supabase/ssr": "^0.5.2",
     "@supabase/supabase-js": "^2.48.1",
     "class-variance-authority": "^0.7.1",

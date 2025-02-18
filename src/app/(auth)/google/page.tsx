@@ -1,9 +1,9 @@
-'use client'
+'use client';
 
 import { UserInfoForm } from './components/userInfoForm';
-import {SaveUserPrefData} from './actions'
+import {SaveUserPrefData} from './actions';
 import { signIn } from "next-auth/react";
-import { useState } from 'react'
+import { useState } from 'react';
 
 export default function CalendarPage() {
   const [loading, setLoading] = useState(false);
@@ -25,12 +25,12 @@ export default function CalendarPage() {
 
       if (loading) return;
 
-      setLoading(true)
+      setLoading(true);
 
       const response = await SaveUserPrefData(formData);
       if (response.error) {
         console.error(response.error);
-        setLoading(false)
+        setLoading(false);
         return;
       }
 

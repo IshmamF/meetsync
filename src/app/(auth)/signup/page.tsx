@@ -5,7 +5,6 @@ import { SignupForm } from "./_components/signupForm";
 import { signup } from "./actions";
 import { useRouter } from "next/navigation";
 import { AlertCircle } from "lucide-react";
-import { redirect } from 'next/navigation';
 
 import {
   Alert,
@@ -37,7 +36,6 @@ export default function Signup() {
     e.preventDefault();
 
     if (formData.password != formData.confirmPassword) {
-      console.log('hi')
       // todo: display error
       setErrorMsg("Passwords do not match");
       return;
@@ -53,7 +51,7 @@ export default function Signup() {
 
       }
     } catch (error) {
-      throw error
+      throw error;
       //router.push("/error");
     }
   };

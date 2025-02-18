@@ -11,9 +11,6 @@ export async function SaveUserPrefData(formData: Record<string, string>) {
     return { error: "User not authenticated" };
   }
 
-  console.log(user.id);
-  console.log(user)
-  
   const { error } = await supabase
   .from("users")
   .update({
