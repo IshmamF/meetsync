@@ -34,7 +34,7 @@ export default function CalendarPage() {
         return;
       }
 
-      await signIn("google", { callbackUrl: 'http://localhost:3000' });
+      await signIn("google", { callbackUrl: process.env.NEXTAUTH_URL });
 
   };
 
