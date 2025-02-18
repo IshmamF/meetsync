@@ -1,7 +1,6 @@
 import NextAuth from 'next-auth/next';
 import { NextAuthOptions } from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google';
-import { SupabaseAdapter } from "@auth/supabase-adapter";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from 'next/navigation';
 
