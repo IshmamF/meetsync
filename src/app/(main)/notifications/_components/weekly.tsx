@@ -1,5 +1,7 @@
 import React from 'react'
 
+import Notification from './notification'
+
 /*
 TO DO:
 - sort notifications based on time
@@ -11,21 +13,21 @@ TO DO:
 
 const notifications = [
     {
-        'img': 'link',
+        'imgLink': 'link',
         'name': 'Olu',
         'message': "sent a friend request",
         "time": '2025-02-15T12:12',
         'type': 'friend-request'
     }, 
     {
-        'img': 'link',
+        'imgLink': 'link',
         'name': 'Mansij',
         'message': "invited you to a meetup",
         "time": '2025-02-15T12:50',
         'type': 'meetup-request'
     },
     {
-        'img': 'link',
+        'imgLink': 'link',
         'name': 'Everyone',
         'message': "selected date/times",
         "time": '2025-02-13T05:12',
@@ -34,13 +36,18 @@ const notifications = [
 ]
 
 export default function Weekly() {
+
+    const notiDivs = notifications.map((value, index) => {
+        return <Notification notif={value} key={index}/>
+    });
+
   return (
     <div>
-        <div>
-            Title: Last 7 Days
+        <div className='pt-6 text-2xl font-semibold'>
+            Last 7 Days
         </div>
-        <div>
-            List of Notifications
+        <div className='border-black border px-4 py-2 rounded-md'>
+            {notiDivs}
         </div>
     </div>
   )

@@ -1,16 +1,16 @@
 import Weekly from './_components/weekly';
 import Monthly from './_components/monthly';
-import Other from './_components/other';
+import Older from './_components/older';
 
 export default function Notification() {
 
     return (
-        <div className="flex flex-col items-center justify-center">
+        <div className="flex flex-col pt-10 items-center bg-lightBlue min-h-screen text-black">
             <div className="font-semibold text-5xl">Notifications</div>
-            <div className="flex flex-col items-center">
+            <div className="flex flex-col">
                 <Weekly/>
                 <Monthly/>
-                <Other/>
+                <Older/>
             </div>
         </div>
     )
