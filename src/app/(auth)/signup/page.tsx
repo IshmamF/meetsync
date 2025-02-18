@@ -44,7 +44,7 @@ export default function Signup() {
     try {
       const message = await signup(formData);
       if (message == 'success') {
-        router.push("/calendar");
+        router.push("/google");
       } else {
         //console.error(response.error?.message);
         setErrorMsg(message);
