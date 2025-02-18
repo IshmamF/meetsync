@@ -5,6 +5,7 @@ import { SignupForm } from "./_components/signupForm";
 import { signup } from "./actions";
 import { useRouter } from "next/navigation";
 import { AlertCircle } from "lucide-react";
+import { redirect } from 'next/navigation';
 
 import {
   Alert,
@@ -43,12 +44,12 @@ export default function Signup() {
     }
 
     try {
-      const response = await signup(formData);
-      if (response.data.user) {
+      const message = await signup(formData);
+      if (message == 'success') {
         router.push("/calendar");
       } else {
         //console.error(response.error?.message);
-        setErrorMsg(response.error?.message);
+        setErrorMsg(message);
 
       }
     } catch (error) {
