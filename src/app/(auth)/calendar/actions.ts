@@ -1,22 +1,32 @@
 "use server";
-import { google } from "googleapis";
+import { createClient } from "@/utils/supabase/server";
 
-export async function CalendarOAuth() {
-    console.log('whatsup')
-    const CLIENT_ID = process.env.CLIENT_ID;
-    const CLIENT_SECRET = process.env.CLIENT_SECRET;
-    const REDIRECT_URL = process.env.REDIRECT_URL;
-  
-    const oauth2Client = new google.auth.OAuth2(
-      CLIENT_ID,
-      CLIENT_SECRET,
-      REDIRECT_URL
-    );
-  
-    const authUrl = oauth2Client.generateAuthUrl({
-      access_type: "offline", 
-      scope: ["https://www.googleapis.com/auth/calendar"], 
-    });
-  
-    return authUrl;
+export async function SaveUserPrefData(formData: Record<string, string>) {
+  const supabase = await createClient(); 
+
+  const { data: {user}} = await supabase.auth.getUser();
+
+  if (!user?.id) {
+    console.error("User not authenticated");
+    return { error: "User not authenticated" };
   }
+
+  console.log(user.id);
+  console.log(user)
+  
+  const { error } = await supabase
+  .from("users")
+  .update({
+      home_address: formData.address,
+      default_transport: formData.transport,
+      updated_at: new Date(), 
+  })
+  .eq('auth_id', user.id);
+
+
+  if (error) {
+    console.error("Error storing form data:", error);
+    return { error: "Database error" };
+  }
+  return {success: "Updated or Inserted transport/address data"};
+}
