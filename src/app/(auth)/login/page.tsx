@@ -43,7 +43,6 @@ export default function Login() {
         handleInputChange={handleInputChange}
         handleSubmit={handleSubmit}
       />
-      ;
     </div>
   );
 }

@@ -1,12 +1,12 @@
 
-interface SignupFormProps {
+interface UserInfoFormProps {
   formData: Record<string, string>;
-  handleInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  handleInputChange: (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
   handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
   loading: boolean;
 }
 
-export const UserInfoForm: React.FC<SignupFormProps> = ({
+export const UserInfoForm: React.FC<UserInfoFormProps> = ({
   formData,
   handleInputChange,
   handleSubmit,
@@ -34,16 +34,19 @@ export const UserInfoForm: React.FC<SignupFormProps> = ({
         <label className="text-2xl font-bold mb-2" htmlFor="email">
           Transport
         </label>
-        <input
-          className="border-2 border-jetBlack bg-lightBlue p-2 pl-4 rounded-lg mb-5"
+        <select
           id="transport"
-          name="transport"
-          type="text"
-          placeholder="Enter your preferred mode of transport"
           value={formData.transport}
+          name="transport"
           onChange={handleInputChange}
           required
-        />
+          className="border-2 border-jetBlack bg-lightBlue p-2 pl-4 rounded-lg mb-5">
+          <option value="" disabled>Select an option</option>
+          <option value="transit">Transit</option>
+          <option value="cycling">Cycling</option>
+          <option value="driving">Driving</option>
+          <option value="walking">Walking</option>
+        </select>
         <div className="flex gap-2 items-center justify-center w-full mt-3">
             <div className="w-3 h-3 rounded-full bg-slate-400"></div>
             <div className="w-3 h-3 rounded-full bg-black"></div>
