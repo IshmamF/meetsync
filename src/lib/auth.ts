@@ -26,7 +26,7 @@ export const authOptions: NextAuthOptions = {
                 prompt: 'consent',
                 access_type: "offline",
                 response_type: "code",
-                scope: "https://www.googleapis.com/auth/calendar.calendarlist.readonly openid https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile"
+                scope: "https://www.googleapis.com/auth/calendar.calendarlist.readonly https://www.googleapis.com/auth/calendar.app.created openid https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile"
             }
         },
     })],
