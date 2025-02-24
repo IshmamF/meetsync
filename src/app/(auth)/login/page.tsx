@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { LoginForm } from "./_components/loginForm";
 import { revalidatePath } from 'next/cache';
 import { login } from "./actions";
+import { toast } from 'react-hot-toast';
 
 export default function Login() {
   const router = useRouter();
@@ -25,13 +26,15 @@ export default function Login() {
     e.preventDefault();
 
     try {
-      const user = await login(formData);
-      if (user) {
+      const info = await login(formData);
+      if (info.success) {
         revalidatePath('/', 'layout');
         router.push("/");
+      } else {
+        toast.error(info.errorMsg!, {duration:2000});
       }
     } catch (error) {
-      router.push("/error");
+      toast.error("Something went wrong: " + String(error), {duration:2000});
     }
   };
 
