@@ -2,6 +2,7 @@ import { NextAuthOptions } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from 'next/navigation';
+import { toast } from 'react-hot-toast';
 
 const GOOGLE_CLIENT = process.env.CLIENT_ID;
 const GOOGLE_SECRET = process.env.CLIENT_SECRET;
@@ -25,7 +26,7 @@ export const authOptions: NextAuthOptions = {
                 prompt: 'consent',
                 access_type: "offline",
                 response_type: "code",
-                scope: "https://www.googleapis.com/auth/calendar openid https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile"
+                scope: "https://www.googleapis.com/auth/calendar.calendarlist.readonly openid https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile"
             }
         },
     })],
@@ -130,8 +131,11 @@ export const authOptions: NextAuthOptions = {
                             .select('expires_at, refresh_token')
                             .eq('user_id', user.id)
                             .single();
-            if (error) throw error;
-            const {expires_at, refresh_token} = data;
+            if (error) {
+              toast.error("Calendar account doesn't exist", {duration:2000});
+              redirect('/google');
+            };
+            const {expires_at, refresh_token} = data!;
             if (expires_at * 1000 < Date.now()) {
                 // If the access token has expired, try to refresh it
                 try {
