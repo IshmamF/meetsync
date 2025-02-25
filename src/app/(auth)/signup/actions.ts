@@ -17,10 +17,27 @@ export async function signup(formData: Record<string, string>) {
 
   const { error } = await supabase.from('users').insert({
     auth_id: userId, 
-    username: formData.name,
+    username: formData.name.toLowerCase(),
   });
 
   if (error) return error.message;
 
   return 'success';
+}
+
+export async function checkUsernameExists(username: String) {
+  const supabase = await createClient();
+
+  const {data, error} = await supabase.from('users').select('username').eq('username', username.trim().toLowerCase());
+
+  if (error) {
+    console.error("Error checking username:", error);
+    return {'success': false, "error": error.message};
+  }
+
+  if (data && data.length > 0) {
+    return {'success': true, "exists": true};
+  } else {
+    return {'success': true, "exists": false};
+  }
 }

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { SignupForm } from "./_components/signupForm";
-import { signup } from "./actions";
+import { signup, checkUsernameExists } from "./actions";
 import { useRouter } from "next/navigation";
 import { toast } from 'react-hot-toast';
 
@@ -31,6 +31,19 @@ export default function Signup() {
       return;
     }
 
+    const usernameExists = await checkUsernameExists(formData.name);
+
+    if (!usernameExists.success) {
+      toast.error(usernameExists.error!);
+      return;
+    }
+
+
+    if (usernameExists.exists) {
+      toast.error('username already exists');
+      return;
+    }
+
     try {
       const message = await signup(formData);
       if (message == 'success') {
@@ -47,7 +60,7 @@ export default function Signup() {
     <>
       <div className="bg-lightBlue min-h-screen flex flex-col gap-6 justify-center items-center">
         <div>
-          <div className="text-5xl font-bold text-jetBlack pb-4">Sign Up</div>
+          <div className="text-5xl font-bold text-jetBlack pb-4 text-center">Sign Up</div>
           <SignupForm
             formData={formData}
             handleInputChange={handleInputChange}
