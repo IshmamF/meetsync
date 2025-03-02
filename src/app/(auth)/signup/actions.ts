@@ -11,7 +11,7 @@ export async function signup(formData: Record<string, string>) {
   };
 
   const response = await supabase.auth.signUp(data_);
-  if (response.error) return response.error.message;
+  if (response.error) return {status: 500, message : response.error.message};
 
   const userId = response.data.user?.id;
 
@@ -22,7 +22,7 @@ export async function signup(formData: Record<string, string>) {
 
   if (error) return {status: 500, message : error.message};
 
-  return {status: 200,  message : "Successfully created user"};
+  return {status: 201,  message : "Successfully created user"};
 }
 
 export async function checkUsernameExists(username: String) {
@@ -34,10 +34,10 @@ export async function checkUsernameExists(username: String) {
     console.error("Error checking username:", error);
     return {status: 500, error: error.message};
   }
-
+  console.log(data)
   if (data && data.length > 0) {
-    return {status: 200, exists: true};
+    return {status: 409};
   } else {
-    return {status: 200, exists: false};
+    return {status: 200};
   }
 }

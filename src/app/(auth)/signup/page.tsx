@@ -46,14 +46,14 @@ export default function Signup() {
     }
 
 
-    if (usernameExists.exists) {
+    if (usernameExists.status == 409) {
       toast.error('username already exists');
       return;
     }
 
     try {
       const message = await signup(formData);
-      if (message == 'success') {
+      if (message.status == 201) {
         router.push("/google");
       } else {
         toast.error(`${message}`, {duration:2000});
