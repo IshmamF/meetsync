@@ -7,9 +7,14 @@ import { revalidatePath } from 'next/cache';
 import { login } from "./actions";
 import { toast } from 'react-hot-toast';
 
+type LoginFormData = {
+  email: string,
+  password: string,
+};
+
 export default function Login() {
   const router = useRouter();
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<LoginFormData>({
     email: "",
     password: "",
   });

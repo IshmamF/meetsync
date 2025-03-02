@@ -6,9 +6,16 @@ import { signup, checkUsernameExists } from "./actions";
 import { useRouter } from "next/navigation";
 import { toast } from 'react-hot-toast';
 
+type SignupFormData = {
+  name: string,
+  email: string,
+  password: string,
+  confirmPassword: string,
+};
+
 export default function Signup() {
   const router = useRouter();
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<SignupFormData>({
     name: "",
     email: "",
     password: "",

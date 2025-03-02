@@ -1,7 +1,14 @@
 "use client";
 
+type SignupFormData = {
+  name: string,
+  email: string,
+  password: string,
+  confirmPassword: string,
+};
+
 interface SignupFormProps {
-  formData: Record<string, string>;
+  formData: SignupFormData;
   handleInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
 }

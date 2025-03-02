@@ -5,9 +5,14 @@ import {SaveUserPrefData} from './actions';
 import { signIn } from "next-auth/react";
 import { useState } from 'react';
 
+type UserFormData = {
+  address: string,
+  transport: string,
+};
+
 export default function CalendarPage() {
   const [loading, setLoading] = useState(false);
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<UserFormData>({
     address: "",
     transport: "",
   });

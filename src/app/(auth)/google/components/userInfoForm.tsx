@@ -1,6 +1,11 @@
 
+type UserFormData = {
+  address: string,
+  transport: string,
+};
+
 interface UserInfoFormProps {
-  formData: Record<string, string>;
+  formData: UserFormData;
   handleInputChange: (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
   handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
   loading: boolean;
