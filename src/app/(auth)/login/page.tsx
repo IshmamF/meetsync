@@ -3,11 +3,18 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { LoginForm } from "./_components/loginForm";
+import { revalidatePath } from 'next/cache';
 import { login } from "./actions";
+import { toast } from 'react-hot-toast';
+
+type LoginFormData = {
+  email: string,
+  password: string,
+};
 
 export default function Login() {
   const router = useRouter();
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<LoginFormData>({
     email: "",
     password: "",
   });
@@ -24,22 +31,26 @@ export default function Login() {
     e.preventDefault();
 
     try {
-      const user = await login(formData);
-      if (user) router.push("/");
+      const info = await login(formData);
+      if (info.status == 200) {
+        revalidatePath('/', 'layout');
+        router.push("/");
+      } else {
+        toast.error(info.errorMsg!, {duration:2000});
+      }
     } catch (error) {
-      console.log(error);
+      toast.error("Something went wrong: " + String(error), {duration:2000});
     }
   };
 
   return (
     <div className="bg-lightBlue min-h-screen flex flex-col gap-6 justify-center items-center">
-      <div className="text-5xl font-bold">Log In</div>
+      <div className="text-5xl font-bold text-jetBlack">Log In</div>
       <LoginForm
         formData={formData}
         handleInputChange={handleInputChange}
         handleSubmit={handleSubmit}
       />
-      ;
     </div>
   );
 }
