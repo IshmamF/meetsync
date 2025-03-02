@@ -20,9 +20,9 @@ export async function signup(formData: Record<string, string>) {
     username: formData.name.toLowerCase(),
   });
 
-  if (error) return error.message;
+  if (error) return {status: 500, message : error.message};
 
-  return 'success';
+  return {status: 200,  message : "Successfully created user"};
 }
 
 export async function checkUsernameExists(username: String) {
@@ -32,12 +32,12 @@ export async function checkUsernameExists(username: String) {
 
   if (error) {
     console.error("Error checking username:", error);
-    return {'success': false, "error": error.message};
+    return {status: 500, error: error.message};
   }
 
   if (data && data.length > 0) {
-    return {'success': true, "exists": true};
+    return {status: 200, exists: true};
   } else {
-    return {'success': true, "exists": false};
+    return {status: 200, exists: false};
   }
 }

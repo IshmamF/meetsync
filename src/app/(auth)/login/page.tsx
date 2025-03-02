@@ -32,7 +32,7 @@ export default function Login() {
 
     try {
       const info = await login(formData);
-      if (info.success) {
+      if (info.status == 200) {
         revalidatePath('/', 'layout');
         router.push("/");
       } else {

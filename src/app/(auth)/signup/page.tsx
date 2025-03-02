@@ -40,7 +40,7 @@ export default function Signup() {
 
     const usernameExists = await checkUsernameExists(formData.name);
 
-    if (!usernameExists.success) {
+    if (usernameExists.status == 500) {
       toast.error(usernameExists.error!);
       return;
     }

@@ -33,7 +33,7 @@ export default function CalendarPage() {
       setLoading(true);
 
       const response = await SaveUserPrefData(formData);
-      if (response.error) {
+      if (response.status != 200) {
         console.error(response.error);
         setLoading(false);
         return;

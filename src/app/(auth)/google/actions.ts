@@ -8,7 +8,7 @@ export async function SaveUserPrefData(formData: Record<string, string>) {
 
   if (!user?.id) {
     console.error("User not authenticated");
-    return { error: "User not authenticated" };
+    return {status: 401, error: "User not authenticated" };
   }
 
   const { error } = await supabase
@@ -23,7 +23,7 @@ export async function SaveUserPrefData(formData: Record<string, string>) {
 
   if (error) {
     console.error("Error storing form data:", error);
-    return { error: "Database error" };
+    return {status: 500, error: "Database error" };
   }
-  return {success: "Updated or Inserted transport/address data"};
+  return {status: 200, success: "Updated or Inserted transport/address data"};
 }

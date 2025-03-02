@@ -12,7 +12,7 @@ export async function login(formData: Record<string, string>) {
 
   const { data, error } = await supabase.auth.signInWithPassword(data_);
   if (error) {
-    return {"success": false, "errorMsg": error.message};
+    return {status: 500, errorMsg: error.message};
   }
-  return {"success": true, "data": data.user};
+  return {status: 200, data: data.user};
 }
