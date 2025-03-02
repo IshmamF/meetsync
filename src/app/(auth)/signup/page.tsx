@@ -2,18 +2,24 @@
 
 import { useState } from "react";
 import { SignupForm } from "./_components/signupForm";
-import { signup } from "./actions";
+import { signup, checkUsernameExists } from "./actions";
 import { useRouter } from "next/navigation";
+import { toast } from 'react-hot-toast';
+
+type SignupFormData = {
+  name: string,
+  email: string,
+  password: string,
+  confirmPassword: string,
+};
 
 export default function Signup() {
   const router = useRouter();
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<SignupFormData>({
     name: "",
     email: "",
     password: "",
     confirmPassword: "",
-    address: "",
-    transport: "",
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -24,38 +30,51 @@ export default function Signup() {
     }));
   };
 
-  const toggleNext = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    // todo: instead of just submitting need to add user setup logic here
-    // ie show next form and then submit on completion of that one
-    handleSubmit(e);
-  };
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (formData.password != formData.confirmPassword) {
-      // todo: display error
+      toast.error("Passwords do not match", {duration:2000});
+      return;
+    }
+
+    const usernameExists = await checkUsernameExists(formData.name);
+
+    if (usernameExists.status == 500) {
+      toast.error(usernameExists.error!);
+      return;
+    }
+
+
+    if (usernameExists.status == 409) {
+      toast.error('username already exists');
       return;
     }
 
     try {
-      const user = await signup(formData);
-      if (user) router.push("/");
+      const message = await signup(formData);
+      if (message.status == 201) {
+        router.push("/google");
+      } else {
+        toast.error(`${message}`, {duration:2000});
+      }
     } catch (error) {
-      console.log(error);
+      toast.error("Something went wrong: " + String(error), {duration:2000});
     }
   };
 
   return (
-    <div className="bg-lightBlue min-h-screen flex flex-col gap-6 justify-center items-center">
-      <div className="text-5xl font-bold">Sign Up</div>
-      <SignupForm
-        formData={formData}
-        handleInputChange={handleInputChange}
-        toggleNext={toggleNext}
-      />
-      ;
-    </div>
+    <>
+      <div className="bg-lightBlue min-h-screen flex flex-col gap-6 justify-center items-center">
+        <div>
+          <div className="text-5xl font-bold text-jetBlack pb-4 text-center">Sign Up</div>
+          <SignupForm
+            formData={formData}
+            handleInputChange={handleInputChange}
+            handleSubmit={handleSubmit}
+          />
+        </div>
+      </div>
+    </>
   );
 }

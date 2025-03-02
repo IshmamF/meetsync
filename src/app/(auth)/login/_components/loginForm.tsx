@@ -1,10 +1,15 @@
 "use client";
 
+type LoginFormData = {
+  email: string,
+  password: string,
+};
+
 interface LoginFormProps {
-  formData: Record<string, string>;
+  formData: LoginFormData;
   handleInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
-}
+};
 
 export const LoginForm: React.FC<LoginFormProps> = ({
   formData,
