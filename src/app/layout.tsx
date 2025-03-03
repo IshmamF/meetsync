@@ -1,7 +1,8 @@
-import { Toaster } from 'react-hot-toast';
+import { Toaster } from "react-hot-toast";
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
+import Navbar from "./components/navbar";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -10,7 +11,8 @@ const poppins = Poppins({
 
 export const metadata: Metadata = {
   title: "MeetSync",
-  description: "Find the best place to meetup based on commute times and location preferences!",
+  description:
+    "Find the best place to meetup based on commute times and location preferences!",
 };
 
 export default function RootLayout({
