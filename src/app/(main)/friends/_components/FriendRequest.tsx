@@ -8,6 +8,7 @@ interface FriendRequestProps {
 }
 
 export default function FriendRequest({ name, onAccept, onDeny }: FriendRequestProps) {
+    {/* Display the pending label only when the friend request is actually pending */}
     return (
         <div className="flex items-center border border-black rounded-lg p-4 shadow-md space-x-4 w-full max-w-full ">
             <div className="w-14 h-14 bg-gray-300 rounded-full border border-yellow-500"></div>
