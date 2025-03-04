@@ -22,7 +22,6 @@ export default function PrivateLayout({ children }: { children: ReactNode }) {
       const response = await supabase.auth.getUser();
       if (response.data.user) {
         setAuthUser(response.data.user);
-        setLoading(false);
       } else {
         router.push("/login");
       }
@@ -35,14 +34,15 @@ export default function PrivateLayout({ children }: { children: ReactNode }) {
       const response = await supabase
         .from("users")
         .select("*")
-        .eq("id", authUser?.id);
+        .eq("auth_id", authUser?.id);
       if (response.error) {
         console.error(response.error);
       } else {
         setUser(response.data[0]);
+        setLoading(false);
       }
     }
-    fetchUser();
+    if (authUser) fetchUser();
   }, [authUser]);
 
   if (loading) {

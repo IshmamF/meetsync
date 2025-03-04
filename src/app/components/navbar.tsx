@@ -10,7 +10,7 @@ export default function Navbar({ type }: { type: string }) {
   return (
     <div>
       {type == "guest" ? (
-        <div className="bg-darkBlue w-100vw text-lightBlue hover:text-gold flex justify-between font-extrabold py-4 px-8">
+        <div className="bg-darkBlue w-100vw text-lightBlue flex justify-between font-extrabold py-4 px-8">
           <Link href="/" className="text-gold text-4xl">
             MeetSync
           </Link>
@@ -46,7 +46,7 @@ export default function Navbar({ type }: { type: string }) {
                 <Bell size="40" />
               </Link>
               <li
-                className="hover:text-gold"
+                className="hover:text-gold cursor-pointer"
                 onClick={() => setDropdown(!dropdown)}
               >
                 <CircleUser size="40" />
@@ -54,7 +54,7 @@ export default function Navbar({ type }: { type: string }) {
             </ul>
           </div>
           {dropdown && (
-            <div className="fade-in">
+            <div>
               <ProfileDropdown />
             </div>
           )}

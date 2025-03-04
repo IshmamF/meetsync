@@ -13,9 +13,9 @@ export default function GuestLayout({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     async function redirectUser() {
-      const response = await supabase.auth.getSession();
-      let session = response.data.session;
-      if (!session) {
+      const response = await supabase.auth.getUser();
+      let user = response.data.user;
+      if (!user) {
         setLoading(false);
       } else {
         router.push("/home");
