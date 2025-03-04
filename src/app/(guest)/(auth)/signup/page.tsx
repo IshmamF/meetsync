@@ -56,6 +56,7 @@ export default function Signup() {
       if (message.status == 201) {
         router.push("/google");
       } else {
+        console.error(message);
         toast.error(`${message}`, {duration:2000});
       }
     } catch (error) {

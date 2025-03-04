@@ -8,7 +8,7 @@ jest.mock('next/navigation', () => ({
   }),
 }));
 
-import Login from '@/app/(auth)/login/page'
+import Login from '@/app/(guest)/(auth)/login/page'
 
 describe('Login Page', () => {
     it('renders correctly', () => {
