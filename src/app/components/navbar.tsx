@@ -16,9 +16,9 @@ export default function Navbar({ type }: { type: string }) {
     };
 
     if (dropdown) {
-      document.addEventListener("mousedown", handleClickOutside);
+      document.addEventListener("mouseup", handleClickOutside);
     } else {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("mouseup", handleClickOutside);
     }
     
   }, [dropdown]);
