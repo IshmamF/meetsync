@@ -1,11 +1,18 @@
 "use client";
 import { createContext, useContext } from "react";
-import { User } from "@supabase/supabase-js";
 
-const UserContext = createContext<User | null>(null);
+export interface PublicUser {
+  auth_id: string;
+  username: string;
+  email: string;
+  home_address: string;
+  default_transport: string;
+}
+
+const UserContext = createContext<PublicUser | null>(null);
 
 interface UserProviderProps {
-  value: User | null;
+  value: PublicUser | null;
   children: React.ReactNode;
 }
 
