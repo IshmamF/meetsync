@@ -7,6 +7,7 @@ import Loading from "../components/loading";
 import { ReactNode } from "react";
 import { User } from "@supabase/supabase-js";
 import { PublicUser, UserProvider } from "@/utils/context/userContext";
+import Navbar from "../components/navbar";
 
 export default function PrivateLayout({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
@@ -50,6 +51,7 @@ export default function PrivateLayout({ children }: { children: ReactNode }) {
 
   return (
     <UserProvider value={user}>
+      <Navbar type="private" />
       {children}
     </UserProvider>
   );

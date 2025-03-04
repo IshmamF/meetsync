@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { supabase } from "@/utils/supabase/client";
 import Loading from "../components/loading";
 import { ReactNode } from "react";
+import Navbar from "../components/navbar";
 
 export default function GuestLayout({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
@@ -29,6 +30,7 @@ export default function GuestLayout({ children }: { children: ReactNode }) {
 
   return (
     <>
+      <Navbar type="guest" />
       {children}
     </>
   );
