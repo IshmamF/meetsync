@@ -31,12 +31,13 @@ export default function PrivateLayout({ children }: { children: ReactNode }) {
     async function fetchUser() {
       const response = await supabase
         .from("users")
-        .select("*")
-        .eq("auth_id", authUser?.id);
+        .select("auth_id, username, email, home_address, default_transport")
+        .eq("auth_id", authUser?.id)
+        .maybeSingle();
       if (response.error) {
         console.error(response.error);
       } else {
-        setUser(response.data[0]);
+        setUser(response.data);
         setLoading(false);
       }
     }

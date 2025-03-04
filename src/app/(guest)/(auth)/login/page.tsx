@@ -33,7 +33,6 @@ export default function Login() {
     try {
       const info = await login(formData);
       if (info.status == 200) {
-        revalidatePath('/', 'layout');
         router.push("/");
       } else {
         toast.error(info.errorMsg!, {duration:2000});
