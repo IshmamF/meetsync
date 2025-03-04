@@ -57,6 +57,7 @@ export default function Signup() {
         router.push("/google");
       } else {
         toast.error(`${message}`, {duration:2000});
+        console.error(message);
       }
     } catch (error) {
       toast.error("Something went wrong: " + String(error), {duration:2000});

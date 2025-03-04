@@ -18,6 +18,7 @@ export async function signup(formData: Record<string, string>) {
   const { error } = await supabase.from('users').insert({
     auth_id: userId, 
     username: formData.name.toLowerCase(),
+    email: formData.email,
   });
 
   if (error) return {status: 500, message : error.message};
