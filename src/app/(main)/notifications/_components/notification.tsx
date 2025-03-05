@@ -2,11 +2,13 @@ import Image from 'next/image'
 import Random from '../../../../../public/random.jpg'
 
 type notification = {
-    imgLink: string;
-    name: string;
-    message: string;
-    time: string;
-    type: string;
+    id: number,
+    user_id: string,
+    message: string, 
+    is_read: boolean, 
+    created_at: string, 
+    sender: string | null, 
+    type: string 
 }
 
 type Props = {
@@ -16,28 +18,6 @@ type Props = {
 export default function Notification({notif}: Props) {
 
     const showButtons = notif.type == 'meetup-request' || notif.type == 'friend-request'
-
-    const calcDifferenceUTC = (a: Date, b: Date) => {
-        const MINUTES = 1000 * 60;
-        const utc1 = Date.UTC(a.getFullYear(), a.getMonth(), a.getDate(), a.getHours(), a.getMinutes());
-        const utc2 = Date.UTC(b.getFullYear(), b.getMonth(), b.getDate(), b.getHours(), b.getMinutes());
-        return Math.floor((utc2 - utc1) / MINUTES); 
-    }
-
-    const calcTimeSinceNotif = (dateString: string) => {
-        const DateTime = new Date(dateString);
-        const currentDateTime = new Date();
-        const difference = calcDifferenceUTC(DateTime, currentDateTime);
-        if (difference < 60) {
-            return `${difference}m`;
-        } else if (difference < 1440) {
-            const hours = Math.floor(difference / 60);
-            return `${hours}h`
-        } else {
-            const days = Math.floor(difference / (60 * 24));
-            return `${days}d`
-        }
-    }
 
   return (
     <div className="flex gap-2 items-center justify-between">
@@ -50,9 +30,7 @@ export default function Notification({notif}: Props) {
                 className='rounded-full border-gold border-2 '
             />
             <div className="flex gap-1 text-xl items">
-                <div>{notif.name}</div>
                 <div>{notif.message}</div>
-                <div>{calcTimeSinceNotif(notif.time)}</div>
             </div>
         </div>
         {showButtons ? 
