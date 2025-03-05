@@ -1,5 +1,7 @@
 import Image from 'next/image'
 import Random from '../../../../../public/random.jpg'
+import {deleteNotification, updateNotification} from '../actions'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 type notification = {
     id: number,
@@ -17,7 +19,32 @@ type Props = {
 
 export default function Notification({notif}: Props) {
 
-    const showButtons = notif.type == 'meetup-request' || notif.type == 'friend-request'
+    const showButtons = notif.type == 'meetup-request' || notif.type == 'friend-request';
+    const queryClient = useQueryClient();
+    const updateMutation = useMutation({
+        mutationFn: updateNotification,
+        onSuccess: () => {
+            queryClient.invalidateQueries({queryKey: ['notif']});
+        },
+    });
+    const deleteMutation = useMutation({
+        mutationFn: deleteNotification,
+        onSuccess: () => {
+            queryClient.invalidateQueries({queryKey: ['notif']});
+        },
+    });
+
+    const handleAccept = () => {
+        updateMutation.mutate({msg: "this worked", notification_id: notif.id});
+    }
+
+    const handleDecline = () => {
+        updateMutation.mutate({msg: "this worked", notification_id: notif.id});
+    }
+
+    const handleDelete = () => {
+        deleteMutation.mutate({notification_id: notif.id});
+    }
 
   return (
     <div className="flex gap-2 items-center justify-between">
@@ -35,11 +62,11 @@ export default function Notification({notif}: Props) {
         </div>
         {showButtons ? 
         (<div className="flex items-center gap-2">
-            <button className='px-3 py-1 sm:px-4 sm:py-2 text-sm font-medium bg-gold text-black rounded-md border-black'>Accept</button>
-            <button className='px-3 py-1 sm:px-4 sm:py-2 text-sm font-medium bg-jetBlack text-gray-400 rounded-md border-black'>Decline</button>
+            <button onClick={handleAccept} className='px-3 py-1 sm:px-4 sm:py-2 text-sm font-medium bg-gold text-black rounded-md border-black'>Accept</button>
+            <button onClick={handleDecline} className='px-3 py-1 sm:px-4 sm:py-2 text-sm font-medium bg-jetBlack text-gray-400 rounded-md border-black'>Decline</button>
         </div>) : 
         (<div>
-            <button className='px-3 py-1 sm:px-4 sm:py-2 text-sm font-medium bg-jetBlack text-gray-400 rounded-md border-black'>Delete</button>
+            <button onClick={handleDelete} className='px-3 py-1 sm:px-4 sm:py-2 text-sm font-medium bg-jetBlack text-gray-400 rounded-md border-black'>Delete</button>
         </div>)
         }
     </div>
