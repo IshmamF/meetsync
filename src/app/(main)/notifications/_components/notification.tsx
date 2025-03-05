@@ -29,17 +29,17 @@ export default function Notification({notif}: Props) {
                 alt=""
                 className='rounded-full border-gold border-2 '
             />
-            <div className="flex gap-1 text-xl items">
+            <div className="flex gap-1 text-sm sm:text-xl items">
                 <div>{notif.message}</div>
             </div>
         </div>
         {showButtons ? 
         (<div className="flex items-center gap-2">
-            <button className='px-4 py-2 bg-gold text-black rounded-md border-black'>Accept</button>
-            <button className='px-4 py-2 bg-jetBlack text-gray-400 rounded-md border-black'>Decline</button>
+            <button className='px-3 py-1 sm:px-4 sm:py-2 text-sm font-medium bg-gold text-black rounded-md border-black'>Accept</button>
+            <button className='px-3 py-1 sm:px-4 sm:py-2 text-sm font-medium bg-jetBlack text-gray-400 rounded-md border-black'>Decline</button>
         </div>) : 
         (<div>
-            <button className='px-4 py-2 bg-jetBlack text-gray-400 rounded-md border-black'>Delete</button>
+            <button className='px-3 py-1 sm:px-4 sm:py-2 text-sm font-medium bg-jetBlack text-gray-400 rounded-md border-black'>Delete</button>
         </div>)
         }
     </div>
