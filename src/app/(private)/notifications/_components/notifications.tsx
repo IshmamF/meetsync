@@ -30,7 +30,9 @@ export const Notifications = ({data, title, type}: Props) => {
     const MINUTES_IN_WEEK = 10080;
     const MINUTES_IN_MONTH = 43800;
 
-    const filtered_notifs = data.filter((notif) => {
+    console.log(data)
+
+    const filtered_notifs = data?.filter((notif) => {
         const diff = minutesDifference(notif.created_at);
         if (type == 'weekly') {
             return diff < MINUTES_IN_WEEK;
@@ -41,12 +43,12 @@ export const Notifications = ({data, title, type}: Props) => {
         }
     });
 
-    const mapped_notifs = filtered_notifs.map(notif => <Notification notif={notif} key={notif.id}/>)
+    const mapped_notifs = filtered_notifs?.map(notif => <Notification notif={notif} key={notif.id}/>)
 
 
     return (
         <div>
-            {mapped_notifs.length > 0 && (
+            {mapped_notifs?.length > 0 && (
                 <>
                     <div className='pt-6 text-2xl font-semibold text-center mb-3'>
                         {title}

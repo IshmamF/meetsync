@@ -5,31 +5,34 @@ const API_URL = "http://127.0.0.1:8000"
 
 export const fetchNotifications = async (): Promise<notif_response> => {
     const supabase = await createClient();
-    const {data, error} = await supabase.auth.getUser();
-    
-    /*
-    if (error || !data) {
-        console.error("Error fetching user:", error);
-        return Promise.resolve({status: 500, notifications: []});
-    }*/
+    const { data, error } = await supabase.auth.getUser();
 
-    // const userId = data.user?.id;
-    const userId = "1697a418-f5b2-4fc4-9ba6-124f6a332c0a"
+    const userId = "1697a418-f5b2-4fc4-9ba6-124f6a332c0a"; // hardcoded for testing
 
     try {
         const response = await fetch(API_URL + "/get-notifications", {
             method: 'POST',
             headers: {
-              'Content-Type': 'application/json'
+                'Content-Type': 'application/json'
             },
-            body: JSON.stringify({user_id: userId})
-          });
-        return response.json();
+            body: JSON.stringify({ user_id: userId })
+        });
+
+        if (!response.ok) {
+            console.error("Failed to fetch notifications:", response.statusText);
+            return { status: response.status, notifications: [] };
+        }
+
+        const json = await response.json();
+        console.log("Fetched notifications:", json);
+
+        return json;
     } catch (err) {
         console.error("Error fetching notifications:", err);
-        return Promise.resolve({status: 500, notifications: []});
+        return { status: 500, notifications: [] };
     }
-}
+};
+
 
 export const deleteNotification = async (input: {notification_id: number}) => {
     const supabase = await createClient();

@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import Random from '../../../../../public/random.jpg'
+import globe from './../../../../../public/globe.svg';
 import {deleteNotification, updateNotification} from '../actions'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
@@ -50,7 +50,7 @@ export default function Notification({notif}: Props) {
     <div className="flex gap-2 items-center justify-between">
         <div className='flex items-center gap-3'>
             <Image
-                src={Random}
+                src={globe}
                 width={49}
                 height={49}
                 alt=""
