@@ -1,6 +1,6 @@
 'use client'
 
-import {useState} from 'react'
+import {useState, useEffect} from 'react'
 import QuickSelect from './_components/quickSelect';
 import SelectDays from './_components/selectDays';
 import SelectTimes from './_components/selectTimes';
@@ -10,6 +10,29 @@ export default function AvailabilityPage() {
     const [startTime, setStartTime] = useState("");
     const [endTime, setEndTime] = useState("");
     const [quickSelect, setQuickSelect] = useState("");
+
+    useEffect(() => {
+
+        function ChangeToQuickSelect() {
+            setStartTime('');
+            setEndTime('');
+        }
+
+        ChangeToQuickSelect();
+
+    }, [quickSelect]);
+
+    useEffect(() => {
+
+        function ChangeToTimeRange() {
+            if (!(startTime == '' && endTime == '')) {
+                setQuickSelect('');
+            }
+        }
+
+        ChangeToTimeRange();
+
+    }, [startTime, endTime]);
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
