@@ -1,6 +1,7 @@
 "use client";
 
-import { Attendee } from "@/app/home/page";
+import { Attendee } from "@/app/(private)/home/page";
+import { useUser } from "@/utils/context/userContext";
 import { supabase } from "@/utils/supabase/client";
 import { Search, CircleX } from "lucide-react";
 import React, { ChangeEvent, useEffect, useRef, useState } from "react";
@@ -20,7 +21,9 @@ function UserSearchBar({
   const [results, setResults] = useState<Attendee[]>([]);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const autocompleteRef = useRef<HTMLDivElement>(null); // Reference for click detection
+  const user = useUser();
 
+  console.log(user);
   async function seachUsers(e: ChangeEvent<HTMLInputElement>) {
     setQuery(e.target.value);
 
@@ -29,9 +32,12 @@ function UserSearchBar({
       return;
     }
 
+    const uuid = "1697a418-f5b2-4fc4-9ba6-124f6a332c0a";
     const results = await fetch(
-      `http://0.0.0.0:8000/friends-autocomplete/?query=${query}&uuid=${uuid}`
+      `api/friends-autocomplete/?query=${query}&uuid=${uuid}`
     );
+
+    console.log(results);
   }
 
   useEffect(() => {
