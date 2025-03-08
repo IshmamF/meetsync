@@ -197,30 +197,42 @@ export type Database = {
         Row: {
           created_at: string;
           creator_id: string;
-          description: string;
+          date_range_end: string | null;
+          date_range_start: string | null;
+          description: string | null;
           id: number;
-          location: string;
-          scheduled_time: string;
+          invitee_ids: string[] | null;
+          location: string | null;
+          scheduled_time: string | null;
+          status: string | null;
           title: string;
           updated_at: string;
         };
         Insert: {
           created_at?: string;
           creator_id: string;
-          description: string;
+          date_range_end?: string | null;
+          date_range_start?: string | null;
+          description?: string | null;
           id?: number;
-          location: string;
-          scheduled_time: string;
+          invitee_ids?: string[] | null;
+          location?: string | null;
+          scheduled_time?: string | null;
+          status?: string | null;
           title: string;
           updated_at?: string;
         };
         Update: {
           created_at?: string;
           creator_id?: string;
-          description?: string;
+          date_range_end?: string | null;
+          date_range_start?: string | null;
+          description?: string | null;
           id?: number;
-          location?: string;
-          scheduled_time?: string;
+          invitee_ids?: string[] | null;
+          location?: string | null;
+          scheduled_time?: string | null;
+          status?: string | null;
           title?: string;
           updated_at?: string;
         };
@@ -237,6 +249,7 @@ export type Database = {
       notifications: {
         Row: {
           created_at: string;
+          hangout_id: number | null;
           id: number;
           is_read: boolean | null;
           message: string;
@@ -246,6 +259,7 @@ export type Database = {
         };
         Insert: {
           created_at?: string;
+          hangout_id?: number | null;
           id?: number;
           is_read?: boolean | null;
           message: string;
@@ -255,6 +269,7 @@ export type Database = {
         };
         Update: {
           created_at?: string;
+          hangout_id?: number | null;
           id?: number;
           is_read?: boolean | null;
           message?: string;
@@ -263,6 +278,13 @@ export type Database = {
           user_id?: string;
         };
         Relationships: [
+          {
+            foreignKeyName: "notifications_hangout_id_fkey";
+            columns: ["hangout_id"];
+            isOneToOne: false;
+            referencedRelation: "hangouts";
+            referencedColumns: ["id"];
+          },
           {
             foreignKeyName: "notifications_user_id_fkey";
             columns: ["user_id"];
@@ -346,7 +368,105 @@ export type Database = {
       [_ in never]: never;
     };
     Functions: {
-      [_ in never]: never;
+      fetch_users_for_autocomplete: {
+        Args: Record<PropertyKey, never>;
+        Returns: string;
+      };
+      final_autoc:
+        | {
+            Args: {
+              currentuser: string;
+              name: string;
+            };
+            Returns: {
+              user_a: string;
+              user_b: string;
+              id: string;
+              email: string;
+              username: string;
+            }[];
+          }
+        | {
+            Args: {
+              usera: string;
+              userb: string;
+              name: string;
+            };
+            Returns: {
+              user_a: string;
+              user_b: string;
+              id: string;
+              email: string;
+              username: string;
+            }[];
+          };
+      hello_world: {
+        Args: Record<PropertyKey, never>;
+        Returns: string;
+      };
+      test_autoc:
+        | {
+            Args: Record<PropertyKey, never>;
+            Returns: {
+              user_a: string;
+              user_b: string;
+              id: string;
+              email: string;
+              username: string;
+            }[];
+          }
+        | {
+            Args: {
+              currentuser: string;
+              name: string;
+            };
+            Returns: {
+              user_a: string;
+              user_b: string;
+              id: string;
+              email: string;
+              username: string;
+            }[];
+          }
+        | {
+            Args: {
+              name: string;
+            };
+            Returns: {
+              user_a: string;
+              user_b: string;
+              id: string;
+              email: string;
+              username: string;
+            }[];
+          }
+        | {
+            Args: {
+              usera: string;
+              userb: string;
+              name: string;
+            };
+            Returns: {
+              user_a: string;
+              user_b: string;
+              id: string;
+              email: string;
+              username: string;
+            }[];
+          };
+      testing_rpc: {
+        Args: {
+          currentuser: string;
+          name: string;
+        };
+        Returns: {
+          user_a: string;
+          user_b: string;
+          id: string;
+          email: string;
+          username: string;
+        }[];
+      };
     };
     Enums: {
       [_ in never]: never;
