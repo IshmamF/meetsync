@@ -131,7 +131,7 @@ function Home() {
           </div>
         </div>
       </div>
-      <div className="flex items-center justify-center p-10">
+      <div className="flex items-center justify-center p-10 mt-[-50px]">
             <HomeBottom />
         </div>
     </div>
