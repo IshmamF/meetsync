@@ -29,11 +29,13 @@ function Home() {
   }
 
   async function createHangout() {
+    // todo , add better checks
     if (!title || title === "") {
       console.error("Title can not be empty.");
       return;
     }
 
+    // todo , add better checks
     if (attendees.length == 0) {
       console.error("Attendees ");
     }
@@ -57,7 +59,6 @@ function Home() {
       const data = await response.json();
       setAttendees([]);
       setTitle("");
-      console.log(data);
     }
 
     if (!response.ok) {
@@ -66,11 +67,9 @@ function Home() {
     }
   }
 
-  console.log(attendees);
-
   return (
     <div className="grid h-screen grid-rows-[340px_auto_1fr]">
-      <div className="bg-blue-200 w-full h-[340px] flex flex-col items-start justify-center p-20">
+      <div className="bg-lightBlue w-full h-[340px] flex flex-col items-start justify-center p-20">
         <p className="text-3xl pb-2 text-darkBlue font-medium">Start Hangout</p>
         <div className="flex w-full h-full mt-3 border-[3px] border-darkBlue p-6 pb-6 rounded-lg">
           <div className="w-[15%]">
@@ -120,7 +119,7 @@ function Home() {
             <button
               onClick={createHangout}
               className={`text-lg font-medium border-2 w-[150px] h-[53px] rounded-2xl ml-10 ${
-                title == "" || attendees.length == 0 || !startDate
+                title == "" || attendees.length == 0 || !startDate || !endDate
                   ? "border-gray-400 text-gray-400 bg-gray-200 cursor-not-allowed opacity-50"
                   : "border-darkBlue text-darkBlue bg-gold"
               }`}

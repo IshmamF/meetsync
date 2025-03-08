@@ -46,6 +46,9 @@ function UserSearchBar({
       if (data.suggestions.length >= 1) {
         setResults(data.suggestions);
         setIsOpen(true);
+      } else {
+        setResults([]);
+        setIsOpen(true);
       }
     }
   }
