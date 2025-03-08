@@ -3,6 +3,8 @@
 import { useUser } from "@/utils/context/userContext";
 import React, { ChangeEvent, useState } from "react";
 import UserSearchBar from "./components/UserSearchBar";
+import HomeBottom from './components/Home';
+
 
 export type Attendee = {
   uuid: string | null;
@@ -68,7 +70,7 @@ function Home() {
   }
 
   return (
-    <div className="grid h-screen grid-rows-[340px_auto_1fr]">
+    <div className="grid h-screen grid-rows-[340px_auto_1fr] bg-lightBlue">
       <div className="bg-lightBlue w-full h-[340px] flex flex-col items-start justify-center p-20">
         <p className="text-3xl pb-2 text-darkBlue font-medium">Start Hangout</p>
         <div className="flex w-full h-full mt-3 border-[3px] border-darkBlue p-6 pb-6 rounded-lg">
@@ -129,14 +131,9 @@ function Home() {
           </div>
         </div>
       </div>
-
-      <div className=" flex items-center justify-center">
-        <p className="">Middle Section (Auto Height)</p>
-      </div>
-
-      <div className="flex items-center justify-center">
-        <p className="text-lg">Footer (Remaining Height)</p>
-      </div>
+      <div className="flex items-center justify-center p-10">
+            <HomeBottom />
+        </div>
     </div>
   );
 }
