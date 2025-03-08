@@ -1,10 +1,11 @@
 "use client";
 
-import UserSearchBar from "@/components/home/UserSearchBar";
+import { useUser } from "@/utils/context/userContext";
 import React, { ChangeEvent, useState } from "react";
+import UserSearchBar from "./components/UserSearchBar";
 
 export type Attendee = {
-  auth_id: string | null;
+  uuid: string | null;
   email: string | null;
   username: string | null;
 };
@@ -12,6 +13,10 @@ export type Attendee = {
 function Home() {
   const [attendees, setAttendees] = useState<Attendee[]>([]);
   const [title, setTitle] = useState<string>("");
+  const [startDate, setStartDate] = useState<string>("");
+  const [endDate, setEndDate] = useState<string>("");
+
+  const user = useUser();
 
   function addAttendee(newAttendee: Attendee) {
     setAttendees((prevAttendees) => [...prevAttendees, newAttendee]);
@@ -19,36 +24,107 @@ function Home() {
 
   function removeAttendee(attendeeId: string) {
     setAttendees((prevAttendees) =>
-      prevAttendees.filter((attendee) => attendee.auth_id != attendeeId)
+      prevAttendees.filter((attendee) => attendee.uuid != attendeeId)
     );
   }
 
+  async function createHangout() {
+    if (!title || title === "") {
+      console.error("Title can not be empty.");
+      return;
+    }
+
+    if (attendees.length == 0) {
+      console.error("Attendees ");
+    }
+
+    const response = await fetch(`http://0.0.0.0:8000/new-hangout`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        creator_username: user?.username,
+        creator_id: user?.auth_id,
+        invitee_ids: attendees.map((attendee) => attendee.uuid),
+        title: title.trim(),
+        date_range_start: startDate,
+        date_range_end: endDate,
+      }),
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      setAttendees([]);
+      setTitle("");
+      console.log(data);
+    }
+
+    if (!response.ok) {
+      const error = await response.json();
+      console.error(error);
+    }
+  }
+
+  console.log(attendees);
+
   return (
-    <div className="grid h-screen grid-rows-[500px_auto_1fr]">
-      <div className="bg-blue-200 w-full h-[500px] flex flex-col items-start justify-center p-20">
-        <p className="text-4xl pb-5 text-darkBlue">Start Hangout</p>
-        <div className="flex w-full h-full mt-10">
+    <div className="grid h-screen grid-rows-[340px_auto_1fr]">
+      <div className="bg-blue-200 w-full h-[340px] flex flex-col items-start justify-center p-20">
+        <p className="text-3xl pb-2 text-darkBlue font-medium">Start Hangout</p>
+        <div className="flex w-full h-full mt-3 border-[3px] border-darkBlue p-6 pb-6 rounded-lg">
           <div className="w-[15%]">
-            <p className="text-5xl text-darkBlue">Title</p>
+            <p className="text-2xl text-darkBlue font-medium">Title</p>
             <input
               value={title}
               onChange={(e: ChangeEvent<HTMLInputElement>) => {
                 setTitle(e.target.value);
               }}
-              className="w-full mt-4 placeholder:text-slate-400 text-black text-lg border border-slate-200 rounded-md px-3 py-[10px] transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow"
+              className="w-full mt-2 placeholder:text-slate-400 text-black text-lg border border-slate-200 rounded-md px-3 py-[12px] transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow"
               placeholder="Type Here..."
             />
           </div>
           <div className="w-[30%]  pl-10 text-darkBlue">
-            <p className="text-5xl">Attendees</p>
+            <p className="text-2xl font-medium">Attendees</p>
             <UserSearchBar
               attendees={attendees}
               addAttendee={addAttendee}
               removeAttendee={removeAttendee}
             />
           </div>
-          <div className="flex items-start justify-center mt-[60px]">
-            <button className="border-2 border-darkBlue text-darkBlue bg-gold w-[135px] h-[50px] rounded-2xl ml-10 ">
+          <div className="w-[230px]  pl-10 text-darkBlue">
+            <p className="text-2xl font-medium">Start Date</p>
+            <input
+              aria-label="Date"
+              type="date"
+              className="w-full h-[50px] p-[20px] mt-2 rounded-md placeholder:text-slate-400 text-black transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow "
+              value={startDate}
+              onChange={(e) => {
+                setStartDate(e.target.value);
+              }}
+            />
+          </div>
+          <div className="w-[230px]  pl-10 text-darkBlue">
+            <p className="text-2xl font-medium">End Date</p>
+            <input
+              aria-label="Date"
+              type="date"
+              className="w-full h-[50px] p-[20px] mt-2 rounded-md placeholder:text-slate-400 text-black transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow "
+              value={endDate}
+              onChange={(e) => {
+                setEndDate(e.target.value);
+              }}
+            />
+          </div>
+          <div className="flex items-start justify-center mt-10">
+            <button
+              onClick={createHangout}
+              className={`text-lg font-medium border-2 w-[150px] h-[53px] rounded-2xl ml-10 ${
+                title == "" || attendees.length == 0 || !startDate
+                  ? "border-gray-400 text-gray-400 bg-gray-200 cursor-not-allowed opacity-50"
+                  : "border-darkBlue text-darkBlue bg-gold"
+              }`}
+            >
               Start Hangout
             </button>
           </div>
@@ -60,7 +136,7 @@ function Home() {
       </div>
 
       <div className="flex items-center justify-center">
-        <p className="">Footer (Remaining Height)</p>
+        <p className="text-lg">Footer (Remaining Height)</p>
       </div>
     </div>
   );
