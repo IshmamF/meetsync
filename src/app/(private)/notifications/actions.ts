@@ -1,21 +1,18 @@
 "use server"
+import { useUser } from "@/utils/context/userContext";
 import { createClient } from "@/utils/supabase/server";
-
-const API_URL = "http://127.0.0.1:8000"
+import { notification } from '@/types/notifications'
 
 export const fetchNotifications = async (): Promise<notif_response> => {
-    const supabase = await createClient();
-    const { data, error } = await supabase.auth.getUser();
-
-    const userId = "1697a418-f5b2-4fc4-9ba6-124f6a332c0a"; // hardcoded for testing
+    const user = useUser();
 
     try {
-        const response = await fetch(API_URL + "/get-notifications", {
+        const response = await fetch("/api/get-notifications", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ user_id: userId })
+            body: JSON.stringify({ user_id: user?.auth_id })
         });
 
         if (!response.ok) {
@@ -35,24 +32,15 @@ export const fetchNotifications = async (): Promise<notif_response> => {
 
 
 export const deleteNotification = async (input: {notification_id: number}) => {
-    const supabase = await createClient();
-    const {data, error} = await supabase.auth.getUser();
-    
-    /*
-    if (error || !data) {
-        console.error("Error fetching user:", error);
-        return Promise.resolve({status: 500, notifications: []});
-    }*/
-    // const userId = data.user?.id;
-    const userId = "1697a418-f5b2-4fc4-9ba6-124f6a332c0a"
+    const user = useUser();
 
     try {
-        const response = await fetch(API_URL + "/delete-notification", {
+        const response = await fetch("/api/delete-notification", {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
             },
-            body: JSON.stringify({user_id: userId, notification_id: input.notification_id.toString()})
+            body: JSON.stringify({user_id: user?.auth_id, notification_id: input.notification_id.toString()})
           });
         return response.json();
     } catch (err) {
@@ -80,14 +68,4 @@ export const updateNotification = async (input: {msg: string, notification_id: n
 type notif_response = {
     status: number
     notifications: notification[]
-}
-
-type notification = {
-    id: number,
-    user_id: string,
-    message: string, 
-    is_read: boolean, 
-    created_at: string, 
-    sender: string | null, 
-    type: string 
 }
