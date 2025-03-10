@@ -32,7 +32,7 @@ function UserSearchBar({
     }
 
     const response = await fetch(
-      `http://0.0.0.0:8000/friends-autocomplete/?query=${query}&authenticated_user_uuid=${user?.auth_id}`,
+      `/api/friends-autocomplete/?query=${query}&authenticated_user_uuid=${user?.auth_id}`,
       {
         method: "GET",
         headers: {
