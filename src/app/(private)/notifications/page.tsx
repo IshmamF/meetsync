@@ -3,11 +3,14 @@
 import { Notifications } from './_components/notifications';
 import { fetchNotifications } from './actions';
 import { useQuery } from '@tanstack/react-query';
+import { useUser } from '@/utils/context/userContext';
 
 export default function Notification() {
+    const user = useUser();
+    
     const { data, isSuccess, isLoading } = useQuery({
         queryKey: ['notif'],
-        queryFn: fetchNotifications
+        queryFn: () => fetchNotifications(user?.auth_id)
     });
 
     if (isLoading) {

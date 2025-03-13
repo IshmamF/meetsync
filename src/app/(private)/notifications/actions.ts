@@ -1,18 +1,16 @@
 "use server"
-import { useUser } from "@/utils/context/userContext";
 import { createClient } from "@/utils/supabase/server";
 import { notification } from '@/types/notifications'
 
-export const fetchNotifications = async (): Promise<notif_response> => {
-    const user = useUser();
+export const fetchNotifications = async (user_id: string | undefined): Promise<notif_response> => {
 
     try {
-        const response = await fetch("/api/get-notifications", {
+        const response = await fetch("http://0.0.0.0:8000/get-notifications", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ user_id: user?.auth_id })
+            body: JSON.stringify({ user_id: user_id! })
         });
 
         if (!response.ok) {
@@ -31,16 +29,15 @@ export const fetchNotifications = async (): Promise<notif_response> => {
 };
 
 
-export const deleteNotification = async (input: {notification_id: number}) => {
-    const user = useUser();
+export const deleteNotification = async (input: {user_id: string | undefined, notification_id: number}) => {
 
     try {
-        const response = await fetch("/api/delete-notification", {
+        const response = await fetch("api/delete-notification", {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
             },
-            body: JSON.stringify({user_id: user?.auth_id, notification_id: input.notification_id.toString()})
+            body: JSON.stringify({user_id: input.user_id, notification_id: input.notification_id.toString()})
           });
         return response.json();
     } catch (err) {

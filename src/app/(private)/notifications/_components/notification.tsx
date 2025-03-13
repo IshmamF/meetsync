@@ -3,6 +3,7 @@ import globe from './../../../../../public/globe.svg';
 import {deleteNotification, updateNotification} from '../actions'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { notification } from '@/types/notifications'
+import { useUser } from '@/utils/context/userContext';
 
 type Props = {
     notif: notification
@@ -10,7 +11,9 @@ type Props = {
 
 export default function Notification({notif}: Props) {
 
-    const showButtons = notif.type == 'meetup-request' || notif.type == 'friend-request';
+    const user = useUser();
+
+    const showButtons = notif.type == 'hangout-invite' || notif.type == 'friend-request';
     const queryClient = useQueryClient();
     const updateMutation = useMutation({
         mutationFn: updateNotification,
@@ -34,7 +37,7 @@ export default function Notification({notif}: Props) {
     }
 
     const handleDelete = () => {
-        deleteMutation.mutate({notification_id: notif.id});
+        deleteMutation.mutate({user_id: user?.auth_id, notification_id: notif.id});
     }
 
   return (
