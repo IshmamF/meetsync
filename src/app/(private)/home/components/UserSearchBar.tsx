@@ -2,9 +2,9 @@
 
 import { Attendee } from "@/app/(private)/home/page";
 import { useUser } from "@/utils/context/userContext";
-import { supabase } from "@/utils/supabase/client";
 import { Search, CircleX } from "lucide-react";
 import React, { ChangeEvent, useEffect, useRef, useState } from "react";
+import { getApiBase } from "@/utils/etc/apiBase";
 
 export type Person = {
   uuid: string | null;
@@ -28,7 +28,7 @@ function UserSearchBar({
   const [query, setQuery] = useState<string>("");
   const [results, setResults] = useState<Attendee[]>([]);
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const autocompleteRef = useRef<HTMLDivElement>(null); // Reference for click detection
+  const autocompleteRef = useRef<HTMLDivElement>(null);
   const user = useUser();
 
   async function seachUsers(e: ChangeEvent<HTMLInputElement>) {
@@ -39,8 +39,10 @@ function UserSearchBar({
       return;
     }
 
+    const base = getApiBase();
+
     const response = await fetch(
-      `/api/friends-autocomplete/?query=${query}&authenticated_user_uuid=${user?.auth_id}`,
+      `${base}/friends-autocomplete/?query=${query}&authenticated_user_uuid=${user?.auth_id}`,
       {
         method: "GET",
         headers: {

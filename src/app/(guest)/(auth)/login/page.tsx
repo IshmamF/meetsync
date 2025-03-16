@@ -3,13 +3,13 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { LoginForm } from "./_components/loginForm";
-import { revalidatePath } from 'next/cache';
+import { revalidatePath } from "next/cache";
 import { login } from "./actions";
-import { toast } from 'react-hot-toast';
+import { toast } from "react-hot-toast";
 
 type LoginFormData = {
-  email: string,
-  password: string,
+  email: string;
+  password: string;
 };
 
 export default function Login() {
@@ -33,12 +33,12 @@ export default function Login() {
     try {
       const info = await login(formData);
       if (info.status == 200) {
-        router.push("/");
+        router.push("/home");
       } else {
-        toast.error(info.errorMsg!, {duration:2000});
+        toast.error(info.errorMsg!, { duration: 2000 });
       }
     } catch (error) {
-      toast.error("Something went wrong: " + String(error), {duration:2000});
+      toast.error("Something went wrong: " + String(error), { duration: 2000 });
     }
   };
 
