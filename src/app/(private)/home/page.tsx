@@ -87,9 +87,10 @@ function Home() {
           <div className="w-[30%]  pl-10 text-darkBlue">
             <p className="text-2xl font-medium">Attendees</p>
             <UserSearchBar
-              attendees={attendees}
-              addAttendee={addAttendee}
-              removeAttendee={removeAttendee}
+              people={attendees}
+              add={addAttendee}
+              remove={removeAttendee}
+              showSelection={true}
             />
           </div>
           <div className="w-[230px]  pl-10 text-darkBlue">
