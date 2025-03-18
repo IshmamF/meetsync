@@ -3,7 +3,6 @@ import React from 'react';
 import UpcomingHangouts from "./UpcomingHangouts";
 import AddNewFriend from './AddNewFriend';
 import SyncCalendar from './SyncCalendar';
-import ViewAllEvents from './ViewAllEvents';
 
 export default function HomeBottom() {
     return (
@@ -15,7 +14,6 @@ export default function HomeBottom() {
             <div className="flex w-full justify-center space-x-16">
                 <AddNewFriend />
                 <SyncCalendar />
-                <ViewAllEvents />
             </div>
         </div>
     );
