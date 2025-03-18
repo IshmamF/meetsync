@@ -8,8 +8,7 @@ import UserSearchBar, { Person } from "../../home/components/UserSearchBar";
 import { getApiBase } from "@/utils/etc/apiBase";
 import { useUser } from "@/utils/context/userContext";
 import { toast } from "react-hot-toast";
-const pendingRequests = ["Ishmam Fardin"];
-const friendsTemp = ["Mansij Mishra", "Olu Kukoyi"];
+import Loading from "@/app/components/loading";
 
 type FetchFriendsResponse = {
   status: string;
@@ -35,20 +34,14 @@ const TOAST_DURATION = 2000;
 export default function Friends() {
   const [friends, setFriends] = useState<Friend[]>([]);
   const [pendingFriends, setPendingFriends] = useState<Friend[]>([]);
+  const [mergedFriends, setMergedFriends] = useState<Friend[]>([]);
   const [query, setQuery] = useState("");
+  const [suggestion, setSuggestion] = useState<Friend[] | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
   const user = useUser();
 
-  // function addFriend(newFriend: Friend) {
-  //   setFriends((prevFriends) => [...prevFriends, newFriend]);
-  // }
-
-  // function removeFriend(friendId: string) {
-  //   setFriends((prevFriends) =>
-  //     prevFriends.filter((friend) => friend.friend_uuid != friendId)
-  //   );
-  // }
-
   async function fetchFriends() {
+    setLoading(true);
     const base = getApiBase();
     const response = await fetch(`${base}/fetch-friends`, {
       method: "POST",
@@ -66,6 +59,8 @@ export default function Friends() {
       setPendingFriends(
         data.friends.filter((friend) => friend.status === "pending")
       );
+      setMergedFriends(data.friends);
+      setLoading(false);
     }
   }
 
@@ -92,6 +87,7 @@ export default function Friends() {
           duration: TOAST_DURATION,
         });
         fetchFriends();
+        setSuggestion(null);
       }
     }
   }
@@ -125,71 +121,105 @@ export default function Friends() {
           duration: TOAST_DURATION,
         });
         fetchFriends();
+        setSuggestion(null);
       }
     }
   }
 
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
-    const value = e.target.value;
+    const value = e.target.value.trim();
+    const filteredFriends = mergedFriends.filter((friend) =>
+      friend.friend_username.includes(value)
+    );
     setQuery(value);
-
-    // add logic for filtering friends
+    setSuggestion(filteredFriends.length !== 0 ? filteredFriends : []);
   }
 
   useEffect(() => {
     fetchFriends();
   }, []);
 
-  console.log("friends: ", friends);
-  console.log("pending", pendingFriends);
+  useEffect(() => {
+    if (query.trim() === "") {
+      setSuggestion(null);
+    }
+  }, [query]);
 
   return (
     <div className="flex flex-col pt-10 bg-lightBlue min-h-screen text-black w-full px-10">
       <div className="font-semibold text-5xl mb-6 pb-8">Friends</div>
-      <div className="pb-8">
-        {/* <UserSearchBar
-          people={friends}
-          add={addFriend}
-          remove={removeFriend}
-          showSelection={false}
-        /> */}
-      </div>
-      <div className="pb-8">
-        <SearchBar
-          value={query}
-          onChange={handleChange}
-          placeholder=" Search friends..."
-        />
-      </div>
-      <div className="w-full space-y-4 max-w-full pb-8">
-        {pendingFriends.map((friend) => (
-          <div key={`pending-${friend.id}`} className="pb-8">
-            <FriendRequest
-              isSender={friend.sender === user?.auth_id}
-              name={friend.friend_username}
-              onAccept={() => {
-                acceptFriendRequest(friend.id);
-              }}
-              onDeny={() => {
-                declineFriendRequest(friend.id, false);
-              }}
+      {loading ? (
+        <Loading />
+      ) : (
+        <>
+          <div className="pb-8">
+            <SearchBar
+              value={query}
+              onChange={handleChange}
+              placeholder=" Search friends..."
             />
           </div>
-        ))}
-        {friends.map((friend) => (
-          <div key={`friend-${friend.id}`} className="pb-8">
-            <FriendList
-              name={friend.friend_username}
-              onRemove={() => {
-                declineFriendRequest(friend.id, true);
-              }}
-            />
+          {suggestion ? (
+            suggestion?.map((friend) => {
+              if (friend.status === "pending") {
+                return (
+                  <FriendRequest
+                    isSender={friend.sender === user?.auth_id}
+                    name={friend.friend_username}
+                    onAccept={() => {
+                      acceptFriendRequest(friend.id);
+                    }}
+                    onDeny={() => {
+                      declineFriendRequest(friend.id, false);
+                    }}
+                  />
+                );
+              } else
+                return (
+                  <div key={`pending-${friend.id}`} className="pb-8">
+                    <FriendList
+                      name={friend.friend_username}
+                      onRemove={() => {
+                        declineFriendRequest(friend.id, true);
+                      }}
+                    />
+                  </div>
+                );
+            })
+          ) : (
+            <div className="w-full space-y-4 max-w-full pb-8">
+              {pendingFriends.map((friend) => (
+                <div key={`pending-${friend.id}`} className="pb-8">
+                  <FriendRequest
+                    isSender={friend.sender === user?.auth_id}
+                    name={friend.friend_username}
+                    onAccept={() => {
+                      acceptFriendRequest(friend.id);
+                    }}
+                    onDeny={() => {
+                      declineFriendRequest(friend.id, false);
+                    }}
+                  />
+                </div>
+              ))}
+              {friends.map((friend) => (
+                <div key={`friend-${friend.id}`} className="pb-8">
+                  <FriendList
+                    name={friend.friend_username}
+                    onRemove={() => {
+                      declineFriendRequest(friend.id, true);
+                    }}
+                  />
+                </div>
+              ))}
+            </div>
+          )}
+
+          <div className="flex w-full  justify-center">
+            <AddFriendButton />
           </div>
-        ))}
-      </div>
-      <div className="flex w-full  justify-center">
-        <AddFriendButton />
-      </div>
+        </>
+      )}
     </div>
   );
 }

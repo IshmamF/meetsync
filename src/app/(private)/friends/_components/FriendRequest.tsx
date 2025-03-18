@@ -22,7 +22,7 @@ export default function FriendRequest({
       <div className="flex flex-col flex-grow">
         <div className="text-lg font-semibold">{name}</div>
         <span className="text-black text-sm font-medium bg-yellow-200 px-2 py-1 rounded self-start">
-          {isSender ? "Sent" : "Pending"}
+          {isSender ? "Outgoing" : "Pending"}
         </span>
       </div>
       <div className="flex space-x-2">

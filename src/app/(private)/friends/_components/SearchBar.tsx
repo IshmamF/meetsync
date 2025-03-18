@@ -21,6 +21,7 @@ export default function SearchBar({
       <input
         type="text"
         placeholder={placeholder}
+        onChange={onChange}
         className="flex-grow outline-none bg-transparent"
       />
     </div>
