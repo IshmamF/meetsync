@@ -6,24 +6,16 @@ import { Search, CircleX } from "lucide-react";
 import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 import { getApiBase } from "@/utils/etc/apiBase";
 
-export type Person = {
-  uuid: string | null;
-  email: string | null;
-  username: string | null;
-};
-
 type UserSearchBarProps = {
-  people: Person[];
-  add(newAttendee: Person): void;
-  remove(attendeeId: string): void;
-  showSelection: boolean;
+  attendees: Attendee[];
+  addAttendee(newAttendee: Attendee): void;
+  removeAttendee(attendeeId: string): void;
 };
 
 function UserSearchBar({
-  people,
-  add,
-  remove,
-  showSelection,
+  attendees,
+  addAttendee,
+  removeAttendee,
 }: UserSearchBarProps) {
   const [query, setQuery] = useState<string>("");
   const [results, setResults] = useState<Attendee[]>([]);
@@ -108,7 +100,7 @@ function UserSearchBar({
                   key={index}
                   onClick={() => {
                     if (item && item.username) {
-                      add(item);
+                      addAttendee(item);
                       setIsOpen(false);
                       setResults([]);
                       setQuery("");
@@ -123,9 +115,9 @@ function UserSearchBar({
           )}
         </div>
       </div>
-      {showSelection && people && (
+      {attendees && (
         <div className="flex flex-wrap w-full gap-3 pl-10 mt-2">
-          {people.map((user) => {
+          {attendees.map((user) => {
             return (
               <div
                 key={user.uuid}
@@ -136,7 +128,7 @@ function UserSearchBar({
                 <CircleX
                   onClick={() => {
                     if (user && user.uuid) {
-                      remove(user.uuid);
+                      removeAttendee(user.uuid);
                     }
                   }}
                   className="pl-2"

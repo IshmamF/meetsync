@@ -4,7 +4,6 @@ import FriendRequest from "./FriendRequest";
 import FriendList from "./FriendList";
 import AddFriendButton from "./AddFriendButton";
 import SearchBar from "./SearchBar";
-import UserSearchBar, { Person } from "../../home/components/UserSearchBar";
 import { getApiBase } from "@/utils/etc/apiBase";
 import { useUser } from "@/utils/context/userContext";
 import { toast } from "react-hot-toast";
