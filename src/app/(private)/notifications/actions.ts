@@ -46,19 +46,19 @@ export const deleteNotification = async (input: {user_id: string | undefined, no
     }
 }
 
-export const acceptNotification = async (input: {notif: notification}) => {
+export const acceptDeclineNotification = async (input: {notif: notification, accept: boolean}) => {
     let message = ''
 
     try {
         switch (input.notif.type) {
             case NotificationType.FRIEND_REQUEST:
                 message = `You accepted ${input.notif.users.username}'s friend request`;
-                await acceptFriendRequest(input.notif);
+                await acceptDeclineFriendRequest(input.notif, input.accept);
                 break;
 
             case NotificationType.HANGOUT_INVITE:
                 message = `You accepted the hangout invite`;
-                await acceptHangoutInvite(input.notif);
+                await acceptDeclineHangoutInvite(input.notif, input.accept);
                 break;
 
             default:
@@ -74,25 +74,11 @@ export const acceptNotification = async (input: {notif: notification}) => {
 
 }
 
-export const declineNotification = async (input: {notif_type: NotificationType, notification_id: number}) => {
-    const supabase = await createClient();
-    const message = ''
+const acceptDeclineFriendRequest = async (notif: notification, accept: boolean) => {
+    let endpoint;
+    accept ? endpoint = '/add-friend' : endpoint = '/remove-friend'
     try {
-        const { error } = await supabase.from('notifications').update({message: message, type: 'general'}).eq('id', input.notification_id.toString());
-        if (error) {
-            console.error("Error updating notification:", error);
-            return Promise.resolve({status: 500, message: "Something went wrong with updating notification"});
-        }
-        return Promise.resolve({ status: 200, message: "Notification updated successfully" });
-    } catch (err) {
-        console.error("Error updating notifications:", err);
-        return Promise.resolve({status: 500, message: "Something went wrong with updating notification"});
-    }
-}
-
-const acceptFriendRequest = async (notif: notification) => {
-    try {
-        const response = await fetch("http://127.0.0.1:8000/add-friend", {
+        const response = await fetch(`http://127.0.0.1:8000/${endpoint}`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -100,17 +86,19 @@ const acceptFriendRequest = async (notif: notification) => {
             body: JSON.stringify({ friendship_id: 'HOW DO I GET FRIENDSHIP ID' }),
         });
 
-        if (!response.ok) throw new Error("Failed to accept friend request");
+        if (!response.ok) throw new Error("Failed to accept/decline friend request");
         return await response.json();
     } catch (err) {
-        console.error("Error accepting friend request:", err);
+        console.error("Error accepting/declining friend request:", err);
         throw err;
     }
 };
 
-const acceptHangoutInvite = async (notif: notification) => {
+const acceptDeclineHangoutInvite = async (notif: notification, accept: boolean) => {
+    let endpoint;
+    accept ? endpoint = '/accept-invite' : endpoint = '/decline-invite'
     try {
-        const response = await fetch("http://127.0.0.1:8000/accept-invite", {
+        const response = await fetch(`http://127.0.0.1:8000/${endpoint}`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

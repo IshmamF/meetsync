@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import globe from './../../../../../public/globe.svg';
-import {deleteNotification, acceptNotification, declineNotification} from '../actions'
+import {deleteNotification, acceptDeclineNotification} from '../actions'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { notification, NotificationType } from '@/types/notifications'
 import { useUser } from '@/utils/context/userContext';
@@ -17,14 +17,8 @@ export default function Notification({notif}: Props) {
     const showAcceptDeclineButton = notif.type == NotificationType.HANGOUT_INVITE || notif.type == NotificationType.FRIEND_REQUEST;
     const showViewButton = notif.type == NotificationType.SELECT_AVAILABILITY
     const queryClient = useQueryClient();
-    const acceptMutation = useMutation({
-        mutationFn: acceptNotification,
-        onSuccess: () => {
-            queryClient.invalidateQueries({queryKey: ['notif']});
-        },
-    });
-    const declineMutation = useMutation({
-        mutationFn: declineNotification,
+    const acceptDeclineMutation = useMutation({
+        mutationFn: acceptDeclineNotification,
         onSuccess: () => {
             queryClient.invalidateQueries({queryKey: ['notif']});
         },
@@ -37,11 +31,11 @@ export default function Notification({notif}: Props) {
     });
 
     const handleAccept = () => {
-        acceptMutation.mutate({notif: notif});
+        acceptDeclineMutation.mutate({notif: notif, accept: true});
     }
 
     const handleDecline = () => {
-        declineMutation.mutate({notification_id: notif.id, notif_type: notif.type});
+        acceptDeclineMutation.mutate({notif: notif, accept: false});
     }
 
     const handleDelete = () => {
