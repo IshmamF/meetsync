@@ -47,17 +47,19 @@ export default function Notification({notif}: Props) {
             redirect('/hangouts')
         }
     }
+    const defaultProfileImage = 'https://images.unsplash.com/photo-1658227387870-6b7d4d6ff031?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
 
   return (
     <div className="flex gap-2 items-center justify-between">
         <div className='flex items-center gap-3'>
-            <Image
-                src={notif.users.profile_img ? notif.users.profile_img : globe}
+            <img
+                src={notif.users.profile_img || defaultProfileImage}
                 width={49}
                 height={49}
-                alt=""
-                className='rounded-full border-gold border-2 '
+                alt="User profile"
+                className="rounded-full border-gold border-2"
             />
+
             <div className="flex gap-1 text-sm sm:text-xl items">
                 <div>{notif.message}</div>
             </div>
