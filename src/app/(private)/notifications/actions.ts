@@ -1,11 +1,12 @@
 "use server"
-import { createClient } from "@/utils/supabase/server";
+import { getApiBase } from "@/utils/etc/apiBase";
 import { notification, NotificationType } from '@/types/notifications'
 
 export const fetchNotifications = async (user_id: string | undefined): Promise<notif_response> => {
+    const base = getApiBase();
 
     try {
-        const response = await fetch("http://127.0.0.1:8000/get-notifications", {
+        const response = await fetch(`${base}/get-notifications`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -28,9 +29,9 @@ export const fetchNotifications = async (user_id: string | undefined): Promise<n
 };
 
 export const deleteNotification = async (input: {user_id: string | undefined, notification_id: number}) => {
-
+    const base = getApiBase();
     try {
-        const response = await fetch("http://127.0.0.1:8000/remove-notification", {
+        const response = await fetch(`${base}/remove-notification`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
@@ -46,7 +47,6 @@ export const deleteNotification = async (input: {user_id: string | undefined, no
 
 export const acceptDeclineNotification = async (input: {notif: notification, accept: boolean}) => {
     let message = ''
-
     try {
         switch (input.notif.type) {
             case NotificationType.HANGOUT_INVITE:
@@ -69,9 +69,10 @@ export const acceptDeclineNotification = async (input: {notif: notification, acc
 const acceptDeclineHangoutInvite = async (notif: notification, accept: boolean) => {
     let endpoint;
     accept ? endpoint = 'accept-invite' : endpoint = 'decline-invite'
+    const base = getApiBase();
 
     try {
-        const response = await fetch(`http://0.0.0.0:8000/${endpoint}`, {
+        const response = await fetch(`${base}/${endpoint}`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -91,8 +92,9 @@ const acceptDeclineHangoutInvite = async (notif: notification, accept: boolean) 
 };
 
 const updateNotificationMessage = async (notification_id: string, new_message: string) => {
+    const base = getApiBase();
     try {
-        const response = await fetch("http://127.0.0.1:8000/update-notification", {
+        const response = await fetch(`${base}/update-notification`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
