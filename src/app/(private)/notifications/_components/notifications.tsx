@@ -9,7 +9,6 @@ interface Props {
 }
 
 export const Notifications = ({data, title, type}: Props) => {
-
     function minutesDifference(notif_date: string) {
         const input_date = new Date(notif_date);
         const current_date = new Date();
@@ -20,8 +19,6 @@ export const Notifications = ({data, title, type}: Props) => {
 
     const MINUTES_IN_WEEK = 10080;
     const MINUTES_IN_MONTH = 43800;
-
-    console.log(data)
 
     const filtered_notifs = data?.filter((notif) => {
         const diff = minutesDifference(notif.created_at);
@@ -34,17 +31,20 @@ export const Notifications = ({data, title, type}: Props) => {
         }
     });
 
-    const mapped_notifs = filtered_notifs?.map(notif => <Notification notif={notif} key={notif.id}/>)
-
+    const mapped_notifs = filtered_notifs?.map(notif => (
+        <div className="py-1 first:pt-0 last:pb-0" key={notif.id}>
+            <Notification notif={notif} />
+        </div>
+    ));
 
     return (
-        <div>
+        <div className="w-full max-w-3xl mb-8">
             {mapped_notifs?.length > 0 && (
                 <>
-                    <div className='pt-6 text-2xl font-semibold text-center mb-3'>
+                    <div className='text-2xl font-semibold text-left mb-4'>
                         {title}
                     </div>
-                    <div className='border-black border px-4 py-2 rounded-md'>
+                    <div className='border-black border px-6 py-4 rounded-md'>
                         {mapped_notifs}
                     </div>
                 </>

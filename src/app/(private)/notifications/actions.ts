@@ -19,7 +19,6 @@ export const fetchNotifications = async (user_id: string | undefined): Promise<n
         }
 
         const json = await response.json();
-        //console.log("Fetched notifications:", json);
 
         return json;
     } catch (err) {
@@ -70,8 +69,7 @@ export const acceptDeclineNotification = async (input: {notif: notification, acc
 const acceptDeclineHangoutInvite = async (notif: notification, accept: boolean) => {
     let endpoint;
     accept ? endpoint = 'accept-invite' : endpoint = 'decline-invite'
-    console.log(notif.hangout_id)
-    console.log(notif.user_id)
+
     try {
         const response = await fetch(`http://0.0.0.0:8000/${endpoint}`, {
             method: "POST",
@@ -82,11 +80,9 @@ const acceptDeclineHangoutInvite = async (notif: notification, accept: boolean) 
         });
 
         if (!response.ok) {
-            const responseText = await response.text();
-            console.error("Error response:", responseText);
-            return 
+            throw new Error("Failed to accept/decline hangout");
         };
-        console.log('hangout accepted or declined')
+
         return await response.json();
     } catch (err) {
         console.error("Error accepting hangout invite:", err);
