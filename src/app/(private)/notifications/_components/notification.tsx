@@ -55,20 +55,20 @@ export default function Notification({notif}: Props) {
   return (
     <div className="flex gap-2 items-center justify-between">
         <div className='flex items-center gap-3'>
-            <img
-                src={notif.users.profile_img || defaultProfileImage}
-                width={49}
-                height={49}
-                alt="User profile"
-                className="rounded-full border-gold border-2"
-            />
+                <div className="w-12 h-12 overflow-hidden rounded-full border-gold border-2 flex-shrink-0">
+                    <img
+                        src={notif.users.profile_img || defaultProfileImage}
+                        alt="User profile"
+                        className="w-full h-full object-cover"
+                    />
+                </div>
 
             <div className="flex gap-1 text-sm sm:text-xl items">
                 <div>{notif.message}</div>
             </div>
         </div>
             {showAcceptDeclineButton ? (
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 flex-shrink-0">
                     <button onClick={handleAccept} className="px-3 py-1 sm:px-4 sm:py-2 text-sm font-medium bg-gold text-black rounded-md border-black">
                         Accept
                     </button>
