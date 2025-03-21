@@ -14,7 +14,9 @@ export enum NotificationType {
     HANGOUT_INVITE = 'hangout-invite',
     FRIEND_REQUEST = 'friend-request',
     GENERAL = 'general',
-    SELECT_AVAILABILITY = 'select-availability'
+    SELECT_AVAILABILITY = 'select-availability',
+    SELECT_PLACRES = 'select-places',
+    CONFIRM_MEETUP = 'confirm-meetup'
 }
 
 

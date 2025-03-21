@@ -19,7 +19,7 @@ export const fetchNotifications = async (user_id: string | undefined): Promise<n
         }
 
         const json = await response.json();
-        console.log("Fetched notifications:", json);
+        //console.log("Fetched notifications:", json);
 
         return json;
     } catch (err) {
@@ -28,11 +28,10 @@ export const fetchNotifications = async (user_id: string | undefined): Promise<n
     }
 };
 
-
 export const deleteNotification = async (input: {user_id: string | undefined, notification_id: number}) => {
 
     try {
-        const response = await fetch("api/delete-notification", {
+        const response = await fetch("http://127.0.0.1:8000/remove-notification", {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
@@ -51,16 +50,10 @@ export const acceptDeclineNotification = async (input: {notif: notification, acc
 
     try {
         switch (input.notif.type) {
-            case NotificationType.FRIEND_REQUEST:
-                message = `You accepted ${input.notif.users.username}'s friend request`;
-                await acceptDeclineFriendRequest(input.notif, input.accept);
-                break;
-
             case NotificationType.HANGOUT_INVITE:
-                message = `You accepted the hangout invite`;
+                input.accept  ? message = `You accepted the hangout invite from ${input.notif.users.username}` : message = `You declined the hangout invite from ${input.notif.users.username}`
                 await acceptDeclineHangoutInvite(input.notif, input.accept);
                 break;
-
             default:
                 console.warn("Unhandled notification type:", input.notif.type);
                 return { status: 400, error: "Unknown notification type" };
@@ -74,39 +67,26 @@ export const acceptDeclineNotification = async (input: {notif: notification, acc
 
 }
 
-const acceptDeclineFriendRequest = async (notif: notification, accept: boolean) => {
-    let endpoint;
-    accept ? endpoint = '/add-friend' : endpoint = '/remove-friend'
-    try {
-        const response = await fetch(`http://127.0.0.1:8000/${endpoint}`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ friendship_id: 'HOW DO I GET FRIENDSHIP ID' }),
-        });
-
-        if (!response.ok) throw new Error("Failed to accept/decline friend request");
-        return await response.json();
-    } catch (err) {
-        console.error("Error accepting/declining friend request:", err);
-        throw err;
-    }
-};
-
 const acceptDeclineHangoutInvite = async (notif: notification, accept: boolean) => {
     let endpoint;
-    accept ? endpoint = '/accept-invite' : endpoint = '/decline-invite'
+    accept ? endpoint = 'accept-invite' : endpoint = 'decline-invite'
+    console.log(notif.hangout_id)
+    console.log(notif.user_id)
     try {
-        const response = await fetch(`http://127.0.0.1:8000/${endpoint}`, {
+        const response = await fetch(`http://0.0.0.0:8000/${endpoint}`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ hangout_id: notif.hangout_id, user_id: notif.id }),
+            body: JSON.stringify({ hangout_id: notif.hangout_id?.toString(), user_id: notif.user_id }),
         });
 
-        if (!response.ok) throw new Error("Failed to accept hangout invite");
+        if (!response.ok) {
+            const responseText = await response.text();
+            console.error("Error response:", responseText);
+            return 
+        };
+        console.log('hangout accepted or declined')
         return await response.json();
     } catch (err) {
         console.error("Error accepting hangout invite:", err);

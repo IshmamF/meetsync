@@ -14,8 +14,8 @@ export default function Notification({notif}: Props) {
 
     const user = useUser();
 
-    const showAcceptDeclineButton = notif.type == NotificationType.HANGOUT_INVITE || notif.type == NotificationType.FRIEND_REQUEST;
-    const showViewButton = notif.type == NotificationType.SELECT_AVAILABILITY
+    const showAcceptDeclineButton = notif.type == NotificationType.HANGOUT_INVITE;
+    const showViewButton = notif.type != 'general';
     const queryClient = useQueryClient();
     const acceptDeclineMutation = useMutation({
         mutationFn: acceptDeclineNotification,
@@ -43,8 +43,11 @@ export default function Notification({notif}: Props) {
     }
 
     const handleView = () => {
-        if (notif.type == NotificationType.SELECT_AVAILABILITY) {
-            redirect('/hangouts')
+        switch (notif.type) {
+            case NotificationType.FRIEND_REQUEST:
+                redirect('/friends')
+            default:
+                redirect('/hangouts')
         }
     }
     const defaultProfileImage = 'https://images.unsplash.com/photo-1658227387870-6b7d4d6ff031?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
@@ -74,7 +77,7 @@ export default function Notification({notif}: Props) {
                     </button>
                 </div>
             ) : showViewButton ? (
-                <div>
+                <div className=''>
                     <button onClick={handleView} className="px-3 py-1 sm:px-4 sm:py-2 text-sm font-medium bg-gold text-black rounded-md border-black">
                         View
                     </button>
