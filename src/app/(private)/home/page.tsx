@@ -3,8 +3,8 @@
 import { useUser } from "@/utils/context/userContext";
 import React, { ChangeEvent, useState } from "react";
 import UserSearchBar from "./components/UserSearchBar";
-import HomeBottom from './components/Home';
-
+import HomeBottom from "./components/Home";
+import { getApiBase } from "@/utils/etc/apiBase";
 
 export type Attendee = {
   uuid: string | null;
@@ -41,8 +41,8 @@ function Home() {
     if (attendees.length == 0) {
       console.error("Attendees ");
     }
-
-    const response = await fetch(`http://0.0.0.0:8000/new-hangout`, {
+    const base = getApiBase();
+    const response = await fetch(`${base}/new-hangout`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -132,8 +132,8 @@ function Home() {
         </div>
       </div>
       <div className="flex items-center justify-center p-10 mt-[-50px]">
-            <HomeBottom />
-        </div>
+        <HomeBottom />
+      </div>
     </div>
   );
 }
