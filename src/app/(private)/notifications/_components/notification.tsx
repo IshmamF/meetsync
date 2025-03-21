@@ -1,5 +1,3 @@
-import Image from 'next/image'
-import globe from './../../../../../public/globe.svg';
 import {deleteNotification, acceptDeclineNotification} from '../actions'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { notification, NotificationType } from '@/types/notifications'
@@ -69,10 +67,10 @@ export default function Notification({notif}: Props) {
         </div>
             {showAcceptDeclineButton ? (
                 <div className="flex items-center gap-2 flex-shrink-0">
-                    <button onClick={handleAccept} className="px-3 py-1 sm:px-4 sm:py-2 text-sm font-medium bg-gold text-black rounded-md border-black">
+                    <button onClick={handleAccept} className="px-3 py-1 sm:px-4 sm:py-2 text-sm font-medium bg-green-500 text-black rounded-md border border-black">
                         Accept
                     </button>
-                    <button onClick={handleDecline} className="px-3 py-1 sm:px-4 sm:py-2 text-sm font-medium bg-jetBlack text-gray-400 rounded-md border-black">
+                    <button onClick={handleDecline} className="px-3 py-1 sm:px-4 sm:py-2 text-sm font-medium bg-red-500 text-black rounded-md border border-black">
                         Decline
                     </button>
                 </div>
