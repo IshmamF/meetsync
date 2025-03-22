@@ -114,7 +114,21 @@ export default function UpcomingHangouts() {
         View All Events
       </button>
 
-      <DetailsModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}></DetailsModal>
+      <DetailsModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        title="Tavern on the Green"
+        type="Cafe"
+        rating={4.4}
+        address="Central Park West & 67th Street, New York, NY 10023"
+        phone="(212) 555-1234"
+        website="https://www.tavernonthegreen.com"
+        hours={{
+          weekdays: "Mon – Fri: 11:00 AM – 10:00 PM",
+          weekends: "Sat – Sun: 9:00 AM – 11:00 PM",
+        }}
+        about="Historic landmark restaurant located in Central Park offering American cuisine in an elegant setting with outdoor seating and beautiful park views."
+      />
     </div>
   );
 }
