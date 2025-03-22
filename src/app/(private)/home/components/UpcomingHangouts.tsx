@@ -8,7 +8,6 @@ interface Hangout {
   id: string;
   title: string;
   scheduled_time: string;
-  created_at : string;
   location: string;
   attendees: number;
 }
@@ -59,24 +58,22 @@ export default function UpcomingHangouts() {
   return (
     <div className="flex flex-grow flex-col items-start border-[3px] border-darkBlue rounded-lg p-4 shadow-md space-y-4 w-full">
       {hangouts.map((hangout, index) => {
-        const dateToUse = hangout.scheduled_time || hangout.created_at || null;
-  
         let formattedDate = "TBD";
         let formattedTime = "TBD";
-  
-        if (dateToUse) {
-          const dateObj = new Date(dateToUse);
+
+        if (hangout.scheduled_time) {
+          const dateObj = new Date(hangout.scheduled_time);
           formattedDate = dateObj.toLocaleDateString();
           formattedTime = dateObj.toLocaleTimeString([], {
             hour: "2-digit",
             minute: "2-digit",
           });
         }
-  
+
         const locationDisplay = hangout.location?.trim()
           ? hangout.location
           : "Location TBD";
-  
+
         return (
           <div
             key={hangout.id}
@@ -90,7 +87,7 @@ export default function UpcomingHangouts() {
                 {formattedDate} at {formattedTime} • {locationDisplay}
               </p>
             </div>
-  
+
             <div className="flex items-center">
               {Array.from({ length: hangout.attendees }).map((_, i) => (
                 <div
@@ -102,7 +99,9 @@ export default function UpcomingHangouts() {
           </div>
         );
       })}
+
       <div className="mt-4"></div>
+
       <button className="mt-4 w-full bg-yellow-500 text-black py-2 rounded-lg font-semibold hover:bg-yellow-600 transition">
         View All Events
       </button>
