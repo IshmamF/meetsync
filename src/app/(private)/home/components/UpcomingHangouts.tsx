@@ -4,6 +4,7 @@ import { getApiBase } from "@/utils/etc/apiBase";
 import { useUser } from "@/utils/context/userContext";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import DetailsModal from "./DetailsModal";
 
 interface Hangout {
   id: string;
@@ -25,6 +26,7 @@ export default function UpcomingHangouts() {
   const [hangouts, setHangouts] = useState<Hangout[]>([]);
   const user = useUser();
   const router = useRouter();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleClick = () => {
     router.push("/hangouts");
@@ -84,6 +86,7 @@ export default function UpcomingHangouts() {
         return (
           <div
             key={hangout.id}
+            onClick={() => setIsModalOpen(true)}
             className={`flex justify-between w-full items-center pl-8 pr-8 pb-3 ${
               index === 0 ? "pt-4" : ""
             } ${index !== hangouts.length ? "border-b border-darkBlue" : ""}`}
@@ -110,6 +113,8 @@ export default function UpcomingHangouts() {
       <button onClick={handleClick} className="mt-4 w-full bg-yellow-500 text-black py-2 rounded-lg font-semibold hover:bg-yellow-600 transition">
         View All Events
       </button>
+
+      <DetailsModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}></DetailsModal>
     </div>
   );
 }
