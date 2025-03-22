@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { getApiBase } from "@/utils/etc/apiBase";
 import { useUser } from "@/utils/context/userContext";
 import { toast } from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 interface Hangout {
   id: string;
@@ -19,9 +20,15 @@ type FetchHangoutsResponse = {
 
 const TOAST_DURATION = 2000;
 
+
 export default function UpcomingHangouts() {
   const [hangouts, setHangouts] = useState<Hangout[]>([]);
   const user = useUser();
+  const router = useRouter();
+
+  const handleClick = () => {
+    router.push("/hangouts");
+  };
 
   async function fetchHangouts() {
     const base = getApiBase();
@@ -99,10 +106,8 @@ export default function UpcomingHangouts() {
           </div>
         );
       })}
-
       <div className="mt-4"></div>
-
-      <button className="mt-4 w-full bg-yellow-500 text-black py-2 rounded-lg font-semibold hover:bg-yellow-600 transition">
+      <button onClick={handleClick} className="mt-4 w-full bg-yellow-500 text-black py-2 rounded-lg font-semibold hover:bg-yellow-600 transition">
         View All Events
       </button>
     </div>
