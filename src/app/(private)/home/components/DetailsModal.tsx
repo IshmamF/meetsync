@@ -33,7 +33,7 @@ const DetailsModal = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="relative bg-white rounded-2xl shadow-xl w-[90%] max-w-lg h-[45vh] overflow-y-auto p-6">
+      <div className="relative bg-white rounded-2xl shadow-xl w-[90%] max-w-lg max-h-[50vh] overflow-y-auto p-6">
 
         <button
           onClick={onClose}
@@ -42,14 +42,15 @@ const DetailsModal = ({
           <X size={16} className="text-gray-700" />
         </button>
 
-
         <h2 className="text-xl font-semibold">{title}</h2>
         <p className="text-sm text-gray-500 flex items-center gap-1">
           {type} · {rating}
-          <Star fill="currentColor" stroke="currentColor" size={14}/>
+          <Star fill="currentColor" stroke="currentColor" size={14} />
         </p>
 
-        <div className="mt-4 space-y-6 text-sm text-gray-700">
+        <p className="text-sm text-gray-700 mt-2">{about}</p>
+
+        <div className="mt-6 space-y-6 text-sm text-gray-700">
           <div className="flex items-start gap-3">
             <MapPin size={18} className="mt-1 text-gray-500" />
             <div>
@@ -95,18 +96,6 @@ const DetailsModal = ({
               <p className="text-base font-semibold">Hours</p>
               <p>{hours.weekdays}</p>
               <p>{hours.weekends}</p>
-            </div>
-          </div>
-
-          <div className="px-2">
-            <hr className="border-t border-gray-700 my-5 ml-[6px]" />
-          </div>
-
-          <div className="flex items-start gap-3 px-2">
-            <div className="w-[18px]" /> 
-            <div>
-              <p className="text-base font-semibold mb-1">About</p>
-              <p>{about}</p>
             </div>
           </div>
         </div>
