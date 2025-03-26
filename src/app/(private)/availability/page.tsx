@@ -11,6 +11,8 @@ export default function AvailabilityPage() {
     const [endTime, setEndTime] = useState("");
     const [quickSelect, setQuickSelect] = useState("");
 
+    console.log('this is a test for github webhook')
+
     useEffect(() => {
 
         function ChangeToQuickSelect() {
