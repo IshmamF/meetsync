@@ -49,6 +49,7 @@ export default function CalendarPage() {
       <div className="text-5xl font-bold text-jetBlack pb-4">Information</div>
       <UserInfoForm
         formData={formData}
+        setFormData={setFormData}
         handleInputChange={handleInputChange}
         handleSubmit={handleSubmit}
         loading={loading}

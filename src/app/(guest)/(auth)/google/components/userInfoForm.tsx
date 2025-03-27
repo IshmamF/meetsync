@@ -1,4 +1,7 @@
-import { AddressAutofill } from "@mapbox/search-js-react";
+import {
+  AddressAutofill,
+  AddressAutofillRetrieveResponse,
+} from "@mapbox/search-js-react";
 
 type UserFormData = {
   address: string;
@@ -7,6 +10,7 @@ type UserFormData = {
 
 interface UserInfoFormProps {
   formData: UserFormData;
+  setFormData: React.Dispatch<React.SetStateAction<UserFormData>>;
   handleInputChange: (
     event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => void;
@@ -16,10 +20,23 @@ interface UserInfoFormProps {
 
 export const UserInfoForm: React.FC<UserInfoFormProps> = ({
   formData,
+  setFormData,
   handleInputChange,
   handleSubmit,
   loading,
 }) => {
+  const handleAddress = (res: AddressAutofillRetrieveResponse) => {
+    const address = res.features[0]?.properties.place_name || "Unknown address";
+    // we have to wait just a small amount for maxbox to input the half address
+    // so then we can replace it with the full. I couldn't find another way around that
+    setTimeout(() => {
+      setFormData((prevData) => ({
+        ...prevData,
+        address,
+      }));
+    }, 1);
+  };
+
   return (
     <div>
       <form
@@ -31,6 +48,7 @@ export const UserInfoForm: React.FC<UserInfoFormProps> = ({
         </label>
         {/* @ts-ignore */}
         <AddressAutofill
+          onRetrieve={handleAddress}
           accessToken={process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN!}
         >
           <input
