@@ -1,7 +1,5 @@
-import {
-  AddressAutofill,
-  AddressAutofillRetrieveResponse,
-} from "@mapbox/search-js-react";
+import { AddressAutofill } from "@mapbox/search-js-react";
+import { AddressAutofillRetrieveResponse } from "@mapbox/search-js-core/dist/autofill/AddressAutofillCore";
 
 type UserFormData = {
   address: string;
