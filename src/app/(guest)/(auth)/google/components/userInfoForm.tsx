@@ -75,10 +75,10 @@ export const UserInfoForm: React.FC<UserInfoFormProps> = ({
           <option value="" disabled>
             Select an option
           </option>
-          <option value="transit">Transit</option>
-          <option value="cycling">Cycling</option>
-          <option value="driving">Driving</option>
-          <option value="walking">Walking</option>
+          <option value="driving+public_transport">Driving</option>
+          <option value="public_transport">Transit</option>
+          <option value="walking+ferry">Walking</option>
+          <option value="cycling+ferry">Cycling</option>
         </select>
         <div className="flex gap-2 items-center justify-center w-full mt-3">
           <div className="w-3 h-3 rounded-full bg-slate-400"></div>
