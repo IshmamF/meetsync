@@ -39,6 +39,11 @@ function formatScheduledTime(dateStr: string | null | undefined): string {
   })}`;
 }
 
+function formatLocation(location: string | null | undefined): string {
+  if (!location || location.trim() === "") return "TBD";
+  return location;
+}
+
 export default function Hangouts() {
   const [hangouts, setHangouts] = useState<Hangout[]>([]);
   const [query, setQuery] = useState<string>("");
@@ -124,7 +129,7 @@ export default function Hangouts() {
               name={hangout.title}
               title={hangout.title}
               scheduled_time={formatScheduledTime(hangout.scheduled_time)}
-              location={hangout.location}
+              location={formatLocation(hangout.location)}
               attendees={hangout.attendees}
             />
           ))}
