@@ -1,4 +1,5 @@
 import { AddressAutofill } from "@mapbox/search-js-react";
+import { AddressAutofillRetrieveResponse } from "@mapbox/search-js-core/dist/autofill/AddressAutofillCore";
 
 type UserFormData = {
   address: string;
@@ -7,6 +8,7 @@ type UserFormData = {
 
 interface UserInfoFormProps {
   formData: UserFormData;
+  setFormData: React.Dispatch<React.SetStateAction<UserFormData>>;
   handleInputChange: (
     event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => void;
@@ -16,10 +18,23 @@ interface UserInfoFormProps {
 
 export const UserInfoForm: React.FC<UserInfoFormProps> = ({
   formData,
+  setFormData,
   handleInputChange,
   handleSubmit,
   loading,
 }) => {
+  const handleAddress = (res: AddressAutofillRetrieveResponse) => {
+    const address = res.features[0]?.properties.place_name || "Unknown address";
+    // we have to wait just a small amount for maxbox to input the half address
+    // so then we can replace it with the full. I couldn't find another way around that
+    setTimeout(() => {
+      setFormData((prevData) => ({
+        ...prevData,
+        address,
+      }));
+    }, 1);
+  };
+
   return (
     <div>
       <form
@@ -31,6 +46,7 @@ export const UserInfoForm: React.FC<UserInfoFormProps> = ({
         </label>
         {/* @ts-ignore */}
         <AddressAutofill
+          onRetrieve={handleAddress}
           accessToken={process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN!}
         >
           <input
@@ -59,10 +75,10 @@ export const UserInfoForm: React.FC<UserInfoFormProps> = ({
           <option value="" disabled>
             Select an option
           </option>
-          <option value="transit">Transit</option>
-          <option value="cycling">Cycling</option>
-          <option value="driving">Driving</option>
-          <option value="walking">Walking</option>
+          <option value="driving+public_transport">Driving</option>
+          <option value="public_transport">Transit</option>
+          <option value="walking+ferry">Walking</option>
+          <option value="cycling+ferry">Cycling</option>
         </select>
         <div className="flex gap-2 items-center justify-center w-full mt-3">
           <div className="w-3 h-3 rounded-full bg-slate-400"></div>
