@@ -3,6 +3,7 @@ import Option from "./option";
 import { toast } from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
 import { useUser } from "@/utils/context/userContext";
+import { submitOptionVotes } from "../actions";
 
 interface Props {
     options: MeetupOption[]
@@ -31,7 +32,7 @@ export default function VoterPage({options, title, hangout_id} : Props) {
         })
     }
 
-    function handleSubmit() {
+    async function handleSubmit() {
         if (selectedOptions.length == 0) {
             toast.error('Please select an option.');
             return;
@@ -41,7 +42,37 @@ export default function VoterPage({options, title, hangout_id} : Props) {
             return;
         }
         setHitSubmet(true);
-        
+
+        let option_ids = []
+        for (let option of selectedOptions) {
+            option_ids.push(option.id);
+        }
+
+        try {
+            const loadingToast = toast.loading('Submitting votes...');
+
+            const dummyID = '492b2e65-0061-473c-b5f7-f6658478ffd2'
+            // const user_id = user?.auth_id!;
+            const response = await submitOptionVotes(hangout_id, dummyID, option_ids);
+
+            toast.dismiss(loadingToast);
+
+            if (response.status == 200) {
+                toast.success(response.message || 'Votes submitted successfully!');
+                
+                setTimeout(() => {
+                    router.push('/'); 
+                }, 2000);
+                setHitSubmet(false);
+            } else {
+                toast.error(response.message || 'Something went wrong. Please try again.');
+                setHitSubmet(false);
+            }
+        } catch (error) {
+            toast.error('An error occurred. Please try again later.');
+            setHitSubmet(false);
+            console.error('Error submitting votes:', error);
+        }
     }
 
     const CardOptions = options.map((option, index) => {
@@ -76,7 +107,7 @@ export default function VoterPage({options, title, hangout_id} : Props) {
                         className="bg-darkBlue hover:bg-darkBlue/80 text-white font-medium px-4 py-2 rounded-lg shadow-md transition-colors duration-200"
                         onClick={handleSubmit}
                     >
-                    {hitSubmit ? "Submitting..." : "Submit Availability"}
+                    {hitSubmit ? "Submitting..." : "Submit Votes"}
                 </button>
             </div>
             <div className="border-gray-400 border p-4 shadow-md rounded-lg">

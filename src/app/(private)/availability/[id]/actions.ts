@@ -65,3 +65,23 @@ export async function getMeetupOptions(hangout_id: string) {
 
     return json;
 }
+
+export async function submitOptionVotes(hangout_id:string, user_id: string, option_ids: string[]) {
+    const base = getApiBase()
+    const response = await fetch(`${base}/vote`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ hangout_id: hangout_id!, user_id: user_id, option_ids: option_ids})
+    });
+
+    if (!response.ok) {
+        console.error("Failed to post votes:", response.statusText);
+        return { status: response.status, message: "Failed to post votes"};
+    }
+
+    const json = await response.json();
+
+    return json;
+}

@@ -114,7 +114,7 @@ export default function AvailabilityOptions({setOptions, options}: Props) {
                             w-auto mx-auto`}
                     disabled={( !(quickSelect || (startTime && endTime)) || (!date))}
                 >
-                    Confirm Availability
+                    Add Availability
                 </button>
             </form>
         </div>
