@@ -109,7 +109,7 @@ export default function MeetingRecommendations() {
   function mapTransport(transport: string): "car" | "transit" | "pedestrian" | "cycling" {
     if (transport.includes("driving")) return "car";
     if (transport.includes("cycling")) return "cycling";
-    if (transport.includes("walk")) return "pedestrian";
+    if (transport.includes("walking")) return "pedestrian";
     return "transit";
   }
 
@@ -118,6 +118,8 @@ export default function MeetingRecommendations() {
     time: `${p.travel_time} min`,
     transport: mapTransport(p.transport),
   }));
+
+  const rankingOptions = Array.from({ length: recommendations.length }, (_, i) => i + 1);
 
   return (
     <div className="flex flex-col pt-10 bg-lightBlue min-h-screen text-black w-full px-10">
@@ -146,6 +148,7 @@ export default function MeetingRecommendations() {
                   type="Cafe"
                   rating={4.5}
                   users={userData}
+                  rankingOptions={rankingOptions}
                 />
               ))}
             </div>
@@ -158,6 +161,7 @@ export default function MeetingRecommendations() {
                 type="Cafe"
                 rating={4.5}
                 users={userData}
+                rankingOptions={rankingOptions}
               />
             </div>
           )}

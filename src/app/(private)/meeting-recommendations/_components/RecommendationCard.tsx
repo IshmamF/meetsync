@@ -13,6 +13,7 @@ export type RecommendationCardProps = {
   type: string;
   rating: number;
   users: UserInfo[];
+  rankingOptions: number[];
 };
 
 export default function RecommendationCard({
@@ -20,9 +21,10 @@ export default function RecommendationCard({
   type,
   rating,
   users,
+  rankingOptions,
 }: RecommendationCardProps) {
   const transportIcons = {
-    car: <Car className="w-4 h-4 inline mr-1" />, 
+    car: <Car className="w-4 h-4 inline mr-1" />,
     pedestrian: <Footprints className="w-4 h-4 inline mr-1" />,
     transit: <Train className="w-4 h-4 inline mr-1" />,
     cycling: <Bike className="w-4 h-4 inline mr-1" />,
@@ -36,7 +38,7 @@ export default function RecommendationCard({
             <h2 className="text-lg font-semibold text-gray-900">{name}</h2>
             <p className="text-sm text-gray-500">{type}</p>
             <div className="flex items-center mt-1">
-            <Star className="w-5 h-5 text-yellow-400 fill-yellow-400 mr-1" />
+              <Star className="w-5 h-5 text-yellow-400 fill-yellow-400 mr-1" />
               <span className="text-sm font-medium text-black">{rating}</span>
             </div>
           </div>
@@ -60,9 +62,11 @@ export default function RecommendationCard({
         <label className="text-sm text-black font-medium">Ranking:</label>
         <select className="p-2 border border-gray-300 bg-lightBlue rounded-md text-sm text-black">
           <option>Choose Rank</option>
-          <option>1</option>
-          <option>2</option>
-          <option>3</option>
+          {rankingOptions.map((rank) => (
+            <option key={rank} value={rank}>
+              {rank}
+            </option>
+          ))}
         </select>
       </div>
     </div>
