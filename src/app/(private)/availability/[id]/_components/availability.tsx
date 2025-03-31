@@ -65,7 +65,7 @@ export default function Availability({id}: Props) {
 
     return (
         <>
-            {isCreator ? (<CreatorPage title={displayTitle} hangout_id={id}/>) : (<VoterPage options={options} title={displayTitle}/>)}
+            {isCreator ? (<CreatorPage title={displayTitle} hangout_id={id}/>) : (<VoterPage options={options} title={displayTitle} hangout_id={id}/>)}
         </>
     )
 }
