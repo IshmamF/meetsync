@@ -49,16 +49,16 @@ export default function AvailabilityOptions({setOptions, options}: Props) {
         if (quickSelect) {
             switch (quickSelect) {
                 case 'Morning (9 AM - 12 PM)':
-                    final_start_time = '9 AM';
-                    final_end_time = '12 PM';
+                    final_start_time = '09:00';
+                    final_end_time = '12:00';
                     break;
                 case 'Afternoon (12 PM - 5 PM)':
-                    final_start_time = '12 PM';
-                    final_end_time = '5 PM';
+                    final_start_time = '12:00';
+                    final_end_time = '17:00';
                     break;
                 case 'Evening (5 PM - 9 PM)':
-                    final_start_time = '5 PM';
-                    final_end_time = '9 PM';
+                    final_start_time = '17:00';
+                    final_end_time = '21:00';
                     break;
             };
         } else if (startTime && endTime) {

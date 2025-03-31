@@ -25,3 +25,23 @@ type hangout_response = {
     status: number
     hangout_info: HangoutAvailabilityInfo | null
 }
+
+export async function submitAvailabilityOptions(options: string[], hangout_id: string) {
+    const base = getApiBase()
+    const response = await fetch(`${base}/create-poll`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ hangout_id: hangout_id!, options: options })
+    });
+
+    if (!response.ok) {
+        console.error("Failed to post data:", response.statusText);
+        return { status: response.status, message: 'Something went wrong posting meetup options'};
+    }
+
+    const json = await response.json();
+
+    return json;
+}
