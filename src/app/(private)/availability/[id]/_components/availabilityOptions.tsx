@@ -5,7 +5,7 @@ import QuickSelect from './quickSelect';
 import SelectDay from './selectDays';
 import SelectTimes from './selectTimes';
 
-export default function Availability() {
+export default function AvailabilityOptions() {
     const [selectedDay, setSelectedDay] = useState<string>('');
     const [startTime, setStartTime] = useState("");
     const [endTime, setEndTime] = useState("");

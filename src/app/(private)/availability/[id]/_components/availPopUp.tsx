@@ -6,7 +6,7 @@ import {
     DialogTitle,
     DialogTrigger,
   } from "@/components/ui/dialog"
-import Availability from "./availability"
+import AvailabilityOptions from "./availabilityOptions"
   
 
 export default function AvailabilityModal() {
@@ -21,7 +21,7 @@ export default function AvailabilityModal() {
                 <DialogHeader>
                     <DialogTitle className="font-extrabold text-3xl text-darkBlue pb-4">Submit Availability</DialogTitle>
                 </DialogHeader>
-                <Availability/>
+                <AvailabilityOptions/>
             </DialogContent>
         </Dialog>
     )
