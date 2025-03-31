@@ -17,7 +17,7 @@ export default function AvailabilityModal({setOptions, options}: Props) {
     return (
         <Dialog >
             <DialogTrigger asChild>
-                <button className="bg-yellow-500 text-black rounded-lg shadow-md px-1 py-3 sm:px-2 sm:py-3">
+                <button className="bg-yellow-500 hover:bg-yellow-600 text-black font-medium px-4 py-2 rounded-lg shadow-md transition-colors duration-200">
                     Add Availability
                 </button>
             </DialogTrigger>
