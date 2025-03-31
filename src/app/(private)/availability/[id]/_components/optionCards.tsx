@@ -8,7 +8,7 @@ type Props = {
 export default function OptionCards({setOptions, options}: Props) {
 
     function handleDelete(option: string) {
-        setOptions(options.filter((curr) => (curr != option)))
+        setOptions(options.filter((curr) => (curr != option)));
     }
 
     const CardOptions = options.map((option, index) => {

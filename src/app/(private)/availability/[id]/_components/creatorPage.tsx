@@ -11,7 +11,7 @@ type Props = {
 }
 
 export default function CreatorPage({title, hangout_id}: Props) {
-    const [options, setOptions] = useState<string[]>([])
+    const [options, setOptions] = useState<string[]>([]);
     const [hitSubmit, setHitSubmet] = useState<boolean>(false);
     const router = useRouter();
 
@@ -36,7 +36,7 @@ export default function CreatorPage({title, hangout_id}: Props) {
                 toast.success(response.message || 'Availability submitted successfully!');
                 
                 setTimeout(() => {
-                    router.push('/'); 
+                    router.push('/home'); 
                 }, 2000);
                 setHitSubmet(false);
             } else {

@@ -19,7 +19,7 @@ type MeetupOption = {
 export default function Availability({id}: Props) {
     const user = useUser();
     const [isCreator, setIsCreator] = useState<boolean>(false);
-    const [displayTitle, setDisplayTitle] = useState<string>('')
+    const [displayTitle, setDisplayTitle] = useState<string>('');
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [options, setOptions] = useState<MeetupOption[]>([]);
     
@@ -39,7 +39,7 @@ export default function Availability({id}: Props) {
             }
         }
         hangoutInfo();
-    }, [])
+    }, []);
 
     useEffect(() => {
         setIsLoading(true);
@@ -55,7 +55,7 @@ export default function Availability({id}: Props) {
             }
         }
         loadMeetupOptions();
-    }, [isCreator, displayTitle])
+    }, [isCreator, displayTitle]);
 
     if (isLoading) {
         return (

@@ -50,10 +50,9 @@ export default function VoterPage({options, title, hangout_id} : Props) {
 
         try {
             const loadingToast = toast.loading('Submitting votes...');
-
-            const dummyID = '492b2e65-0061-473c-b5f7-f6658478ffd2'
-            // const user_id = user?.auth_id!;
-            const response = await submitOptionVotes(hangout_id, dummyID, option_ids);
+            
+            const user_id = user?.auth_id!;
+            const response = await submitOptionVotes(hangout_id, user_id, option_ids);
 
             toast.dismiss(loadingToast);
 

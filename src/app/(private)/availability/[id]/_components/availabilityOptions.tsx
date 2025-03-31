@@ -1,6 +1,6 @@
-'use client'
+'use client';
 
-import {useState, useEffect} from 'react'
+import {useState, useEffect} from 'react';
 import QuickSelect from './quickSelect';
 import SelectDay from './selectDay';
 import SelectTimes from './selectTimes';
@@ -14,9 +14,7 @@ export default function AvailabilityOptions({setOptions, options}: Props) {
     const [startTime, setStartTime] = useState("");
     const [endTime, setEndTime] = useState("");
     const [quickSelect, setQuickSelect] = useState<string>("");
-    const [date, setDate] = useState<Date | undefined>(new Date())
-
-    console.log('this is a test for github webhook')
+    const [date, setDate] = useState<Date | undefined>(new Date());
 
     useEffect(() => {
 
@@ -72,7 +70,7 @@ export default function AvailabilityOptions({setOptions, options}: Props) {
             year: 'numeric',
             month: 'numeric',
             day: 'numeric'
-        })
+        });
 
         const final_option = `${formattedDate},${final_start_time},${final_end_time}`;
 
