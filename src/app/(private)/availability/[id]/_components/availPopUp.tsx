@@ -8,8 +8,12 @@ import {
   } from "@/components/ui/dialog"
 import AvailabilityOptions from "./availabilityOptions"
   
+type Props = {
+    setOptions: React.Dispatch<React.SetStateAction<string[]>>;
+    options: string[]
+}
 
-export default function AvailabilityModal() {
+export default function AvailabilityModal({setOptions, options}: Props) {
     return (
         <Dialog >
             <DialogTrigger asChild>
@@ -21,7 +25,10 @@ export default function AvailabilityModal() {
                 <DialogHeader>
                     <DialogTitle className="font-extrabold text-3xl text-darkBlue pb-4">Submit Availability</DialogTitle>
                 </DialogHeader>
-                <AvailabilityOptions/>
+                <AvailabilityOptions
+                    setOptions={setOptions}
+                    options={options}
+                />
             </DialogContent>
         </Dialog>
     )

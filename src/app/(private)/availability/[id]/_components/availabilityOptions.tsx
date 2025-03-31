@@ -5,11 +5,17 @@ import QuickSelect from './quickSelect';
 import SelectDay from './selectDays';
 import SelectTimes from './selectTimes';
 
-export default function AvailabilityOptions() {
+type Props = {
+    setOptions: React.Dispatch<React.SetStateAction<string[]>>;
+    options: string[]
+}
+
+export default function AvailabilityOptions({setOptions, options}: Props) {
+
     const [selectedDay, setSelectedDay] = useState<string>('');
     const [startTime, setStartTime] = useState("");
     const [endTime, setEndTime] = useState("");
-    const [quickSelect, setQuickSelect] = useState("");
+    const [quickSelect, setQuickSelect] = useState<string>("");
 
     console.log('this is a test for github webhook')
 
@@ -38,12 +44,37 @@ export default function AvailabilityOptions() {
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        /* To Do 
-        - send information to backend
-        - fix schema for availability
-        */
+        let final_start_time = '';
+        let final_end_time = '';
+        if (quickSelect) {
+            switch (quickSelect) {
+                case 'Morning (9 AM - 12 PM)':
+                    final_start_time = '9 AM';
+                    final_end_time = '12 PM';
+                    break;
+                case 'Afternoon (12 PM - 5 PM)':
+                    final_start_time = '12 PM';
+                    final_end_time = '5 PM';
+                    break;
+                case 'Evening (5 PM - 9 PM)':
+                    final_start_time = '5 PM';
+                    final_end_time = '9 PM';
+                    break;
+            };
+        } else if (startTime && endTime) {
+            final_start_time = startTime;
+            final_end_time = endTime;    
+        } else {
+            return;
+        }
+        if (!selectedDay) return;
+        const final_option = `${selectedDay},${final_start_time},${final_end_time}`;
 
+        if (!options.includes(final_option)) {
+            setOptions((prev: string[]) => [...prev, final_option]);
+        }
     }
+
     return (
         <div className="text-black w-full">
             <form onSubmit={handleSubmit} className='bg-white w-full pb-6 flex flex-col rounded-lg'>
