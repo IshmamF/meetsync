@@ -45,3 +45,23 @@ export async function submitAvailabilityOptions(options: string[], hangout_id: s
 
     return json;
 }
+
+export async function getMeetupOptions(hangout_id: string) {
+    const base = getApiBase()
+    const response = await fetch(`${base}/get-poll`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ hangout_id: hangout_id!})
+    });
+
+    if (!response.ok) {
+        console.error("Failed to retrieve options:", response.statusText);
+        return { status: response.status, options: []};
+    }
+
+    const json = await response.json();
+
+    return json;
+}
