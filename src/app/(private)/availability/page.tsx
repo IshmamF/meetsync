@@ -6,6 +6,7 @@ import AvailabilityModal from "./_components/availPopUp"
 
 export default function AvailabilityPage() {
 
+    
 
 
     return (

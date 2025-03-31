@@ -3,18 +3,18 @@ const options = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday
 import clsx from 'clsx';
 
 interface Props {
-    setSelectedDays: React.Dispatch<React.SetStateAction<string[]>>
-    selectedDays: string[]
+    setSelectedDay: React.Dispatch<React.SetStateAction<string>>
+    selectedDay: string
 }
 
-export default function SelectDays({selectedDays, setSelectedDays}: Props) {
+export default function SelectDay({selectedDay, setSelectedDay}: Props) {
 
     const handleClick = (day: string) => {
-        setSelectedDays((prevSelectedDays) => {
-            if (prevSelectedDays.includes(day)) {
-                return prevSelectedDays.filter(d => d !== day);
+        setSelectedDay((prevSelectedDays) => {
+            if (prevSelectedDays == day) {
+                return '';
             } else {
-                return [...prevSelectedDays, day];
+                return day;
             }
         });    
     };
@@ -29,7 +29,7 @@ export default function SelectDays({selectedDays, setSelectedDays}: Props) {
                         onClick={() => handleClick(day)}
                         className={clsx(
                             "cursor-pointer p-4 border-2 rounded-md text-center transition-all duration-300",
-                            selectedDays.includes(day)
+                            selectedDay == day
                             ? "bg-darkBlue text-white border-darkBlue"
                             : "bg-white text-darkBlue border-gray-200"
                         )}

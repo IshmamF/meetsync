@@ -2,11 +2,11 @@
 
 import {useState, useEffect} from 'react'
 import QuickSelect from './quickSelect';
-import SelectDays from './selectDays';
+import SelectDay from './selectDays';
 import SelectTimes from './selectTimes';
 
 export default function Availability() {
-    const [selectedDays, setSelectedDays] = useState<string[]>([]);
+    const [selectedDay, setSelectedDay] = useState<string>('');
     const [startTime, setStartTime] = useState("");
     const [endTime, setEndTime] = useState("");
     const [quickSelect, setQuickSelect] = useState("");
@@ -49,9 +49,9 @@ export default function Availability() {
             <form onSubmit={handleSubmit} className='bg-white w-full pb-6 flex flex-col rounded-lg'>
                 <div className="flex flex-col sm:flex-row">
                     <div className="px-8 flex-1 sm:border-r sm:pr-8">
-                        <SelectDays
-                            selectedDays={selectedDays}
-                            setSelectedDays={setSelectedDays}
+                        <SelectDay
+                            selectedDay={selectedDay}
+                            setSelectedDay={setSelectedDay}
                         />
                     </div>
                     <div className="flex-1 px-8 pt-6 sm:pt-0">
@@ -73,12 +73,12 @@ export default function Availability() {
                 </div>
                 <button 
                         className={`mt-8 py-3 px-8 rounded-2xl text-white font-semibold shadow-md 
-                            ${( !(quickSelect || (startTime && endTime)) || (selectedDays.length == 0))
+                            ${( !(quickSelect || (startTime && endTime)) || (selectedDay == ''))
                                 ? 'bg-darkBlue/45 cursor-not-allowed' 
                                 : 'bg-darkBlue hover:bg-darkBlue/80 focus:outline-none focus:ring-2 focus:ring-darkBlue focus:ring-opacity-50'
                             } 
                             w-auto mx-auto`}
-                    disabled={( !(quickSelect || (startTime && endTime)) || (selectedDays.length == 0))}
+                    disabled={( !(quickSelect || (startTime && endTime)) || (selectedDay == ''))}
                 >
                     Confirm Availability
                 </button>
