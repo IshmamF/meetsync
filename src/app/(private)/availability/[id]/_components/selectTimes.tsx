@@ -13,10 +13,8 @@ export default function SelectTimes({setEndTime, setStartTime, endTime, startTim
 
         if (name == 'start-time') {
             setStartTime(value);
-            console.log('value')
         } else {
             setEndTime(value);
-            console.log('value')
         }
     }
 

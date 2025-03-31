@@ -14,6 +14,8 @@ export default function Availability({id}: Props) {
     const user = useUser();
     const [isCreator, setIsCreator] = useState<boolean>(false);
     const [displayTitle, setDisplayTitle] = useState<string>('')
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+
     
     useEffect(() => {
         const hangoutInfo = async () => {
@@ -22,14 +24,20 @@ export default function Availability({id}: Props) {
                 setIsCreator(true);
             }
             setDisplayTitle(info.hangout_info?.title!);
+            setIsLoading(false);
         }
         hangoutInfo();
     }, [])
 
+    if (isLoading) {
+        return (
+            <div className='bg-lightBlue w-full h-screen'></div>
+        )
+    }
+
     return (
         <>
-            <div>{displayTitle}</div>
-            {isCreator ? (<CreatorPage/>) : (<VoterPage/>)}
+            {isCreator ? (<CreatorPage title={displayTitle} hangout_id={id}/>) : (<VoterPage/>)}
         </>
     )
 }

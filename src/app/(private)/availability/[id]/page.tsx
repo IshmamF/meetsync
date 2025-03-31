@@ -12,7 +12,7 @@ export default async function AvailabilityPage({
     const { id } = await params
 
     return (
-        <div>
+        <div className="bg-lightBlue">
             <Availability
               id={id}
             />
