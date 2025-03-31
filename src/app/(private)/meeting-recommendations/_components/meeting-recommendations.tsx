@@ -1,5 +1,6 @@
 "use client";
 import RecommendationCard from "./RecommendationCard";
+import { ChevronDown } from "lucide-react";
 
 // temporary data for testing
 const rawCardsData = [
@@ -68,10 +69,16 @@ export default function MeetingRecommendations() {
 
   return (
     <div className="flex flex-col pt-10 bg-lightBlue min-h-screen text-black w-full px-10">
-      <div className="font-semibold text-5xl mb-6 pb-8 text-center">
-        Meeting Recommendations
-      </div>
-  
+        <div className="flex justify-center mb-6 pb-8">
+        <div className="flex items-center gap-4">
+            <h1 className="font-semibold text-5xl">Meeting Recommendations</h1>
+            <button className="bg-yellow-500 text-black font-medium border-black shadow-md px-4 py-2 rounded-full flex items-center gap-x-2">
+            <span>Sort by</span>
+            <ChevronDown className="w-4 h-4" />
+            </button>
+        </div>
+        </div>
+
       {testCardsData.length === 0 ? (
         <div className="text-center text-gray-600 text-lg mt-10">
           No recommendations found.
@@ -104,7 +111,7 @@ export default function MeetingRecommendations() {
           )}
   
           <div className="flex justify-center mt-6">
-            <button className="bg-yellow-400 hover:bg-yellow-500 text-black font-semibold py-2 px-6 rounded-md shadow">
+            <button className="bg-yellow-500 hover:bg-yellow-500 text-black font-semibold py-2 px-6 rounded-md shadow">
               Submit
             </button>
           </div>
