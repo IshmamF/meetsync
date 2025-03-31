@@ -21,7 +21,7 @@ export default function AvailabilityModal({setOptions, options}: Props) {
                     Add Availability
                 </button>
             </DialogTrigger>
-            <DialogContent>
+            <DialogContent className="sm:max-w-[700px]">
                 <DialogHeader>
                     <DialogTitle className="font-extrabold text-3xl text-darkBlue pb-4">Submit Availability</DialogTitle>
                 </DialogHeader>

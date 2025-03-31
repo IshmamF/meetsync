@@ -2,7 +2,7 @@
 
 import {useState, useEffect} from 'react'
 import QuickSelect from './quickSelect';
-import SelectDay from './selectDays';
+import SelectDay from './selectDay';
 import SelectTimes from './selectTimes';
 
 type Props = {
@@ -11,11 +11,10 @@ type Props = {
 }
 
 export default function AvailabilityOptions({setOptions, options}: Props) {
-
-    const [selectedDay, setSelectedDay] = useState<string>('');
     const [startTime, setStartTime] = useState("");
     const [endTime, setEndTime] = useState("");
     const [quickSelect, setQuickSelect] = useState<string>("");
+    const [date, setDate] = useState<Date | undefined>(new Date())
 
     console.log('this is a test for github webhook')
 
@@ -67,8 +66,15 @@ export default function AvailabilityOptions({setOptions, options}: Props) {
         } else {
             return;
         }
-        if (!selectedDay) return;
-        const final_option = `${selectedDay},${final_start_time},${final_end_time}`;
+        if (!date) return;
+
+        const formattedDate = date?.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'numeric',
+            day: 'numeric'
+        })
+
+        const final_option = `${formattedDate},${final_start_time},${final_end_time}`;
 
         if (!options.includes(final_option)) {
             setOptions((prev: string[]) => [...prev, final_option]);
@@ -78,14 +84,11 @@ export default function AvailabilityOptions({setOptions, options}: Props) {
     return (
         <div className="text-black w-full">
             <form onSubmit={handleSubmit} className='bg-white w-full pb-6 flex flex-col rounded-lg'>
-                <div className="flex flex-col sm:flex-row">
-                    <div className="px-8 flex-1 sm:border-r sm:pr-8">
-                        <SelectDay
-                            selectedDay={selectedDay}
-                            setSelectedDay={setSelectedDay}
-                        />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="p-4 md:border-r md:pr-8">
+                        <SelectDay date={date} setDate={setDate} />
                     </div>
-                    <div className="flex-1 px-8 pt-6 sm:pt-0">
+                    <div className="p-4 flex flex-col space-y-4">
                         <div>
                             <SelectTimes 
                                 startTime={startTime}
@@ -104,12 +107,12 @@ export default function AvailabilityOptions({setOptions, options}: Props) {
                 </div>
                 <button 
                         className={`mt-8 py-3 px-8 rounded-2xl text-white font-semibold shadow-md 
-                            ${( !(quickSelect || (startTime && endTime)) || (selectedDay == ''))
+                            ${( !(quickSelect || (startTime && endTime)) || (!date))
                                 ? 'bg-darkBlue/45 cursor-not-allowed' 
                                 : 'bg-darkBlue hover:bg-darkBlue/80 focus:outline-none focus:ring-2 focus:ring-darkBlue focus:ring-opacity-50'
                             } 
                             w-auto mx-auto`}
-                    disabled={( !(quickSelect || (startTime && endTime)) || (selectedDay == ''))}
+                    disabled={( !(quickSelect || (startTime && endTime)) || (!date))}
                 >
                     Confirm Availability
                 </button>
