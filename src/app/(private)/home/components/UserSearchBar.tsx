@@ -94,7 +94,7 @@ function UserSearchBar({
           </div>
           {/* suggestions box */}
           {isOpen && results.length > 0 && (
-            <ul className="absolute top-[38px] z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none dark:bg-gray-800 dark:ring-white dark:ring-opacity-10 sm:text-sm">
+            <ul className="absolute top-[40px] z-10 mt-1 max-h-60 w-[calc(100%+36px)] overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none dark:bg-gray-800 dark:ring-white dark:ring-opacity-10 sm:text-sm">
               {results.map((item, index) => (
                 <li
                   key={index}
@@ -115,8 +115,8 @@ function UserSearchBar({
           )}
         </div>
       </div>
-      {attendees && (
-        <div className="flex flex-wrap w-full gap-3 pl-10 mt-2">
+      {attendees.length > 0 && (
+        <div className="flex flex-wrap w-full gap-3 pl-10 pr-4 pt-2 pb-4">
           {attendees.map((user) => {
             return (
               <div
