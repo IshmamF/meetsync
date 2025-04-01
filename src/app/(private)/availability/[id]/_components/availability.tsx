@@ -54,7 +54,7 @@ export default function Availability({id}: Props) {
                 setIsLoading(false);
             }
         }
-        loadMeetupOptions();
+        if (!isCreator) loadMeetupOptions();
     }, [isCreator, displayTitle]);
 
     if (isLoading) {

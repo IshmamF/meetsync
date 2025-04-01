@@ -3,12 +3,11 @@ import { HangoutAvailabilityInfo } from "@/types/hangout";
 
 export async function getHangoutInfo(id: string): Promise<hangout_response>  {
     const base = getApiBase()
-    const response = await fetch(`${base}/get-hangout-info`, {
-        method: 'POST',
+    const response = await fetch(`${base}/get-hangout-info?hangout_id=${id}`, {
+        method: 'GET',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ hangout_id: id! })
     });
 
     if (!response.ok) {
@@ -48,12 +47,11 @@ export async function submitAvailabilityOptions(options: string[], hangout_id: s
 
 export async function getMeetupOptions(hangout_id: string) {
     const base = getApiBase()
-    const response = await fetch(`${base}/get-poll`, {
-        method: 'POST',
+    const response = await fetch(`${base}/get-poll?hangout_id=${hangout_id}`, {
+        method: 'GET',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ hangout_id: hangout_id!})
     });
 
     if (!response.ok) {

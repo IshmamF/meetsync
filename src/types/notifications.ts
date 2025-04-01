@@ -16,7 +16,9 @@ export enum NotificationType {
     GENERAL = 'general',
     SELECT_AVAILABILITY = 'select-availability',
     SELECT_PLACRES = 'select-places',
-    CONFIRM_MEETUP = 'confirm-meetup'
+    CONFIRM_MEETUP = 'confirm-meetup',
+    CONFIRM_TIME = 'confirm-time',
+    CONFIRMED = 'confirmed'
 }
 
 
