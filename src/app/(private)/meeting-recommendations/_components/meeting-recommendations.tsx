@@ -48,12 +48,11 @@ interface FetchParticipantsResponse {
   participants: Participant[];
 }
 
-export default function MeetingRecommendations() {
+export default function MeetingRecommendations({ hangoutId }: { hangoutId: string }) {
   const [recommendations, setRecommendations] = useState<Recommendation[]>([]);
   const [participants, setParticipants] = useState<Participant[]>([]);
   const [loading, setLoading] = useState(false);
   const user = useUser();
-  const hangoutId = 47; // Temporary for testing
 
   async function fetchRecommendations() {
     setLoading(true);
