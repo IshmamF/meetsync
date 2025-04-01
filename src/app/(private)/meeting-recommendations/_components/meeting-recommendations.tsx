@@ -62,13 +62,7 @@ export default function MeetingRecommendations() {
     try {
       const [recRes, partRes] = await Promise.all([
         fetch(`${base}/get-recommendations?hangout_id=${hangoutId}`),
-        fetch(`${base}/get-hangout-participants`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ hangout_id: hangoutId.toString() }),
-        }),
+        fetch(`${base}/get-hangout-participants?hangout_id=${hangoutId}`),
       ]);
 
       const recData: FetchRecommendationsResponse = await recRes.json();
@@ -145,8 +139,8 @@ export default function MeetingRecommendations() {
                 <RecommendationCard
                   key={`${rowIndex}-${idx}`}
                   name={card.name}
-                  type="Cafe"
-                  rating={4.5}
+                  type="Cafe" // TODO type not dynamic
+                  rating={4.5} // TODO rating not dynamic
                   users={userData}
                   rankingOptions={rankingOptions}
                 />
@@ -158,8 +152,8 @@ export default function MeetingRecommendations() {
             <div className="flex justify-center mb-6">
               <RecommendationCard
                 name={lastCard.name}
-                type="Cafe"
-                rating={4.5}
+                type="Cafe" // TODO type not dynamic
+                rating={4.5} // TODO rating not dynamic
                 users={userData}
                 rankingOptions={rankingOptions}
               />
