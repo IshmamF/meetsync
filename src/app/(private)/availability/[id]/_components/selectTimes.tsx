@@ -31,7 +31,6 @@ export default function SelectTimes({setEndTime, setStartTime, endTime, startTim
                         value={startTime}
                         className="border border-gray-300 rounded-md p-2 block"
                         onChange={handleChange}
-                        required
                     >
                     </input>
                 </div>
@@ -44,7 +43,6 @@ export default function SelectTimes({setEndTime, setStartTime, endTime, startTim
                         value={endTime}
                         className="border border-gray-300 rounded-md p-2 block"
                         onChange={handleChange}
-                        required
                     >
                     </input>
                 </div>
