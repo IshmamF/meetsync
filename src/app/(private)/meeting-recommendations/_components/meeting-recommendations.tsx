@@ -126,6 +126,14 @@ export default function MeetingRecommendations({ hangoutId }: { hangoutId: strin
       return;
     }
   
+    const ranks = voteEntries.map(([, rank]) => rank);
+    const uniqueRanks = new Set(ranks);
+  
+    if (uniqueRanks.size !== ranks.length) {
+      toast.error("Each recommendation must have a unique rank.");
+      return;
+    }
+  
     try {
       const response = await fetch(`${base}/submit-batch-votes`, {
         method: "POST",
@@ -150,16 +158,13 @@ export default function MeetingRecommendations({ hangoutId }: { hangoutId: strin
     }
   };
   
+  
 
   return (
     <div className="flex flex-col pt-10 bg-lightBlue min-h-screen text-black w-full px-10">
       <div className="flex justify-center mb-6 pb-8">
         <div className="flex items-center gap-4">
           <h1 className="font-semibold text-5xl">Meeting Recommendations</h1>
-          <button className="bg-yellow-500 text-black font-medium border-black shadow-md px-4 py-2 rounded-full flex items-center gap-x-2">
-            <span>Sort by</span>
-            <ChevronDown className="w-4 h-4" />
-          </button>
         </div>
       </div>
 
