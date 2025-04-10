@@ -120,35 +120,36 @@ export default function MeetingRecommendations({ hangoutId }: { hangoutId: strin
   const handleSubmitVotes = async () => {
     const base = getApiBase();
     const voteEntries = Object.entries(selectedRanks);
-
+  
     if (voteEntries.length === 0) {
       toast.error("No votes to submit");
       return;
     }
-
+  
     try {
-      for (const [recId, rank] of voteEntries) {
-        const res = await fetch(`${base}/submit-ranked-vote`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            user_id: user.auth_id,
-            recommendation_id: Number(recId),
-            rank: rank,
-          }),
-        });
-
-        const data = await res.json();
-        if (data.status !== 200) {
-          toast.error(`Failed to submit vote for ID ${recId}`);
-        }
+      const response = await fetch(`${base}/submit-batch-votes`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          user_id: user.auth_id,
+          votes: voteEntries.map(([recommendation_id, rank]) => ({
+            recommendation_id: Number(recommendation_id),
+            rank,
+          })),
+        }),
+      });
+  
+      const data = await response.json();
+      if (data.status === 200) {
+        toast.success("All votes submitted!");
+      } else {
+        toast.error(data.message || "Something went wrong submitting votes.");
       }
-
-      toast.success("All votes submitted!");
     } catch (err) {
-      toast.error("Error submitting votes");
+      toast.error("Network error submitting votes");
     }
   };
+  
 
   return (
     <div className="flex flex-col pt-10 bg-lightBlue min-h-screen text-black w-full px-10">
