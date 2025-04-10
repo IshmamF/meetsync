@@ -49,10 +49,11 @@ interface FetchParticipantsResponse {
 }
 
 export default function MeetingRecommendations({ hangoutId }: { hangoutId: string }) {
+  const user = useUser()!;
   const [recommendations, setRecommendations] = useState<Recommendation[]>([]);
   const [participants, setParticipants] = useState<Participant[]>([]);
   const [loading, setLoading] = useState(false);
-  const user = useUser();
+  const [selectedRanks, setSelectedRanks] = useState<{ [id: number]: number }>({});
 
   async function fetchRecommendations() {
     setLoading(true);
@@ -86,10 +87,8 @@ export default function MeetingRecommendations({ hangoutId }: { hangoutId: strin
   }
 
   useEffect(() => {
-    if (user?.auth_id) {
-      fetchRecommendations();
-    }
-  }, [user]);
+    fetchRecommendations();
+  }, []);
 
   const evenRows: Recommendation[][] = [];
   for (let i = 0; i < recommendations.length - 1; i += 2) {
@@ -114,6 +113,43 @@ export default function MeetingRecommendations({ hangoutId }: { hangoutId: strin
 
   const rankingOptions = Array.from({ length: recommendations.length }, (_, i) => i + 1);
 
+  const handleRankChange = (recId: number, rank: number) => {
+    setSelectedRanks((prev) => ({ ...prev, [recId]: rank }));
+  };
+
+  const handleSubmitVotes = async () => {
+    const base = getApiBase();
+    const voteEntries = Object.entries(selectedRanks);
+
+    if (voteEntries.length === 0) {
+      toast.error("No votes to submit");
+      return;
+    }
+
+    try {
+      for (const [recId, rank] of voteEntries) {
+        const res = await fetch(`${base}/submit-ranked-vote`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            user_id: user.auth_id,
+            recommendation_id: Number(recId),
+            rank: rank,
+          }),
+        });
+
+        const data = await res.json();
+        if (data.status !== 200) {
+          toast.error(`Failed to submit vote for ID ${recId}`);
+        }
+      }
+
+      toast.success("All votes submitted!");
+    } catch (err) {
+      toast.error("Error submitting votes");
+    }
+  };
+
   return (
     <div className="flex flex-col pt-10 bg-lightBlue min-h-screen text-black w-full px-10">
       <div className="flex justify-center mb-6 pb-8">
@@ -137,11 +173,15 @@ export default function MeetingRecommendations({ hangoutId }: { hangoutId: strin
               {row.map((card, idx) => (
                 <RecommendationCard
                   key={`${rowIndex}-${idx}`}
+                  id={card.id}
                   name={card.name}
-                  type="Cafe" // TODO type not dynamic
-                  rating={4.5} // TODO rating not dynamic
+                  type="Cafe"
+                  rating={4.5}
                   users={userData}
                   rankingOptions={rankingOptions}
+                  userId={user.auth_id}
+                  selectedRank={selectedRanks[card.id] ?? null}
+                  onRankChange={(rank) => handleRankChange(card.id, rank)}
                 />
               ))}
             </div>
@@ -150,17 +190,24 @@ export default function MeetingRecommendations({ hangoutId }: { hangoutId: strin
           {hasOddCard && lastCard && (
             <div className="flex justify-center mb-6">
               <RecommendationCard
+                id={lastCard.id}
                 name={lastCard.name}
-                type="Cafe" // TODO type not dynamic
-                rating={4.5} // TODO rating not dynamic
+                type="Cafe"
+                rating={4.5}
                 users={userData}
                 rankingOptions={rankingOptions}
+                userId={user.auth_id}
+                selectedRank={selectedRanks[lastCard.id] ?? null}
+                onRankChange={(rank) => handleRankChange(lastCard.id, rank)}
               />
             </div>
           )}
 
           <div className="flex justify-center mt-6">
-            <button className="bg-yellow-500 hover:bg-yellow-500 text-black font-semibold py-2 px-6 rounded-md shadow">
+            <button
+              onClick={handleSubmitVotes}
+              className="bg-yellow-500 hover:bg-yellow-500 text-black font-semibold py-2 px-6 rounded-md shadow"
+            >
               Submit
             </button>
           </div>
