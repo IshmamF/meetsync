@@ -61,7 +61,6 @@ export default function TimeAddressForm() {
                     name="address"
                     type="text"
                     placeholder="Enter your address"
-                    autoComplete="address-line1"
                     value={address}
                     onChange={(e) => setAddress(e.target.value)}
                     required
