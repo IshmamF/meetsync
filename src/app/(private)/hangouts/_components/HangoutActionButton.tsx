@@ -13,7 +13,11 @@ export default function HangoutActionButton({
 }: HangoutActionButtonProps) {
   return (
     <div>
-      {flowStatus === "pending-time-vote" ? (
+      {flowStatus === "pending-time-input" ? (
+        <div className="border-darkBlue border rounded-md px-3 py-1 cursor-pointer hover:bg-gold transition-all duration-300 ease-in-out">
+          <Link href={`/availability/${id}`}>Submit Availability</Link>
+        </div>
+      ) : flowStatus === "pending-time-vote" ? (
         <div className="border-darkBlue border rounded-md px-3 py-1 cursor-pointer hover:bg-gold transition-all duration-300 ease-in-out">
           <Link href={`/availability/${id}`}>Vote on Availability</Link>
         </div>
