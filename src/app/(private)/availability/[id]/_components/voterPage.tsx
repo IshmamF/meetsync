@@ -19,7 +19,7 @@ type MeetupOption = {
 
 export default function VoterPage({ options, title, hangout_id }: Props) {
   const [selectedOptions, setSelectedOptions] = useState<MeetupOption[]>([]);
-  const [hitSubmit, setHitsubmit] = useState<boolean>(false);
+  const [hitSubmit, setHitSubmit] = useState<boolean>(false);
   const router = useRouter();
   const user = useUser();
 
@@ -42,7 +42,7 @@ export default function VoterPage({ options, title, hangout_id }: Props) {
       toast.error("Can only submit this once, please be patient");
       return;
     }
-    setHitsubmit(true);
+    setHitSubmit(true);
 
     let option_ids = [];
     for (let option of selectedOptions) {
@@ -63,16 +63,16 @@ export default function VoterPage({ options, title, hangout_id }: Props) {
         setTimeout(() => {
           router.push("/hangouts");
         }, 2000);
-        setHitsubmit(false);
+        setHitSubmit(false);
       } else {
         toast.error(
           response.message || "Something went wrong. Please try again."
         );
-        setHitsubmit(false);
+        setHitSubmit(false);
       }
     } catch (error) {
       toast.error("An error occurred. Please try again later.");
-      setHitsubmit(false);
+      setHitSubmit(false);
       console.error("Error submitting votes:", error);
     }
   }

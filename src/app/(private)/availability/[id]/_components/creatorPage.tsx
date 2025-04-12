@@ -12,7 +12,7 @@ type Props = {
 
 export default function CreatorPage({ title, hangout_id }: Props) {
   const [options, setOptions] = useState<string[]>([]);
-  const [hitSubmit, setHitsubmit] = useState<boolean>(false);
+  const [hitSubmit, setHitSubmit] = useState<boolean>(false);
   const router = useRouter();
 
   async function handleSubmit() {
@@ -24,7 +24,7 @@ export default function CreatorPage({ title, hangout_id }: Props) {
       toast.error("Can only submit this once, please be patient");
       return;
     }
-    setHitsubmit(true);
+    setHitSubmit(true);
     try {
       const loadingToast = toast.loading("Submitting availability...");
 
@@ -40,16 +40,16 @@ export default function CreatorPage({ title, hangout_id }: Props) {
         setTimeout(() => {
           router.push("/hangouts");
         }, 2000);
-        setHitsubmit(false);
+        setHitSubmit(false);
       } else {
         toast.error(
           response.message || "Something went wrong. Please try again."
         );
-        setHitsubmit(false);
+        setHitSubmit(false);
       }
     } catch (error) {
       toast.error("An error occurred. Please try again later.");
-      setHitsubmit(false);
+      setHitSubmit(false);
       console.error("Error submitting availability:", error);
     }
   }
