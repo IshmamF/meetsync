@@ -49,10 +49,11 @@ interface FetchParticipantsResponse {
 }
 
 export default function MeetingRecommendations({ hangoutId }: { hangoutId: string }) {
+  const user = useUser()!;
   const [recommendations, setRecommendations] = useState<Recommendation[]>([]);
   const [participants, setParticipants] = useState<Participant[]>([]);
   const [loading, setLoading] = useState(false);
-  const user = useUser();
+  const [selectedRanks, setSelectedRanks] = useState<{ [id: number]: number }>({});
 
   async function fetchRecommendations() {
     setLoading(true);
@@ -86,10 +87,8 @@ export default function MeetingRecommendations({ hangoutId }: { hangoutId: strin
   }
 
   useEffect(() => {
-    if (user?.auth_id) {
-      fetchRecommendations();
-    }
-  }, [user]);
+    fetchRecommendations();
+  }, []);
 
   const evenRows: Recommendation[][] = [];
   for (let i = 0; i < recommendations.length - 1; i += 2) {
@@ -114,15 +113,58 @@ export default function MeetingRecommendations({ hangoutId }: { hangoutId: strin
 
   const rankingOptions = Array.from({ length: recommendations.length }, (_, i) => i + 1);
 
+  const handleRankChange = (recId: number, rank: number) => {
+    setSelectedRanks((prev) => ({ ...prev, [recId]: rank }));
+  };
+
+  const handleSubmitVotes = async () => {
+    const base = getApiBase();
+    const voteEntries = Object.entries(selectedRanks);
+  
+    if (voteEntries.length === 0) {
+      toast.error("No votes to submit");
+      return;
+    }
+  
+    const ranks = voteEntries.map(([, rank]) => rank);
+    const uniqueRanks = new Set(ranks);
+  
+    if (uniqueRanks.size !== ranks.length) {
+      toast.error("Each recommendation must have a unique rank.");
+      return;
+    }
+  
+    try {
+      const response = await fetch(`${base}/submit-batch-votes`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          user_id: user.auth_id,
+          votes: voteEntries.map(([recommendation_id, rank]) => ({
+            recommendation_id: Number(recommendation_id),
+            rank,
+          })),
+        }),
+      });
+  
+      const data = await response.json();
+      if (data.status === 200) {
+        toast.success("All votes submitted!");
+      } else {
+        toast.error(data.message || "Something went wrong submitting votes.");
+      }
+    } catch (err) {
+      toast.error("Network error submitting votes");
+    }
+  };
+  
+  
+
   return (
     <div className="flex flex-col pt-10 bg-lightBlue min-h-screen text-black w-full px-10">
       <div className="flex justify-center mb-6 pb-8">
         <div className="flex items-center gap-4">
           <h1 className="font-semibold text-5xl">Meeting Recommendations</h1>
-          <button className="bg-yellow-500 text-black font-medium border-black shadow-md px-4 py-2 rounded-full flex items-center gap-x-2">
-            <span>Sort by</span>
-            <ChevronDown className="w-4 h-4" />
-          </button>
         </div>
       </div>
 
@@ -137,11 +179,15 @@ export default function MeetingRecommendations({ hangoutId }: { hangoutId: strin
               {row.map((card, idx) => (
                 <RecommendationCard
                   key={`${rowIndex}-${idx}`}
+                  id={card.id}
                   name={card.name}
-                  type="Cafe" // TODO type not dynamic
-                  rating={4.5} // TODO rating not dynamic
+                  type="Cafe"
+                  rating={4.5}
                   users={userData}
                   rankingOptions={rankingOptions}
+                  userId={user.auth_id}
+                  selectedRank={selectedRanks[card.id] ?? null}
+                  onRankChange={(rank) => handleRankChange(card.id, rank)}
                 />
               ))}
             </div>
@@ -150,17 +196,24 @@ export default function MeetingRecommendations({ hangoutId }: { hangoutId: strin
           {hasOddCard && lastCard && (
             <div className="flex justify-center mb-6">
               <RecommendationCard
+                id={lastCard.id}
                 name={lastCard.name}
-                type="Cafe" // TODO type not dynamic
-                rating={4.5} // TODO rating not dynamic
+                type="Cafe"
+                rating={4.5}
                 users={userData}
                 rankingOptions={rankingOptions}
+                userId={user.auth_id}
+                selectedRank={selectedRanks[lastCard.id] ?? null}
+                onRankChange={(rank) => handleRankChange(lastCard.id, rank)}
               />
             </div>
           )}
 
           <div className="flex justify-center mt-6">
-            <button className="bg-yellow-500 hover:bg-yellow-500 text-black font-semibold py-2 px-6 rounded-md shadow">
+            <button
+              onClick={handleSubmitVotes}
+              className="bg-yellow-500 hover:bg-yellow-500 text-black font-semibold py-2 px-6 rounded-md shadow"
+            >
               Submit
             </button>
           </div>
