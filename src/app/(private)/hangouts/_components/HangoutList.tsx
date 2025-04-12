@@ -1,20 +1,25 @@
 "use client";
 import React from "react";
+import HangoutActionButton from "./HangoutActionButton";
 
 interface HangoutListProps {
   name: string;
+  id: string;
   title: string;
   scheduled_time: string;
   location: string;
   attendees: number;
+  flowStatus: string;
 }
 
 export default function HangoutList({
   name,
+  id,
   title,
   scheduled_time,
   location,
   attendees,
+  flowStatus,
 }: HangoutListProps) {
   return (
     <div className="flex flex-col border border-black rounded-lg p-4 shadow-md w-full max-w-full">
@@ -42,8 +47,8 @@ export default function HangoutList({
             {attendees} attendee{attendees !== 1 ? "s" : ""}
           </span>
         </div>
-        <div className="border-darkBlue border rounded-md px-3 py-1 cursor-pointer hover:bg-gold transition-all duration-300 ease-in-out">
-          Vote Availability
+        <div>
+          <HangoutActionButton id={id} flowStatus={flowStatus} />
         </div>
       </div>
     </div>

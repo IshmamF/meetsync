@@ -13,6 +13,10 @@ interface Hangout {
   scheduled_time: string;
   location: string;
   attendees: number;
+  participant_flow_status: string;
+  participant_start_address: string;
+  participant_transport: string;
+  participant_travel_time: number;
 }
 
 type FetchHangoutsResponse = {
@@ -88,13 +92,13 @@ export default function Hangouts() {
 
   useEffect(() => {
     if (user?.auth_id) {
-      fetchHangouts(); 
+      fetchHangouts();
     }
   }, [user]);
 
   useEffect(() => {
     if (query.trim() === "") {
-      setSuggestion(null); 
+      setSuggestion(null);
     }
   }, [query]);
 
@@ -103,7 +107,7 @@ export default function Hangouts() {
   return (
     <div className="flex flex-col pt-10 bg-lightBlue min-h-screen text-black w-full px-10">
       <div className="font-semibold text-5xl mb-6 pb-8">Hangouts</div>
-  
+
       <div className="flex items-center justify-between w-full pb-8">
         <div className="w-2/3">
           <SearchBar
@@ -112,13 +116,13 @@ export default function Hangouts() {
             placeholder="Search events..."
           />
         </div>
-  
+
         <button className="bg-yellow-500 text-black font-medium border-black shadow-md px-6 py-1 rounded-md flex items-center gap-x-2">
           <span>All Events</span>
           <ChevronDown className="w-4 h-4" />
         </button>
       </div>
-  
+
       {loading ? (
         <div className="text-gray-500 text-lg">Loading hangouts...</div>
       ) : hangoutsToDisplay.length > 0 ? (
@@ -126,11 +130,13 @@ export default function Hangouts() {
           {hangoutsToDisplay.map((hangout) => (
             <HangoutList
               key={hangout.id}
+              id={hangout.id}
               name={hangout.title}
               title={hangout.title}
               scheduled_time={formatScheduledTime(hangout.scheduled_time)}
               location={formatLocation(hangout.location)}
               attendees={hangout.attendees}
+              flowStatus={hangout.participant_flow_status}
             />
           ))}
         </div>
@@ -138,5 +144,5 @@ export default function Hangouts() {
         <div className="text-gray-500 text-lg">No hangouts found.</div>
       )}
     </div>
-  );  
+  );
 }
