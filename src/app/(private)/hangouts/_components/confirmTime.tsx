@@ -1,12 +1,31 @@
-'use client'
+'use client';
 import { useState } from "react";
 import TimeAddressForm from "./timeAddressForm";
+import { useUser } from "@/utils/context/userContext";
+import {SaveParticipantMeetupTimeDecline} from '../actions';
+import toast from "react-hot-toast";
 
-export default function ConfirmTimePopUp() {
+interface Props {
+    time: string
+    hangout_id: number
+}
+
+export default function ConfirmTimePopUp({time, hangout_id}: Props) {
   const [isOpen, setIsOpen] = useState(false);
+  const user = useUser(); 
 
   const openPopup = () => setIsOpen(true);
   const closePopup = () => setIsOpen(false);
+
+  async function handleDecline() {
+    const response = await SaveParticipantMeetupTimeDecline(hangout_id, user?.auth_id!);
+    if (response.status != 200) {
+      console.error(response.message);
+      toast.error(response.message);
+    } else {
+      toast.success("Declined hangout");
+    }
+  }
 
   return (
     <>
@@ -17,7 +36,7 @@ export default function ConfirmTimePopUp() {
         >
           Confirm
         </button>
-        <button className="bg-red-500 hover:bg-red-600 text-black font-medium px-4 py-2 rounded-lg shadow-md transition-colors duration-200">
+        <button onSubmit={handleDecline} className="bg-red-500 hover:bg-red-600 text-black font-medium px-4 py-2 rounded-lg shadow-md transition-colors duration-200">
           Decline
         </button>
       </div>
@@ -32,11 +51,17 @@ export default function ConfirmTimePopUp() {
               ✕
             </button>
             <div className="mb-4">
-              <h2 className="font-extrabold text-3xl text-darkBlue pb-4">
+              <h2 className="font-extrabold text-3xl text-darkBlue pb-1">
                 Confirm Time and Place
               </h2>
             </div>
-            <TimeAddressForm />
+            <div className="flex items-center gap-2">
+                <div className="text-2xl font-bold mb-2">Meetup Time: </div>
+                <div className="items-center text-xl text-black">{time}</div>
+            </div>
+            <TimeAddressForm 
+                hangout_id={hangout_id}            
+            />
           </div>
         </div>
       )}

@@ -1,12 +1,19 @@
-'use client'
+'use client';
 
-import { useState, useEffect, useRef } from "react"
-import { useUser } from "@/utils/context/userContext"
+import { useState, useEffect } from "react";
+import { useUser } from "@/utils/context/userContext";
 import { AddressAutofill } from "@mapbox/search-js-react";
 import { AddressAutofillRetrieveResponse } from "@mapbox/search-js-core/dist/autofill/AddressAutofillCore";
+import { MeetupTimeStatus } from "@/types/hangout";
+import {SaveParticipantMeetupTimeConfirmation} from '../actions';
+import { toast } from "react-hot-toast";
 
 
-export default function TimeAddressForm() {
+interface Props {
+    hangout_id: number
+}
+
+export default function TimeAddressForm({hangout_id}: Props) {
     const user = useUser(); 
     const [address, setAddress] = useState<string>("");
     const [transport, setTransport] = useState<string>("");
@@ -37,6 +44,22 @@ export default function TimeAddressForm() {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
+        const data: MeetupTimeStatus = {
+            "hangout_id": hangout_id,
+            "address": address,
+            "transport": transport,
+            "travel_time": travelTime,
+            "user_id": user?.auth_id!
+        };
+        
+        const response = await SaveParticipantMeetupTimeConfirmation(data);
+
+        if (response.status != 200) {
+            console.error(response.message);
+            toast.error(response.message);
+        } else {
+            toast.success("Declined hangout");
+        }
     }
   
 
@@ -45,7 +68,7 @@ export default function TimeAddressForm() {
             className="flex flex-col bg-lightBlue"
             onSubmit={handleSubmit}
             autoComplete="off"
-        >
+        >   
             <label className="text-2xl font-bold mb-2" htmlFor="address">
                 Address
             </label>

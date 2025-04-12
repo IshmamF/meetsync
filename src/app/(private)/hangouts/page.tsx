@@ -4,7 +4,10 @@ import ConfirmTimePopUp from './_components/confirmTime';
 export default function Page() {
     return (
         <div>
-            <ConfirmTimePopUp></ConfirmTimePopUp>
+            <ConfirmTimePopUp
+                time={"05/20/2025 12:00:00"}
+                hangout_id={11}
+            />
             <Hangouts />
         </div>
     );
