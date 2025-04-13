@@ -30,9 +30,6 @@ export default function HangoutList({
   const [isConfirmationModal, setIsConfirmationModal] =
     useState<boolean>(false);
 
-  if (id == "47") {
-    console.log(flowStatus);
-  }
   return (
     <>
       <ConfirmLocationModal
