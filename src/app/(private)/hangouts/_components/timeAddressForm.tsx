@@ -10,7 +10,7 @@ import { toast } from "react-hot-toast";
 
 
 interface Props {
-    hangout_id: number
+    hangout_id: string
 }
 
 export default function TimeAddressForm({hangout_id}: Props) {
@@ -42,11 +42,11 @@ export default function TimeAddressForm({hangout_id}: Props) {
         e.preventDefault();
 
         const data: MeetupTimeStatus = {
-            "hangout_id": hangout_id,
-            "address": address,
-            "transport": transport,
+            "hangout_id": String(hangout_id),
+            "address": String(address),
+            "transport": String(transport),
             "travel_time": travelTime,
-            "user_id": user?.auth_id!
+            "user_id": String(user?.auth_id!)
         };
         
         const response = await SaveParticipantMeetupTimeConfirmation(data);

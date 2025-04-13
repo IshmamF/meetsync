@@ -20,14 +20,14 @@ export async function SaveParticipantMeetupTimeConfirmation(data: MeetupTimeStat
     return json;
 }
 
-export async function SaveParticipantMeetupTimeDecline(hangout_id: number, user_id: string) {
+export async function SaveParticipantMeetupTimeDecline(hangout_id: string, user_id: string) {
     const base = getApiBase();
     const response = await fetch(`${base}/meetup-time-decline`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({"hangout_id": hangout_id, "user_id": user_id})
+        body: JSON.stringify({"hangout_id": String(hangout_id), "user_id": user_id})
     });
 
     if (!response.ok) {

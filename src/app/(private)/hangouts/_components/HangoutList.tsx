@@ -48,7 +48,7 @@ export default function HangoutList({
           </span>
         </div>
         <div>
-          <HangoutActionButton id={id} flowStatus={flowStatus} />
+          <HangoutActionButton id={id} flowStatus={flowStatus} scheduled_time={scheduled_time}/>
         </div>
       </div>
     </div>

@@ -4,7 +4,7 @@ export interface HangoutAvailabilityInfo {
 } 
 
 export type MeetupTimeStatus = {
-    "hangout_id": number,
+    "hangout_id": string,
     "address": string,
     "transport": string,
     "travel_time": number,

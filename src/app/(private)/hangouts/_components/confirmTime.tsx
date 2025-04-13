@@ -7,7 +7,7 @@ import toast from "react-hot-toast";
 
 interface Props {
     time: string
-    hangout_id: number
+    hangout_id: string
 }
 
 export default function ConfirmTimePopUp({time, hangout_id}: Props) {
@@ -29,14 +29,14 @@ export default function ConfirmTimePopUp({time, hangout_id}: Props) {
 
   return (
     <>
-      <div className="flex gap-3 ">
+      <div className="flex gap-3 pt-4">
         <button
           onClick={openPopup}
           className="bg-green-500 hover:bg-green-600 text-black font-medium px-4 py-2 rounded-lg shadow-md transition-colors duration-200"
         >
           Confirm
         </button>
-        <button onSubmit={handleDecline} className="bg-red-500 hover:bg-red-600 text-black font-medium px-4 py-2 rounded-lg shadow-md transition-colors duration-200">
+        <button onClick={handleDecline} className="bg-red-500 hover:bg-red-600 text-black font-medium px-4 py-2 rounded-lg shadow-md transition-colors duration-200">
           Decline
         </button>
       </div>
