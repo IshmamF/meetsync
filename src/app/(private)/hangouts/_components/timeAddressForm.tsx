@@ -30,13 +30,10 @@ export default function TimeAddressForm({hangout_id}: Props) {
     const [travelTime, setTravelTime] = useState<number>(0);
 
     const handleAddress = (res: AddressAutofillRetrieveResponse) => {
-        console.log(res);
         const newAddress = res.features[0].properties.place_name || "Unknown address";
-        console.log(newAddress);
         // we have to wait just a small amount for maxbox to input the half address
         // so then we can replace it with the full. I couldn't find another way around that
         setTimeout(() => {
-            console.log(newAddress);
             setAddress(newAddress);
         }, 1);
     };

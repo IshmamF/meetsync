@@ -35,7 +35,6 @@ export async function checkUsernameExists(username: String) {
     console.error("Error checking username:", error);
     return {status: 500, error: error.message};
   }
-  console.log(data)
   if (data && data.length > 0) {
     return {status: 409};
   } else {
