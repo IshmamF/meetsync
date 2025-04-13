@@ -1,25 +1,57 @@
 import React from "react";
 import { Participant } from "./Hangouts";
 import { XIcon } from "@/app/components/Icons";
+import { getApiBase } from "@/utils/etc/apiBase";
+import toast from "react-hot-toast";
+import { useUser } from "@/utils/context/userContext";
 
 type FinalConfirmationModallProps = {
+  hangoutId: number;
   isOpen: boolean;
   onClose: () => void;
   title: string;
   location: string;
   time: string;
   participants: Participant[];
+  onUpdate(): void;
 };
 
 const FinalConfirmationModal = ({
+  hangoutId,
   isOpen,
   onClose,
   title,
   location,
   time,
   participants,
+  onUpdate,
 }: FinalConfirmationModallProps) => {
   if (!isOpen) return null;
+  const user = useUser();
+
+  const updateFlowStatus = async (status: string) => {
+    const base = getApiBase();
+    const response = await fetch(`${base}/update_flow_status`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        hangout_id: hangoutId,
+        user_id: user?.auth_id,
+        new_status: status,
+      }),
+    });
+
+    if (!response.ok) {
+      console.error("Failed to update flow status:", response.statusText);
+      toast.error("Error while submitting response.");
+    } else {
+      toast.success("Sucessfully confirmed your attendence.");
+    }
+    onUpdate();
+    onClose();
+  };
 
   return (
     <>
@@ -54,13 +86,17 @@ const FinalConfirmationModal = ({
             </div>
             <div className="w-full flex items-center justify-center gap-5 mt-6">
               <button
-                // onClick={openPopup}
+                onClick={() => {
+                  updateFlowStatus("accepted");
+                }}
                 className="w-[160px] bg-green-500 hover:bg-green-600 text-black font-medium px-4 py-2 rounded-lg shadow-md transition-colors duration-200"
               >
                 Confirm
               </button>
               <button
-                // onSubmit={handleDecline}
+                onClick={() => {
+                  updateFlowStatus("declined");
+                }}
                 className="w-[160px] bg-red-500 hover:bg-red-600 text-black font-medium px-4 py-2 rounded-lg shadow-md transition-colors duration-200"
               >
                 Decline

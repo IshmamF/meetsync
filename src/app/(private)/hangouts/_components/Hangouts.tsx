@@ -153,6 +153,7 @@ export default function Hangouts() {
                 attendees={hangout.attendees}
                 flowStatus={hangout.participant_flow_status}
                 participants={hangout.participants}
+                onUpdate={fetchHangouts}
               />
             ))}
           </div>
