@@ -98,6 +98,7 @@ export default function Hangouts() {
   }, [user]);
 
   useEffect(() => {
+    if (!user?.auth_id) return;
     const channel = supabase
       .channel('real time')
       .on(
@@ -106,10 +107,10 @@ export default function Hangouts() {
           event: '*',
           schema: 'public',
           table: 'hangout_participants',
+          filter: `user_id=eq.${user.auth_id}`
         },
         (payload) => {
           fetchHangouts();
-          console.log('Change received!', payload);
         }
       )
       .subscribe();
@@ -117,7 +118,7 @@ export default function Hangouts() {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [supabase]);
+  }, [supabase, user?.auth_id]);
   
 
   useEffect(() => {
