@@ -6,6 +6,7 @@ import HangoutList from "./HangoutList";
 import { useUser } from "@/utils/context/userContext";
 import SearchBar from "./Searchbar";
 import { ChevronDown } from "lucide-react";
+import { supabase } from "@/utils/supabase/client";
 
 interface Hangout {
   id: string;
@@ -95,6 +96,30 @@ export default function Hangouts() {
       fetchHangouts();
     }
   }, [user]);
+
+  useEffect(() => {
+    if (!user?.auth_id) return;
+    const channel = supabase
+      .channel('real time')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'hangout_participants',
+          filter: `user_id=eq.${user.auth_id}`
+        },
+        (payload) => {
+          fetchHangouts();
+        }
+      )
+      .subscribe();
+  
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [supabase, user?.auth_id]);
+  
 
   useEffect(() => {
     if (query.trim() === "") {
