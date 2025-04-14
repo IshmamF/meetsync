@@ -55,7 +55,7 @@ export default function TimeAddressForm({hangout_id}: Props) {
             console.error(response.message);
             toast.error(response.message);
         } else {
-            toast.success("Declined hangout");
+            toast.success("Confirmed hangout");
         }
     }
   
