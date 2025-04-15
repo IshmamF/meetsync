@@ -98,6 +98,8 @@ export default function Hangouts() {
     setLoading(false);
   }
 
+  console.log(hangouts);
+
   function handleSearchChange(e: ChangeEvent<HTMLInputElement>) {
     const value = e.target.value.trim();
     setQuery(value);
