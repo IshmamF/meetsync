@@ -8,6 +8,19 @@ import SearchBar from "./Searchbar";
 import { ChevronDown } from "lucide-react";
 import { supabase } from "@/utils/supabase/client";
 
+export type Participant = {
+  created_at: string;
+  flowStatus: string;
+  hangout_id: number;
+  id: number;
+  start_address: string;
+  status: string;
+  transport: string;
+  travel_time: number;
+  user: { username: string };
+  user_id: string;
+};
+
 interface Hangout {
   id: string;
   title: string;
@@ -18,6 +31,7 @@ interface Hangout {
   participant_start_address: string;
   participant_transport: string;
   participant_travel_time: number;
+  participants: Participant[];
 }
 
 type FetchHangoutsResponse = {
@@ -85,6 +99,8 @@ export default function Hangouts() {
     setLoading(false);
   }
 
+  console.log(hangouts);
+
   function handleSearchChange(e: ChangeEvent<HTMLInputElement>) {
     const value = e.target.value.trim();
     setQuery(value);
@@ -100,26 +116,25 @@ export default function Hangouts() {
   useEffect(() => {
     if (!user?.auth_id) return;
     const channel = supabase
-      .channel('real time')
+      .channel("real time")
       .on(
-        'postgres_changes',
+        "postgres_changes",
         {
-          event: '*',
-          schema: 'public',
-          table: 'hangout_participants',
-          filter: `user_id=eq.${user.auth_id}`
+          event: "*",
+          schema: "public",
+          table: "hangout_participants",
+          filter: `user_id=eq.${user.auth_id}`,
         },
         (payload) => {
           fetchHangouts();
         }
       )
       .subscribe();
-  
+
     return () => {
       supabase.removeChannel(channel);
     };
   }, [supabase, user?.auth_id]);
-  
 
   useEffect(() => {
     if (query.trim() === "") {
@@ -130,44 +145,47 @@ export default function Hangouts() {
   const hangoutsToDisplay = suggestion ?? hangouts;
 
   return (
-    <div className="flex flex-col pt-10 bg-lightBlue min-h-screen text-black w-full px-10">
-      <div className="font-semibold text-5xl mb-6 pb-8">Hangouts</div>
+    <>
+      <div className="flex flex-col pt-10 bg-lightBlue min-h-screen text-black w-full px-10">
+        <div className="font-semibold text-5xl mb-6 pb-8">Hangouts</div>
 
-      <div className="flex items-center justify-between w-full pb-8">
-        <div className="w-2/3">
-          <SearchBar
-            value={query}
-            onChange={handleSearchChange}
-            placeholder="Search events..."
-          />
-        </div>
-
-        <button className="bg-yellow-500 text-black font-medium border-black shadow-md px-6 py-1 rounded-md flex items-center gap-x-2">
-          <span>All Events</span>
-          <ChevronDown className="w-4 h-4" />
-        </button>
-      </div>
-
-      {loading ? (
-        <div className="text-gray-500 text-lg">Loading hangouts...</div>
-      ) : hangoutsToDisplay.length > 0 ? (
-        <div className="flex flex-col gap-4">
-          {hangoutsToDisplay.map((hangout) => (
-            <HangoutList
-              key={hangout.id}
-              id={hangout.id}
-              name={hangout.title}
-              title={hangout.title}
-              scheduled_time={formatScheduledTime(hangout.scheduled_time)}
-              location={formatLocation(hangout.location)}
-              attendees={hangout.attendees}
-              flowStatus={hangout.participant_flow_status}
+        <div className="flex items-center justify-between w-full pb-8">
+          <div className="w-2/3">
+            <SearchBar
+              value={query}
+              onChange={handleSearchChange}
+              placeholder="Search events..."
             />
-          ))}
+          </div>
+
+          <button className="bg-yellow-500 text-black font-medium border-black shadow-md px-6 py-1 rounded-md flex items-center gap-x-2">
+            <span>All Events</span>
+            <ChevronDown className="w-4 h-4" />
+          </button>
         </div>
-      ) : (
-        <div className="text-gray-500 text-lg">No hangouts found.</div>
-      )}
-    </div>
+
+        {loading ? (
+          <div className="text-gray-500 text-lg">Loading hangouts...</div>
+        ) : hangoutsToDisplay.length > 0 ? (
+          <div className="flex flex-col gap-4">
+            {hangoutsToDisplay.map((hangout) => (
+              <HangoutList
+                key={hangout.id}
+                id={hangout.id}
+                name={hangout.title}
+                title={hangout.title}
+                scheduled_time={formatScheduledTime(hangout.scheduled_time)}
+                location={formatLocation(hangout.location)}
+                attendees={hangout.attendees}
+                flowStatus={hangout.participant_flow_status}
+                participants={hangout.participants}
+              />
+            ))}
+          </div>
+        ) : (
+          <div className="text-gray-500 text-lg">No hangouts found.</div>
+        )}
+      </div>
+    </>
   );
 }
