@@ -13,7 +13,6 @@ type FinalConfirmationModallProps = {
   location: string;
   time: string;
   participants: Participant[];
-  onUpdate(): void;
 };
 
 const FinalConfirmationModal = ({
@@ -24,7 +23,6 @@ const FinalConfirmationModal = ({
   location,
   time,
   participants,
-  onUpdate,
 }: FinalConfirmationModallProps) => {
   if (!isOpen) return null;
   const user = useUser();
@@ -47,9 +45,12 @@ const FinalConfirmationModal = ({
       console.error("Failed to update flow status:", response.statusText);
       toast.error("Error while submitting response.");
     } else {
-      toast.success("Sucessfully confirmed your attendence.");
+      if (status === "declined") {
+        toast.success("Successfully declined final meetup confirmation.");
+      } else {
+        toast.success("Successfully accepted final meetup confirmation");
+      }
     }
-    onUpdate();
     onClose();
   };
 

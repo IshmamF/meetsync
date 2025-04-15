@@ -13,7 +13,6 @@ interface HangoutListProps {
   attendees: number;
   flowStatus: string;
   participants: Participant[];
-  onUpdate(): void;
 }
 
 export default function HangoutList({
@@ -25,7 +24,6 @@ export default function HangoutList({
   attendees,
   flowStatus,
   participants,
-  onUpdate,
 }: HangoutListProps) {
   const [isConfirmationModal, setIsConfirmationModal] =
     useState<boolean>(false);
@@ -40,7 +38,6 @@ export default function HangoutList({
         time={scheduled_time}
         location={location}
         participants={participants}
-        onUpdate={onUpdate}
       />
       <div className="flex flex-col border border-black rounded-lg p-4 shadow-md w-full max-w-full">
         <div className="flex flex-row items-center justify-between w-full">

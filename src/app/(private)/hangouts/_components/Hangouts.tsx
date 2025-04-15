@@ -116,26 +116,25 @@ export default function Hangouts() {
   useEffect(() => {
     if (!user?.auth_id) return;
     const channel = supabase
-      .channel('real time')
+      .channel("real time")
       .on(
-        'postgres_changes',
+        "postgres_changes",
         {
-          event: '*',
-          schema: 'public',
-          table: 'hangout_participants',
-          filter: `user_id=eq.${user.auth_id}`
+          event: "*",
+          schema: "public",
+          table: "hangout_participants",
+          filter: `user_id=eq.${user.auth_id}`,
         },
         (payload) => {
           fetchHangouts();
         }
       )
       .subscribe();
-  
+
     return () => {
       supabase.removeChannel(channel);
     };
   }, [supabase, user?.auth_id]);
-  
 
   useEffect(() => {
     if (query.trim() === "") {
@@ -180,7 +179,6 @@ export default function Hangouts() {
                 attendees={hangout.attendees}
                 flowStatus={hangout.participant_flow_status}
                 participants={hangout.participants}
-                onUpdate={fetchHangouts}
               />
             ))}
           </div>
