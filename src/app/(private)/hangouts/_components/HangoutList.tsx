@@ -74,6 +74,7 @@ export default function HangoutList({
               }}
               id={id}
               flowStatus={flowStatus}
+              scheduled_time={scheduled_time}
             />
           </div>
         </div>
