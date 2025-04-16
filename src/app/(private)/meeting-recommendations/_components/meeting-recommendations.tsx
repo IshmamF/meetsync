@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
+import { useRouter } from "next/navigation";
 import { useUser } from "@/utils/context/userContext";
 import { getApiBase } from "@/utils/etc/apiBase";
 import RecommendationCard from "./RecommendationCard";
@@ -49,6 +50,7 @@ interface FetchParticipantsResponse {
 }
 
 export default function MeetingRecommendations({ hangoutId }: { hangoutId: string }) {
+  const router = useRouter();
   const user = useUser()!;
   const [recommendations, setRecommendations] = useState<Recommendation[]>([]);
   const [participants, setParticipants] = useState<Participant[]>([]);
@@ -120,20 +122,20 @@ export default function MeetingRecommendations({ hangoutId }: { hangoutId: strin
   const handleSubmitVotes = async () => {
     const base = getApiBase();
     const voteEntries = Object.entries(selectedRanks);
-  
+
     if (voteEntries.length === 0) {
       toast.error("No votes to submit");
       return;
     }
-  
+
     const ranks = voteEntries.map(([, rank]) => rank);
     const uniqueRanks = new Set(ranks);
-  
+
     if (uniqueRanks.size !== ranks.length) {
       toast.error("Each recommendation must have a unique rank.");
       return;
     }
-  
+
     try {
       const response = await fetch(`${base}/submit-batch-votes`, {
         method: "POST",
@@ -146,10 +148,11 @@ export default function MeetingRecommendations({ hangoutId }: { hangoutId: strin
           })),
         }),
       });
-  
+
       const data = await response.json();
       if (data.status === 200) {
         toast.success("All votes submitted!");
+        setTimeout(() => router.push("/hangouts"), TOAST_DURATION);
       } else {
         toast.error(data.message || "Something went wrong submitting votes.");
       }
@@ -157,8 +160,6 @@ export default function MeetingRecommendations({ hangoutId }: { hangoutId: strin
       toast.error("Network error submitting votes");
     }
   };
-  
-  
 
   return (
     <div className="flex flex-col pt-10 bg-lightBlue min-h-screen text-black w-full px-10">
