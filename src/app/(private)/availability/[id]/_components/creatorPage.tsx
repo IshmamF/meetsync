@@ -4,6 +4,8 @@ import OptionCards from "./optionCards";
 import { submitAvailabilityOptions } from "../actions";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import InfoModal from "@/app/components/infoModal";
+import { informationStrings } from "@/utils/etc/informationStrings";
 
 type Props = {
   title: string;
@@ -67,6 +69,12 @@ export default function CreatorPage({ title, hangout_id }: Props) {
             {hitSubmit ? "Submitting..." : "Submit Availability"}
           </button>
         </div>
+      </div>
+      <div className="relative">
+        <InfoModal
+          information={informationStrings.availabilityInput}
+          size={36}
+        />
       </div>
       <OptionCards setOptions={setOptions} options={options} />
     </div>

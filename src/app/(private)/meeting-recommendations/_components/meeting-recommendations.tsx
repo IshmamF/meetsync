@@ -7,6 +7,8 @@ import { useUser } from "@/utils/context/userContext";
 import { getApiBase } from "@/utils/etc/apiBase";
 import RecommendationCard from "./RecommendationCard";
 import { ChevronDown } from "lucide-react";
+import InfoModal from "@/app/components/infoModal";
+import { informationStrings } from "@/utils/etc/informationStrings";
 
 const TOAST_DURATION = 2000;
 
@@ -163,7 +165,8 @@ export default function MeetingRecommendations({ hangoutId }: { hangoutId: strin
 
   return (
     <div className="flex flex-col pt-10 bg-lightBlue min-h-screen text-black w-full px-10">
-      <div className="flex justify-center mb-6 pb-8">
+      <div className="relative flex justify-center mb-6 pb-8">
+        <InfoModal information={informationStrings.meetingRecsVoting} size={36} />
         <div className="flex items-center gap-4">
           <h1 className="font-semibold text-5xl">Meeting Recommendations</h1>
         </div>
