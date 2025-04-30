@@ -17,7 +17,7 @@ export default function ProfileDropdown() {
     }
   }
   return (
-    <div className="absolute right-8 shadow-lg mt-2 border-2 border-jetBlack/40 rounded-xl text-left p-2 bg-white">
+    <div className="absolute right-8 shadow-lg mt-2 border-2 border-jetBlack/40 rounded-xl text-left p-2 bg-white z-20">
       <div className="border-b-2 border-jetBlack/40 p-2">
         <div className="text-xl font-bold">{user?.username}</div>
         <div className="text-jetBlack/80 text-lg">{user?.email}</div>

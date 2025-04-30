@@ -51,7 +51,6 @@ export default function RecommendationCard({
               <span className="text-sm font-medium text-black">{rating}</span>
             </div>
           </div>
-          <Info className="w-8 h-8 text-black fill-gray-400" />
         </div>
 
         <div className="mt-4 space-y-1">

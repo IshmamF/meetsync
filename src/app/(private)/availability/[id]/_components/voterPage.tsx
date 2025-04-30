@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import { useUser } from "@/utils/context/userContext";
 import { submitOptionVotes } from "../actions";
 import { CircleCheck } from "lucide-react";
+import InfoModal from "@/app/components/infoModal";
+import { informationStrings } from "@/utils/etc/informationStrings";
 
 interface Props {
   options: MeetupOption[];
@@ -108,7 +110,11 @@ export default function VoterPage({ options, title, hangout_id }: Props) {
           {hitSubmit ? "Submitting..." : "Submit Votes"}
         </button>
       </div>
-      <div className="border-gray-400 border p-4 shadow-md rounded-lg">
+      <div className="relative border-gray-400 border p-4 shadow-md rounded-lg">
+        <InfoModal
+          information={informationStrings.availabilityVoting}
+          size={36}
+        />
         <div className="font-semibold text-2xl pb-3">Select Meetup Options</div>
         <div>{CardOptions}</div>
       </div>

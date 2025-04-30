@@ -5,6 +5,8 @@ import React, { ChangeEvent, useState } from "react";
 import UserSearchBar from "./components/UserSearchBar";
 import HomeBottom from "./components/Home";
 import { getApiBase } from "@/utils/etc/apiBase";
+import InfoModal from "@/app/components/infoModal";
+import { informationStrings } from "@/utils/etc/informationStrings";
 
 export type Attendee = {
   uuid: string | null;
@@ -72,7 +74,8 @@ function Home() {
     <div className="grid h-screen grid-rows-[auto_auto_1fr] bg-lightBlue">
       <div className="bg-lightBlue w-full h-[auto] flex flex-col items-start justify-center p-20">
         <p className="text-3xl pb-2 text-darkBlue font-medium">Start Hangout</p>
-        <div className="flex flex-col items-start justify-center w-full h-full mt-3 border-[3px] border-darkBlue p-6 pb-6 rounded-lg">
+        <div className="relative flex flex-col items-start justify-center w-full h-full mt-3 border-[3px] border-darkBlue p-6 pb-6 rounded-lg">
+          <InfoModal information={informationStrings.startHangout} size={30} />
           <div className="w-[100%] flex flex-col pl-8 pr-8 pb-6">
             <p className="text-2xl text-darkBlue font-medium">Title</p>
             <input
