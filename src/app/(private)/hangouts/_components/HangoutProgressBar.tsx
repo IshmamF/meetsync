@@ -1,10 +1,10 @@
 import React from "react";
 
 interface HangoutProgressBarProps {
-  currentStageIndex: number; 
+  currentStageIndex: number;
   completed: number;
   total: number;
-  stages: number; 
+  stages: number;
 }
 
 const stageLabels = [
@@ -21,7 +21,10 @@ export default function HangoutProgressBar({
   total,
   stages,
 }: HangoutProgressBarProps) {
-  const label = stageLabels[currentStageIndex] || "Stage";
+  const label =
+    currentStageIndex >= 0 && currentStageIndex < stageLabels.length
+      ? stageLabels[currentStageIndex]
+      : "Progress";
 
   return (
     <div className="flex flex-col items-center mt-2 mb-1">

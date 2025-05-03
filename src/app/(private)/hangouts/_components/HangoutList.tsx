@@ -1,9 +1,11 @@
 "use client";
-import React, { useState } from "react";
+
+import React, { useState, useEffect } from "react";
 import HangoutActionButton from "./HangoutActionButton";
 import ConfirmLocationModal from "../_components/FinalConfirmationModal";
-import { Participant } from "./Hangouts";
 import HangoutProgressBar from "./HangoutProgressBar";
+import { Participant } from "./Hangouts";
+import { getApiBase } from "@/utils/etc/apiBase";
 
 interface HangoutListProps {
   name: string;
@@ -16,6 +18,17 @@ interface HangoutListProps {
   participants: Participant[];
 }
 
+const flowStatusIndexMap: Record<string, number> = {
+  "pending-time-input": 0,
+  "pending-time-vote": 1,
+  "pending-location-vote": 2,
+  "pending-confirm-location": 3,
+  "accepted-final-confirmation": 4,
+  "availability-not-started": 5
+};
+
+const knownStages = Object.keys(flowStatusIndexMap);
+
 export default function HangoutList({
   name,
   id,
@@ -26,8 +39,37 @@ export default function HangoutList({
   flowStatus,
   participants,
 }: HangoutListProps) {
-  const [isConfirmationModal, setIsConfirmationModal] =
-    useState<boolean>(false);
+  const [isConfirmationModal, setIsConfirmationModal] = useState(false);
+  const [progress, setProgress] = useState<{
+    currentStageIndex: number;
+    completed: number;
+    total: number;
+  } | null>(null);
+
+  useEffect(() => {
+    async function fetchHangoutProgress() {
+      try {
+        const res = await fetch(`${getApiBase()}/get_hangout_progress/${id}`);
+        const data = await res.json();
+  
+        if (
+          data.status === 200 &&
+          data.current_stage &&
+          knownStages.includes(data.current_stage)
+        ) {
+          setProgress({
+            currentStageIndex: flowStatusIndexMap[data.current_stage],
+            completed: data.stage_count,
+            total: data.total_count,
+          });
+        } 
+      } catch (err) {
+        console.error("Failed to fetch hangout progress:", err);
+      }
+    }
+  
+    fetchHangoutProgress();
+  }, [id]);
 
   return (
     <>
@@ -51,12 +93,14 @@ export default function HangoutList({
           </div>
         </div>
 
-        <HangoutProgressBar
-          currentStageIndex={2}
-          completed={2}
-          total={5}
-          stages={4}
-        />
+        {progress && (
+          <HangoutProgressBar
+            currentStageIndex={progress.currentStageIndex}
+            completed={progress.completed}
+            total={progress.total}
+            stages={4}
+          />
+        )}
 
         <div className="flex flex-row justify-between space-y-1">
           <div className="flex items-center space-x-2">
