@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import HangoutActionButton from "./HangoutActionButton";
 import ConfirmLocationModal from "../_components/FinalConfirmationModal";
 import { Participant } from "./Hangouts";
+import HangoutProgressBar from "./HangoutProgressBar";
 
 interface HangoutListProps {
   name: string;
@@ -49,6 +50,13 @@ export default function HangoutList({
             {scheduled_time}
           </div>
         </div>
+
+        <HangoutProgressBar
+          currentStageIndex={2}
+          completed={2}
+          total={5}
+          stages={4}
+        />
 
         <div className="flex flex-row justify-between space-y-1">
           <div className="flex items-center space-x-2">
