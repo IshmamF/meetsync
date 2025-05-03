@@ -8,15 +8,16 @@ import { getApiBase } from "@/utils/etc/apiBase";
 import { useUser } from "@/utils/context/userContext";
 import { toast } from "react-hot-toast";
 import Loading from "@/app/components/loading";
+import AddFriendModal from "../../hangouts/_components/AddFriendModal";
 
 type FetchFriendsResponse = {
   status: string;
   friends: Friend[];
 };
 
-type Friend = {
+export type Friend = {
   id: string;
-  friend_uuid: string;
+  friend_auth_id: string;
   friend_email: string;
   friend_username: string;
   status: string;
@@ -38,6 +39,7 @@ export default function Friends() {
   const [suggestion, setSuggestion] = useState<Friend[] | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const user = useUser();
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   async function fetchFriends() {
     setLoading(true);
@@ -145,37 +147,73 @@ export default function Friends() {
   }, [query]);
 
   return (
-    <div className="flex flex-col pt-10 bg-lightBlue min-h-screen text-black w-full px-10">
-      <div className="font-semibold text-5xl mb-6 pb-8">Friends</div>
-      {loading ? (
-        <Loading />
-      ) : (
-        <>
-          <div className="pb-8">
-            <SearchBar
-              value={query}
-              onChange={handleChange}
-              placeholder=" Search friends..."
-            />
-          </div>
-          {suggestion ? (
-            suggestion?.map((friend) => {
-              if (friend.status === "pending") {
-                return (
-                  <FriendRequest
-                    isSender={friend.sender === user?.auth_id}
-                    name={friend.friend_username}
-                    onAccept={() => {
-                      acceptFriendRequest(friend.id);
-                    }}
-                    onDeny={() => {
-                      declineFriendRequest(friend.id, false);
-                    }}
-                  />
-                );
-              } else
-                return (
+    <>
+      <AddFriendModal
+        friends={friends.map((friend) => friend.friend_auth_id)}
+        isOpen={isModalOpen}
+        onClose={() => {
+          setIsModalOpen(false);
+        }}
+      />
+
+      <div className="flex flex-col pt-10 bg-lightBlue min-h-screen text-black w-full px-10">
+        <div className="font-semibold text-5xl mb-6 pb-8">Friends</div>
+        {loading ? (
+          <Loading />
+        ) : (
+          <>
+            <div className="pb-8">
+              <SearchBar
+                value={query}
+                onChange={handleChange}
+                placeholder=" Search friends..."
+              />
+            </div>
+            {suggestion ? (
+              suggestion?.map((friend) => {
+                if (friend.status === "pending") {
+                  return (
+                    <FriendRequest
+                      isSender={friend.sender === user?.auth_id}
+                      name={friend.friend_username}
+                      onAccept={() => {
+                        acceptFriendRequest(friend.id);
+                      }}
+                      onDeny={() => {
+                        declineFriendRequest(friend.id, false);
+                      }}
+                    />
+                  );
+                } else
+                  return (
+                    <div key={`pending-${friend.id}`} className="pb-8">
+                      <FriendList
+                        name={friend.friend_username}
+                        onRemove={() => {
+                          declineFriendRequest(friend.id, true);
+                        }}
+                      />
+                    </div>
+                  );
+              })
+            ) : (
+              <div className="w-full space-y-4 max-w-full pb-8">
+                {pendingFriends.map((friend) => (
                   <div key={`pending-${friend.id}`} className="pb-8">
+                    <FriendRequest
+                      isSender={friend.sender === user?.auth_id}
+                      name={friend.friend_username}
+                      onAccept={() => {
+                        acceptFriendRequest(friend.id);
+                      }}
+                      onDeny={() => {
+                        declineFriendRequest(friend.id, false);
+                      }}
+                    />
+                  </div>
+                ))}
+                {friends.map((friend) => (
+                  <div key={`friend-${friend.id}`} className="pb-8">
                     <FriendList
                       name={friend.friend_username}
                       onRemove={() => {
@@ -183,42 +221,21 @@ export default function Friends() {
                       }}
                     />
                   </div>
-                );
-            })
-          ) : (
-            <div className="w-full space-y-4 max-w-full pb-8">
-              {pendingFriends.map((friend) => (
-                <div key={`pending-${friend.id}`} className="pb-8">
-                  <FriendRequest
-                    isSender={friend.sender === user?.auth_id}
-                    name={friend.friend_username}
-                    onAccept={() => {
-                      acceptFriendRequest(friend.id);
-                    }}
-                    onDeny={() => {
-                      declineFriendRequest(friend.id, false);
-                    }}
-                  />
-                </div>
-              ))}
-              {friends.map((friend) => (
-                <div key={`friend-${friend.id}`} className="pb-8">
-                  <FriendList
-                    name={friend.friend_username}
-                    onRemove={() => {
-                      declineFriendRequest(friend.id, true);
-                    }}
-                  />
-                </div>
-              ))}
-            </div>
-          )}
+                ))}
+              </div>
+            )}
 
-          <div className="flex w-full  justify-center">
-            <AddFriendButton />
-          </div>
-        </>
-      )}
-    </div>
+            <div
+              className="flex w-full  justify-center"
+              onClick={() => {
+                setIsModalOpen(true);
+              }}
+            >
+              <AddFriendButton />
+            </div>
+          </>
+        )}
+      </div>
+    </>
   );
 }
