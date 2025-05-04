@@ -14,7 +14,7 @@ const stageLabels = [
   "Confirm Details",         // 2
   "Vote on Location",        // 2
   "Confirm Location",        // 3
-  "Completed"                // 4
+  "Hangout Scheduled"                // 4
 ];
 
 export default function HangoutProgressBar({
