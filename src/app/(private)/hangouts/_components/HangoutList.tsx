@@ -21,10 +21,10 @@ interface HangoutListProps {
 const flowStatusIndexMap: Record<string, number> = {
   "pending-time-input": 0,
   "pending-time-vote": 1,
-  "pending-location-vote": 2,
-  "pending-confirm-location": 3,
-  "accepted-final-confirmation": 4,
-  "availability-not-started": 5
+  "pending-confirm-time": 2,
+  "pending-location-vote": 3,
+  "pending-confirm-location": 4,
+  "accepted-final-confirmation": 5,
 };
 
 const knownStages = Object.keys(flowStatusIndexMap);
@@ -51,23 +51,24 @@ export default function HangoutList({
       try {
         const res = await fetch(`${getApiBase()}/get_hangout_progress/${id}`);
         const data = await res.json();
-  
-        if (
-          data.status === 200 &&
-          data.current_stage &&
-          knownStages.includes(data.current_stage)
-        ) {
-          setProgress({
-            currentStageIndex: flowStatusIndexMap[data.current_stage],
-            completed: data.stage_count,
-            total: data.total_count,
-          });
-        } 
+
+        if (data.status === 200) {
+          const stageKey = data.current_stage;
+          if (knownStages.includes(stageKey)) {
+            setProgress(prev => ({
+              currentStageIndex: flowStatusIndexMap[stageKey],
+              completed: data.stage_count,
+              total: data.total_count,
+            }));
+          } else {
+            setProgress(prev => prev ?? null);
+          }
+        }
       } catch (err) {
         console.error("Failed to fetch hangout progress:", err);
       }
     }
-  
+
     fetchHangoutProgress();
   }, [id]);
 
@@ -98,7 +99,8 @@ export default function HangoutList({
             currentStageIndex={progress.currentStageIndex}
             completed={progress.completed}
             total={progress.total}
-            stages={4}
+            stages={5} 
+            flowStatus={flowStatus} 
           />
         )}
 
