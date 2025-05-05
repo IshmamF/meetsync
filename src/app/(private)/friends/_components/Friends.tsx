@@ -179,30 +179,40 @@ export default function Friends() {
           <Loading />
         ) : (
           <>
-            <div className="pb-8">
+            <div className="flex w-full items-center justify-between pb-8">
               <SearchBar
                 value={query}
                 onChange={handleChange}
                 placeholder=" Search friends..."
               />
+              <div
+                className="flex w-full justify-end"
+                onClick={() => {
+                  setIsModalOpen(true);
+                }}
+              >
+                <AddFriendButton />
+              </div>
             </div>
             {suggestion ? (
               suggestion?.map((friend) => {
                 if (friend.status === "pending") {
                   return (
-                    <FriendRequest
-                      isSender={friend.sender === user?.auth_id}
-                      name={friend.friend_username}
-                      onAccept={() => {
-                        acceptFriendRequest(friend.id);
-                      }}
-                      onDeny={() => {
-                        declineFriendRequest(friend.id, false);
-                      }}
-                      onCancel={() => {
-                        declineFriendRequest(friend.id, false, true);
-                      }}
-                    />
+                    <div key={`pending-${friend.id}`} className="pb-8">
+                      <FriendRequest
+                        isSender={friend.sender === user?.auth_id}
+                        name={friend.friend_username}
+                        onAccept={() => {
+                          acceptFriendRequest(friend.id);
+                        }}
+                        onDeny={() => {
+                          declineFriendRequest(friend.id, false);
+                        }}
+                        onCancel={() => {
+                          declineFriendRequest(friend.id, false, true);
+                        }}
+                      />
+                    </div>
                   );
                 } else
                   return (
@@ -218,14 +228,6 @@ export default function Friends() {
               })
             ) : (
               <div className="w-full space-y-4 max-w-full pb-8">
-                <div
-                  className="flex w-full justify-center pb-10"
-                  onClick={() => {
-                    setIsModalOpen(true);
-                  }}
-                >
-                  <AddFriendButton />
-                </div>
                 {pendingFriends.map((friend) => (
                   <div key={`pending-${friend.id}`} className="pb-8">
                     <FriendRequest
