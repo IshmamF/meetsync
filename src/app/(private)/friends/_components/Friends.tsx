@@ -38,11 +38,15 @@ export default function Friends() {
   const [query, setQuery] = useState("");
   const [suggestion, setSuggestion] = useState<Friend[] | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  const [hasTrigged, setHasTrigged] = useState<boolean>(false);
   const user = useUser();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   async function fetchFriends() {
-    setLoading(true);
+    if (!hasTrigged) {
+      setLoading(true);
+      setHasTrigged(true);
+    }
     const base = getApiBase();
     const response = await fetch(`${base}/fetch-friends`, {
       method: "POST",
@@ -93,7 +97,11 @@ export default function Friends() {
     }
   }
 
-  async function declineFriendRequest(friendshipId: string, removing: boolean) {
+  async function declineFriendRequest(
+    friendshipId: string,
+    removing: boolean,
+    canceling?: boolean
+  ) {
     const base = getApiBase();
     const response = await fetch(`${base}/remove-friend`, {
       method: "POST",
@@ -106,12 +114,17 @@ export default function Friends() {
     });
 
     if (response.ok) {
-      const toastSuccessMessage = removing
+      let toastSuccessMessage = removing
         ? "Succesfully removed friend"
         : "Succesfully declined friend request";
-      const toastErrorMessage = removing
+      let toastErrorMessage = removing
         ? "Unable to removed friend"
         : "Unable to decline friend request";
+      if (canceling) {
+        toastSuccessMessage = "Succesfully canceled pending friend request.";
+        toastErrorMessage = "Unable to cancel pending friend-request";
+      }
+
       const data = (await response.json()) as APIResponse;
       if (data.status !== 200) {
         toast.error(toastErrorMessage, {
@@ -186,6 +199,9 @@ export default function Friends() {
                       onDeny={() => {
                         declineFriendRequest(friend.id, false);
                       }}
+                      onCancel={() => {
+                        declineFriendRequest(friend.id, false, true);
+                      }}
                     />
                   );
                 } else
@@ -202,6 +218,14 @@ export default function Friends() {
               })
             ) : (
               <div className="w-full space-y-4 max-w-full pb-8">
+                <div
+                  className="flex w-full justify-center pb-10"
+                  onClick={() => {
+                    setIsModalOpen(true);
+                  }}
+                >
+                  <AddFriendButton />
+                </div>
                 {pendingFriends.map((friend) => (
                   <div key={`pending-${friend.id}`} className="pb-8">
                     <FriendRequest
@@ -212,6 +236,9 @@ export default function Friends() {
                       }}
                       onDeny={() => {
                         declineFriendRequest(friend.id, false);
+                      }}
+                      onCancel={() => {
+                        declineFriendRequest(friend.id, false, true);
                       }}
                     />
                   </div>
@@ -228,15 +255,6 @@ export default function Friends() {
                 ))}
               </div>
             )}
-
-            <div
-              className="flex w-full  justify-center"
-              onClick={() => {
-                setIsModalOpen(true);
-              }}
-            >
-              <AddFriendButton />
-            </div>
           </>
         )}
       </div>
