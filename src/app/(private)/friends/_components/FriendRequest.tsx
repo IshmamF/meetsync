@@ -5,6 +5,7 @@ interface FriendRequestProps {
   name: string;
   onAccept: () => void;
   onDeny: () => void;
+  onCancel: () => void;
   isSender: boolean;
 }
 
@@ -12,6 +13,7 @@ export default function FriendRequest({
   name,
   onAccept,
   onDeny,
+  onCancel,
   isSender,
 }: FriendRequestProps) {
   {
@@ -29,7 +31,7 @@ export default function FriendRequest({
         {isSender ? (
           <button
             className="bg-red-500 text-black px-4 py-2 rounded-md border border-black"
-            onClick={onDeny}
+            onClick={onCancel}
           >
             Cancel
           </button>
