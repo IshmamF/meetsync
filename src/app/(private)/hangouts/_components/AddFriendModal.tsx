@@ -41,7 +41,6 @@ const AddFriendModal = ({
         return;
       }
       const suggestions = await findPeople(e.target.value);
-      console.log(suggestions);
 
       if (Array.isArray(suggestions)) {
         setPeople(
