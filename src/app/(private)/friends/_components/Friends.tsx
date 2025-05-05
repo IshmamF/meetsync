@@ -150,8 +150,12 @@ export default function Friends() {
     <>
       <AddFriendModal
         friends={friends.map((friend) => friend.friend_auth_id)}
+        pendingFriends={pendingFriends.map((friend) => friend.friend_auth_id)}
         isOpen={isModalOpen}
-        onClose={() => {
+        onClose={(rerender: boolean) => {
+          if (rerender) {
+            fetchFriends();
+          }
           setIsModalOpen(false);
         }}
       />
