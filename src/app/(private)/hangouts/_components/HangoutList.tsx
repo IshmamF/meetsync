@@ -73,13 +73,7 @@ export default function HangoutList({
 
     fetchHangoutProgress();
   }, [id]);
-
-  useEffect(() => {
-    async function fetchMapInfo() {
-      const response = await GetPlaceCoord(location);
-    }
-  }, [flowStatus])
-
+  
   return (
     <>
       <ConfirmLocationModal
@@ -126,10 +120,11 @@ export default function HangoutList({
               {attendees} attendee{attendees !== 1 ? "s" : ""}
             </span>
           </div>
+
           <div>
-            { flowStatus == "accepted-final-confirmation" && <MeetupInfo locationName={location} title={title} scheduled_time={scheduled_time}/> }
-          </div>
-          <div>
+            <div>
+              { flowStatus == "accepted-final-confirmation" && <MeetupInfo locationName={location} title={title} scheduled_time={scheduled_time}/> }
+            </div>
             <HangoutActionButton
               showConfirmLocationModal={() => {
                 setIsConfirmationModal(true);
