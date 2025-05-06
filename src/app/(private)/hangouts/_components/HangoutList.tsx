@@ -6,6 +6,8 @@ import ConfirmLocationModal from "../_components/FinalConfirmationModal";
 import HangoutProgressBar from "./HangoutProgressBar";
 import { Participant } from "./Hangouts";
 import { getApiBase } from "@/utils/etc/apiBase";
+import MeetupInfo from "./meetupInfo";
+import { GetPlaceCoord } from "../actions";
 
 interface HangoutListProps {
   name: string;
@@ -72,6 +74,12 @@ export default function HangoutList({
     fetchHangoutProgress();
   }, [id]);
 
+  useEffect(() => {
+    async function fetchMapInfo() {
+      const response = await GetPlaceCoord(location);
+    }
+  }, [flowStatus])
+
   return (
     <>
       <ConfirmLocationModal
@@ -117,6 +125,9 @@ export default function HangoutList({
             <span className="text-sm font-semibold text-gray-700">
               {attendees} attendee{attendees !== 1 ? "s" : ""}
             </span>
+          </div>
+          <div>
+            { flowStatus == "accepted-final-confirmation" && <MeetupInfo locationName={location} title={title} scheduled_time={scheduled_time}/> }
           </div>
           <div>
             <HangoutActionButton
