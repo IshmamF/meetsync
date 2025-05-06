@@ -3,6 +3,7 @@ import Map, { Marker, Popup, MapRef }  from 'react-map-gl/mapbox';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { useState, useEffect, Suspense } from 'react';
 import {useRef} from 'react';
+import { Participant } from "./Hangouts";
 
 const token = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN as string;
 
@@ -19,10 +20,12 @@ interface Props {
   setViewState: React.Dispatch<React.SetStateAction<{
     longitude: number;
     latitude: number;
-    zoom: number;}>>;
+    zoom: number;}
+  >>;
+  participants: string;
 }
 
-const MapBox = ({locationName, coord, address, userloc, viewState, setViewState}: Props) => {
+const MapBox = ({locationName, coord, address, userloc, viewState, setViewState, participants}: Props) => {
   const mapRef = useRef<MapRef | null>(null);
   const [openPopup, setOpenPopup] = useState(false);
 
@@ -33,7 +36,6 @@ const MapBox = ({locationName, coord, address, userloc, viewState, setViewState}
           {...viewState}
           ref={mapRef}
           mapboxAccessToken={token}
-          style={{ width: '400px', height: '400px' }}
           mapStyle="mapbox://styles/mapbox/streets-v12"
           onMove={(evt) => {setViewState(evt.viewState)}}
         >
@@ -63,12 +65,17 @@ const MapBox = ({locationName, coord, address, userloc, viewState, setViewState}
               onClose={() => setOpenPopup(false)}
             >
               <div className="flex flex-col items-start space-y-1">
-                <h3 className="text-sm font-semibold text-black">
+                <h3 className="text-sm font-bold text-black">
                   {locationName}
                 </h3>
                 <p className="text-xs text-gray-500">
                   {address}
                 </p>
+                <div className="flex flex-wrap">
+                  <p className="font-semibold text-black">Participants: </p> 
+                  <p className='text-gray-500'>{participants}</p>
+                </div>
+
                 <button
                   onClick={() => setOpenPopup(false)}
                   className="self-end text-xs text-blue-500 hover:underline "

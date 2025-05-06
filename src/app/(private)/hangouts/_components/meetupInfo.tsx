@@ -9,11 +9,13 @@ import {
 import MapBox from './mapbox'; 
 import { useEffect, useState } from "react";
 import { GetPlaceCoord } from "../actions";
+import { Participant } from "./Hangouts";
   
 interface Props {
     locationName: string;
     title: string;
     scheduled_time: string;
+    participants: string;
 }
 
 type PlaceCoordResponse = {
@@ -31,7 +33,8 @@ type Coordinate = {
     longitude: number,
 }
 
-export default function MeetupInfo({locationName, title, scheduled_time} : Props) {
+
+export default function MeetupInfo({locationName, title, scheduled_time, participants} : Props) {
     const [coord, setCoord] = useState<number[]>([]);
     const [address, setAddress] = useState<string>('');
     const [isOpen, setIsOpen] = useState(false);
@@ -99,7 +102,7 @@ export default function MeetupInfo({locationName, title, scheduled_time} : Props
                 <DialogHeader className="flex items-center text-xl font-semibold ">
                     <DialogTitle>{`${title} : ${scheduled_time}`}</DialogTitle>
                 </DialogHeader>
-                <div className="h-full flex justify-center">
+                <div className="h-[500px] flex justify-center">
                     {coord.length > 0 ? (
                         <MapBox
                             locationName={locationName}
@@ -108,6 +111,7 @@ export default function MeetupInfo({locationName, title, scheduled_time} : Props
                             userloc={userloc}
                             viewState={viewState}
                             setViewState={setViewState}
+                            participants={participants}
                         />
                     ) : (
                         <div className="flex items-center justify-center h-full text-gray-500">
