@@ -63,6 +63,7 @@ const MapBox = ({locationName, coord, address, userloc, viewState, setViewState,
               longitude={Number(coord[0])}
               latitude={Number(coord[1]!)}
               onClose={() => setOpenPopup(false)}
+              closeButton={false}
             >
               <div className="flex flex-col items-start space-y-1">
                 <h3 className="text-sm font-bold text-black">
