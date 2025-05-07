@@ -5,6 +5,7 @@ import { getHangoutInfo, getMeetupOptions } from '../actions';
 import CreatorPage from './creatorPage';
 import VoterPage from './voterPage';
 import toast from 'react-hot-toast';
+import Loading from '@/app/components/loading';
 
 
 interface Props {
@@ -18,13 +19,14 @@ type MeetupOption = {
 
 export default function Availability({id}: Props) {
     const user = useUser();
-    const [isCreator, setIsCreator] = useState<boolean>(false);
+    const [isCreator, setIsCreator] = useState<boolean>(true);
     const [displayTitle, setDisplayTitle] = useState<string>('');
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [options, setOptions] = useState<MeetupOption[]>([]);
     
     useEffect(() => {
         const hangoutInfo = async () => {
+            setIsLoading(true);
             try {
                 const info = await getHangoutInfo(id);
                 if (info.hangout_info?.creator_id == user?.auth_id) {
@@ -59,7 +61,7 @@ export default function Availability({id}: Props) {
 
     if (isLoading) {
         return (
-            <div className='bg-lightBlue w-full h-screen'></div>
+           <Loading />
         )
     }
 
