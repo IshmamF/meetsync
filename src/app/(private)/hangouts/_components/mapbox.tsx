@@ -1,9 +1,8 @@
 'use client';
 import Map, { Marker, Popup, MapRef }  from 'react-map-gl/mapbox';
 import 'mapbox-gl/dist/mapbox-gl.css';
-import { useState, useEffect, Suspense } from 'react';
+import { useState, Suspense } from 'react';
 import {useRef} from 'react';
-import { Participant } from "./Hangouts";
 
 const token = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN as string;
 
@@ -27,7 +26,7 @@ interface Props {
 
 const MapBox = ({locationName, coord, address, userloc, viewState, setViewState, participants}: Props) => {
   const mapRef = useRef<MapRef | null>(null);
-  const [openPopup, setOpenPopup] = useState(false);
+  const [openPopup, setOpenPopup] = useState(true);
 
   return (
     <>

@@ -9,7 +9,6 @@ import {
 import MapBox from './mapbox'; 
 import { useEffect, useState } from "react";
 import { GetPlaceCoord } from "../actions";
-import { Participant } from "./Hangouts";
   
 interface Props {
     locationName: string;
@@ -38,7 +37,7 @@ export default function MeetupInfo({locationName, title, scheduled_time, partici
     const [coord, setCoord] = useState<number[]>([]);
     const [address, setAddress] = useState<string>('');
     const [isOpen, setIsOpen] = useState(false);
-    const DEFAULT_LOC = [ -73.8203, 40.7367 ];
+    const DEFAULT_LOC = [ -73.95, 40.8194 ];
     const [userloc, setUserLoc] = useState<number[]>(DEFAULT_LOC);
     const [viewState, setViewState] = useState({
         longitude: DEFAULT_LOC[0],
