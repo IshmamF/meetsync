@@ -4,6 +4,7 @@ import { useUser } from "@/utils/context/userContext";
 import React, { ChangeEvent, useState } from "react";
 import UserSearchBar from "./components/UserSearchBar";
 import HomeBottom from "./components/Home";
+import { useRouter } from "next/navigation";
 import { getApiBase } from "@/utils/etc/apiBase";
 import InfoModal from "@/app/components/infoModal";
 import { informationStrings } from "@/utils/etc/informationStrings";
@@ -14,9 +15,17 @@ export type Attendee = {
   username: string | null;
 };
 
+type NewHangoutResponse = {
+  hangout_id: number,
+  message: string,
+  status: number,
+};
+
 function Home() {
   const [attendees, setAttendees] = useState<Attendee[]>([]);
   const [title, setTitle] = useState<string>("");
+
+  const router = useRouter();
 
   const user = useUser();
 
@@ -59,7 +68,8 @@ function Home() {
     });
 
     if (response.ok) {
-      const data = await response.json();
+      const data: NewHangoutResponse = await response.json();
+      router.push(`/availability/${data.hangout_id}`);
       setAttendees([]);
       setTitle("");
     }
