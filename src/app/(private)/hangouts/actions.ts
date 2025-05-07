@@ -38,3 +38,22 @@ export async function SaveParticipantMeetupTimeDecline(hangout_id: string, user_
     const json = await response.json();
     return json;
 }
+
+export async function GetPlaceCoord(name: string) {
+    const base = getApiBase();
+    const response = await fetch(`${base}/get-place-coord`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({"name": name})
+    })
+
+    if (!response.ok) {
+        console.error("Failed to post data:", response.statusText);
+        return { status: response.status, message: 'Something went getting latitude and longitude of a place'};
+    }
+
+    const json = await response.json();
+    return json;
+}
