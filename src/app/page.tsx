@@ -5,10 +5,8 @@ import {  MapPin, CalendarCheck2, SlidersHorizontal, Handshake, } from "lucide-r
 export default function Home() {
   return (
     <div className="flex flex-col">
-      <nav className="bg-[#0E1E33] text-4xl text-gray-400 py-4">
-        <div className="container mx-auto flex justify-between items-center px-6">
+      <nav className="bg-[#0E1E33] text-4xl text-gray-400 py-4 px-8">
           <h1 className="font-bold text-[#F9B233]">MeetSync</h1>
-        </div>
       </nav>
 
       <section className="bg-[#0E1E33] text-white py-24">
