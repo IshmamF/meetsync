@@ -8,17 +8,6 @@ export default function Home() {
       <nav className="bg-[#0E1E33] text-4xl text-gray-400 py-4">
         <div className="container mx-auto flex justify-between items-center px-6">
           <h1 className="font-bold text-[#F9B233]">MeetSync</h1>
-          <div className="space-x-6">
-            <Link href="/" className="hover:underline">
-              About
-            </Link>
-            <Link href="/login" className="hover:underline">
-              Login
-            </Link>
-            <Link href="/signup" className="hover:underline">
-              Register
-            </Link>
-          </div>
         </div>
       </nav>
 
