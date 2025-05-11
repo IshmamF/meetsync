@@ -19,7 +19,7 @@ type MeetupOption = {
 
 export default function Availability({id}: Props) {
     const user = useUser();
-    const [isCreator, setIsCreator] = useState<boolean>(true);
+    const [isCreator, setIsCreator] = useState<boolean>(false);
     const [displayTitle, setDisplayTitle] = useState<string>('');
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [options, setOptions] = useState<MeetupOption[]>([]);
